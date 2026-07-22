@@ -19,6 +19,14 @@ import {
   SiDocker
 } from 'react-icons/si';
 import { FaAws } from 'react-icons/fa';
+import CountUp from "@/components/CountUp";
+import PixelTransition from "@/components/PixelTransition";
+import ScrollStack, { ScrollStackItem } from '../components/ScrollStack';
+import '../components/ScrollStack.css';
+import SplashCursor from '@/components/SplashCursor';
+import ElectricBorder from '@/components/ElectricBorder';        // ✅ أضف هذا
+import '@/components/ElectricBorder.css';   
+
 
 // ===== بيانات مشاريعك =====
 const projects = [
@@ -300,14 +308,14 @@ const textBlocks = [
     subtitle: "Full-Stack Web Developer | مهندس برمجيات",
     align: "center" as const,
     start: 0,
-    end: 0.25,
+    end: 0.20,
   },
   {
     id: 1,
     title: "التميز والخبرة",
     subtitle: "تطوير تطبيقات وتصميم حلول برمجية بمعايير عالمية",
     align: "left" as const,
-    start: 0.22,
+    start: 0.18,
     end: 0.5,
   },
   {
@@ -324,8 +332,9 @@ const textBlocks = [
     subtitle: "جاهز لتحويل أفكارك إلى حلول برمجية احترافية",
     align: "center" as const,
     start: 0.73,
-    end: 1,
+    end: 0.80,
   },
+  
 ];
 
 // ===== دالة مسار الصور =====
@@ -595,37 +604,54 @@ export default function PortfolioMain() {
       </header>
 
       {/* ===== الخلفية الثابتة والممتدة لجميع الصفحة ===== */}
-      <div className="fixed inset-0 z-0 overflow-hidden bg-[#020202]">
-        <canvas ref={canvasRef} className="h-full w-full opacity-60" />
-        
-        {/* طبقة التعتيم الأساسية */}
-        <div className="absolute inset-0 bg-black/45 pointer-events-none" />
+{/* ===== الخلفية الثابتة والممتدة لجميع الصفحة ===== */}
+<div className="fixed inset-0 z-0 overflow-hidden bg-[#020202]">
+  
+  {/* ===== SplashCursor مخفف ===== */}
+  <SplashCursor
+    RAINBOW_MODE={true}              // ❌ إيقاف قوس قزح (يقلل الأداء)
+    // COLOR="#F59E0B"                   // 🟡 لون ذهبي ثابت
+    SIM_RESOLUTION={48}               // ⬇️ من 128 إلى 48 (أداء أفضل)
+    DYE_RESOLUTION={512}              // ⬇️ من 1440 إلى 512
+    SPLAT_RADIUS={0.15}               // ⬇️ من 0.25 إلى 0.15 (تأثير أصغر)
+    SPLAT_FORCE={3500}                // ⬇️ من 3000 إلى 1500 (قوة أقل)
+    DENSITY_DISSIPATION={6}           // ⬆️ من 4.5 إلى 6 (يتلاشى أسرع)
+    VELOCITY_DISSIPATION={10}          // ⬆️ من 3.5 إلى 5 (حركة أقل)
+    TRANSPARENT={true}
+    COLOR_UPDATE_SPEED={30}            // ⬇️ من 6 إلى 2 (تغير أبطأ)
+    SHADING={false}                   // ❌ إيقاف التظليل (يقلل الأداء)
+  />
+  
+  <canvas ref={canvasRef} className="h-full w-full opacity-60" />
+  
+  {/* طبقة التعتيم الأساسية */}
+  <div className="absolute inset-0 bg-black/45 pointer-events-none" />
 
-        {/* تأثير البقعة الضوئية */}
-        <div
-          className="absolute inset-0 pointer-events-none transition-opacity duration-300"
-          style={{
-            opacity: isInsideHero ? 1 : 0,
-            backdropFilter: "brightness(1.5) contrast(1.1)",
-            WebkitBackdropFilter: "brightness(1.5) contrast(1.1)",
-            maskImage: `radial-gradient(circle 80px at ${mousePos.x}px ${mousePos.y}px, black 0%, transparent 100%)`,
-            WebkitMaskImage: `radial-gradient(circle 80px at ${mousePos.x}px ${mousePos.y}px, black 0%, transparent 100%)`,
-          }}
-        />
+  {/* تأثير البقعة الضوئية */}
+  <div
+    className="absolute inset-0 pointer-events-none transition-opacity duration-300"
+    style={{
+      opacity: isInsideHero ? 1 : 0,
+      backdropFilter: "brightness(1.5) contrast(1.1)",
+      WebkitBackdropFilter: "brightness(1.5) contrast(1.1)",
+      maskImage: `radial-gradient(circle 80px at ${mousePos.x}px ${mousePos.y}px, black 0%, transparent 100%)`,
+      WebkitMaskImage: `radial-gradient(circle 80px at ${mousePos.x}px ${mousePos.y}px, black 0%, transparent 100%)`,
+    }}
+  />
 
-        {!isLoaded && (
-          <div className="absolute inset-0 z-30 flex items-center justify-center bg-[#020202] backdrop-blur-md">
-            <div className="flex flex-col items-center gap-4 text-center">
-              <div className="h-12 w-12 animate-spin rounded-full border-[3px] border-white/10 border-t-amber-400" />
-              <div>
-                <p className="text-xs uppercase tracking-[0.4em] text-white/50">جاري تحميل المعرض</p>
-                <p className="mt-2 text-base font-medium text-white/90">استعد لاكتشاف أعمال Mohammed Al-Hanani</p>
-              </div>
-            </div>
-          </div>
-        )}
+  {/* Loading */}
+  {!isLoaded && (
+    <div className="absolute inset-0 z-30 flex items-center justify-center bg-[#020202] backdrop-blur-md">
+      <div className="flex flex-col items-center gap-4 text-center">
+        <div className="h-12 w-12 animate-spin rounded-full border-[3px] border-white/10 border-t-amber-400" />
+        <div>
+          <p className="text-xs uppercase tracking-[0.4em] text-white/50">جاري تحميل المعرض</p>
+          <p className="mt-2 text-base font-medium text-white/90">استعد لاكتشاف أعمال Mohammed Al-Hanani</p>
+        </div>
       </div>
-
+    </div>
+  )}
+</div>
       {/* ===== 1 & 2. قسم الهيرو والتمرير بالصور مع تعقب المؤشر ===== */}
       <div 
         className="h-[300vh] relative z-10"
@@ -738,102 +764,367 @@ export default function PortfolioMain() {
       <div className="relative z-10 bg-transparent pt-20 pb-16 space-y-32">
         
         {/* ===== 2. قسم عني (About Me) ===== */}
-        <section id="about" className="max-w-4xl mx-auto px-6 scroll-mt-28">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <span className="text-amber-400 text-xs uppercase tracking-[0.3em] font-medium">About Me</span>
-            <h2 className="text-3xl sm:text-4xl font-bold mt-2 mb-6">My Journey as a Full-Stack Developer</h2>
-            <p className="text-white/80 leading-relaxed text-lg mb-8 drop-shadow">
-              Passionate developer with expertise in both front-end and back-end technologies. I build responsive, scalable web applications with clean code and modern frameworks.
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="p-4 rounded-xl bg-black/40 backdrop-blur-md border border-white/10 shadow-lg">
-                <span className="text-xs text-white/50 block mb-1">الاسم</span>
-                <span className="font-medium text-white">Mohammed Al-Hanani</span>
-              </div>
-              <div className="p-4 rounded-xl bg-black/40 backdrop-blur-md border border-white/10 shadow-lg">
-                <span className="text-xs text-white/50 block mb-1">البريد الإلكتروني</span>
-                <span className="font-medium text-white text-sm truncate block">Mohammadalhnani@gmail.com</span>
-              </div>
-              <div className="p-4 rounded-xl bg-black/40 backdrop-blur-md border border-white/10 shadow-lg">
-                <span className="text-xs text-white/50 block mb-1">الخبرة</span>
-                <span className="font-medium text-amber-400">2+ Years</span>
-              </div>
-              <div className="p-4 rounded-xl bg-black/40 backdrop-blur-md border border-white/10 shadow-lg">
-                <span className="text-xs text-white/50 block mb-1">العمل الحر</span>
-                <span className="font-medium text-emerald-400">Available</span>
-              </div>
+{/* ===== 2. قسم عني (About Me) ===== */}
+{/* ===== 2. قسم عني (About Me) ===== */}
+<section id="about" className="max-w-6xl mx-auto px-6 scroll-mt-28">
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.6 }}
+  >
+    <div className="flex items-center gap-3 mb-2">
+      <span className="w-10 h-0.5 bg-amber-400"></span>
+      <span className="text-amber-400 text-xs uppercase tracking-[0.3em] font-medium">About Me</span>
+    </div>
+    
+    <h2 className="text-3xl sm:text-4xl font-bold mt-2 mb-6">
+      مطور برمجيات <span className="text-amber-400">شغوف</span> بحل المشكلات
+    </h2>
+    
+    <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+      
+      {/* ===== العمود الأيسر: الصورة الشخصية مع PixelTransition ===== */}
+      <div className="lg:col-span-2">
+        <div className="relative group">
+          {/* الإطار الخارجي مع تأثير التوهج */}
+          <div className="absolute -inset-1 bg-gradient-to-r from-amber-400/20 via-amber-400/10 to-amber-400/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          
+          <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-black/40 backdrop-blur-sm p-2">
+            <PixelTransition
+              firstContent={
+                <img
+                  src="/img/profile-img.jpg"
+                  alt="Mohammed Al-Hanani"
+                  style={{ 
+                    width: "100%", 
+                    height: "100%", 
+                    objectFit: "cover",
+                    display: "block"
+                  }}
+                  onError={(e) => {
+                    e.currentTarget.src = 'https://ui-avatars.com/api/?name=Mohammed+Al-Hanani&size=400&background=F59E0B&color=fff&bold=true';
+                  }}
+                />
+              }
+              secondContent={
+                <div
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    display: "grid",
+                    placeItems: "center",
+                    backgroundColor: "#0a0a0a",
+                    backgroundImage: "radial-gradient(circle at center, #1a1a2e 0%, #0a0a0a 100%)",
+                    padding: "20px"
+                  }}
+                >
+                  <div style={{ textAlign: "center" }}>
+                    <p style={{ 
+                      fontWeight: 700, 
+                      fontSize: "2rem", 
+                      color: "#F59E0B",
+                      marginBottom: "8px"
+                    }}>
+                      مرحباً!
+                    </p>
+                    <p style={{ 
+                      fontSize: "0.9rem", 
+                      color: "#ffffff",
+                      opacity: 0.8,
+                      maxWidth: "200px"
+                    }}>
+                      محمد الحناني
+                    </p>
+                    <div style={{
+                      width: "40px",
+                      height: "2px",
+                      backgroundColor: "#F59E0B",
+                      margin: "12px auto",
+                      borderRadius: "2px"
+                    }} />
+                    <p style={{ 
+                      fontSize: "0.7rem", 
+                      color: "#ffffff",
+                      opacity: 0.5
+                    }}>
+                      Full-Stack Developer
+                    </p>
+                  </div>
+                </div>
+              }
+              gridSize={12}
+              pixelColor="#F59E0B"
+              animationStepDuration={0.5}
+              once={false}
+              aspectRatio="75%"
+              className="w-full"
+              style={{
+                width: "100%",
+                borderRadius: "12px",
+                border: "none",
+                backgroundColor: "transparent"
+              }}
+            />
+            
+            {/* شارة الخبرة */}
+            <div className="absolute bottom-4 right-4 bg-black/80 backdrop-blur-md border border-amber-400/30 rounded-xl px-4 py-2 shadow-xl z-10">
+              <span className="block text-2xl font-bold text-amber-400">4+</span>
+              <span className="text-[10px] text-white/60 uppercase tracking-wider">سنوات خبرة</span>
             </div>
-          </motion.div>
-        </section>
+          </div>
+        </div>
+      </div>
+      
+      {/* ===== العمود الأيمن: المعلومات ===== */}
+      <div className="lg:col-span-3 space-y-6">
+        <div>
+          <h3 className="text-2xl font-bold text-white mb-2">
+            Mohammed Al-Hanani
+          </h3>
+          <p className="text-amber-400 text-sm font-medium">
+            Full-Stack Developer | مهندس برمجيات
+          </p>
+        </div>
+        
+        <p className="text-white/80 leading-relaxed text-base">
+          مطور برمجيات شغوف بتطوير حلول تقنية مبتكرة وفعالة. أمتلك خبرة في بناء 
+          تطبيقات الويب والموبايل باستخدام أحدث التقنيات، مع التركيز على جودة الكود 
+          وتجربة المستخدم. أسعى دائماً لتقديم قيمة مضافة لعملائي من خلال حلول برمجية 
+          احترافية تلبي احتياجاتهم وتتجاوز توقعاتهم.
+        </p>
+
+        {/* ===== معلومات سريعة ===== */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div className="p-3 rounded-xl bg-black/40 backdrop-blur-md border border-white/10 shadow-lg hover:border-amber-400/30 transition-colors">
+            <span className="text-[8px] text-white/40 uppercase tracking-wider block mb-0.5">الاسم</span>
+            <span className="font-medium text-white text-xs">Mohammed Al-Hanani</span>
+          </div>
+          <div className="p-3 rounded-xl bg-black/40 backdrop-blur-md border border-white/10 shadow-lg hover:border-amber-400/30 transition-colors">
+            <span className="text-[8px] text-white/40 uppercase tracking-wider block mb-0.5">البريد الإلكتروني</span>
+            <span className="font-medium text-white text-xs truncate block">Mohammadalhnani@gmail.com</span>
+          </div>
+          <div className="p-3 rounded-xl bg-black/40 backdrop-blur-md border border-white/10 shadow-lg hover:border-amber-400/30 transition-colors">
+            <span className="text-[8px] text-white/40 uppercase tracking-wider block mb-0.5">المكان</span>
+            <span className="font-medium text-white text-xs">Yemen, Sanaa</span>
+          </div>
+          <div className="p-3 rounded-xl bg-black/40 backdrop-blur-md border border-white/10 shadow-lg hover:border-amber-400/30 transition-colors">
+            <span className="text-[8px] text-white/40 uppercase tracking-wider block mb-0.5">الخبرة</span>
+            <span className="font-medium text-amber-400 text-xs">4+ سنوات</span>
+          </div>
+        </div>
+
+        {/* ===== وصف إضافي ===== */}
+        <div className="p-5 rounded-xl bg-gradient-to-r from-amber-400/5 to-transparent border border-amber-400/10">
+          <p className="text-white/70 text-sm leading-relaxed italic">
+            "أؤمن بأن التكنولوجيا الجيدة يجب أن تكون بسيطة وسهلة الاستخدام، 
+            ولذلك أركز على تقديم حلول برمجية تجمع بين القوة والجمال."
+          </p>
+        </div>
+      </div>
+    </div>
+  </motion.div>
+</section>
 
         {/* ===== 3. قسم السيرة الذاتية (Resume) ===== */}
-        <section id="resume" className="max-w-4xl mx-auto px-6 scroll-mt-28">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <span className="text-amber-400 text-xs uppercase tracking-[0.3em] font-medium">My Resume</span>
-            <h2 className="text-3xl sm:text-4xl font-bold mt-2 mb-4">Professional Journey & Technical Expertise</h2>
-            <p className="text-white/80 mb-10 text-base drop-shadow">
-              Mohammed Al-Hanani - Full Stack Developer specializing in Flutter and Laravel with 2+ years of experience.
-            </p>
-            
-            <div className="p-6 rounded-2xl bg-black/40 backdrop-blur-md border border-white/10 shadow-lg space-y-4">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/10 pb-4">
-                <div>
-                  <h3 className="text-xl font-semibold text-amber-400">Flutter & Firebase Developer</h3>
-                  <p className="text-xs text-white/60 mt-1">Sanaa, Yemen | GitHub: MohammedAlHanani</p>
-                </div>
-                <span className="text-xs font-mono bg-amber-400/10 text-amber-400 px-3 py-1 rounded-full w-fit border border-amber-400/20">
-                  Jan 2022 - Present
-                </span>
-              </div>
-              <p className="text-white/90 leading-relaxed">
-                Developed 10+ cross-platform mobile applications using Flutter framework, providing robust UI/UX experiences and backend API connectivity.
-              </p>
-            </div>
-          </motion.div>
-        </section>
-
+{/* ===== 3. قسم السيرة الذاتية (Resume) ===== */}
         {/* ===== 4. قسم الخدمات (Services) ===== */}
-        <section id="services" className="max-w-5xl mx-auto px-6 scroll-mt-28">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <span className="text-amber-400 text-xs uppercase tracking-[0.3em] font-medium">My Expertise</span>
-            <h2 className="text-3xl sm:text-4xl font-bold mt-2 mb-12">My Services</h2>
+{/* ===== 4. قسم الخدمات (Services) ===== */}
+{/* ===== 4. قسم الخدمات (Services) ===== */}
+{/* ===== 4. قسم الخدمات (Services) مع ScrollStack ===== */}
+{/* ===== 4. قسم الخدمات (Services) مع ElectricBorder ===== */}
+<section id="services" className="max-w-6xl mx-auto px-6 scroll-mt-28">
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.6 }}
+  >
+    <div className="flex items-center gap-3 mb-2">
+      <span className="w-10 h-0.5 bg-amber-400"></span>
+      <span className="text-amber-400 text-xs uppercase tracking-[0.3em] font-medium">My Expertise</span>
+    </div>
+    
+    <h2 className="text-3xl sm:text-4xl font-bold mt-2 mb-4">الخدمات التقنية المتكاملة</h2>
+    <p className="text-white/80 mb-12 text-base drop-shadow max-w-3xl">
+      أقدم حلولاً برمجية شاملة تغطي كامل دورة حياة التطوير، من الواجهات الأمامية إلى البنية التحتية السحابية
+    </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="p-6 rounded-2xl bg-black/40 backdrop-blur-md border border-white/10 shadow-lg hover:border-amber-400/40 transition-colors">
-                <h3 className="text-xl font-semibold mb-2 text-white">Mobile App Development</h3>
-                <p className="text-white/80 text-sm leading-relaxed">Building cross-platform mobile applications using Flutter with high performance and smooth UI.</p>
-              </div>
-              <div className="p-6 rounded-2xl bg-black/40 backdrop-blur-md border border-white/10 shadow-lg hover:border-amber-400/40 transition-colors">
-                <h3 className="text-xl font-semibold mb-2 text-white">Web Development</h3>
-                <p className="text-white/80 text-sm leading-relaxed">Creating responsive web applications using Laravel and modern front-end technologies.</p>
-              </div>
-              <div className="p-6 rounded-2xl bg-black/40 backdrop-blur-md border border-white/10 shadow-lg hover:border-amber-400/40 transition-colors">
-                <h3 className="text-xl font-semibold mb-2 text-white">Backend & APIs</h3>
-                <p className="text-white/80 text-sm leading-relaxed">Developing robust backend systems, secure databases, and high-performance RESTful APIs.</p>
-              </div>
-              <div className="p-6 rounded-2xl bg-black/40 backdrop-blur-md border border-white/10 shadow-lg hover:border-amber-400/40 transition-colors">
-                <h3 className="text-xl font-semibold mb-2 text-white">Firebase Solutions</h3>
-                <p className="text-white/80 text-sm leading-relaxed">Implementing advanced Firebase services including Realtime Database, Cloud Messaging, and Authentication.</p>
+    {/* ===== شبكة الخدمات مع ElectricBorder ===== */}
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      
+      {/* ===== الخدمة الأولى: تطوير الواجهات الأمامية ===== */}
+      <ElectricBorder
+        color="#F59E0B"
+        speed={1.2}
+        chaos={0.13}
+        borderRadius={16}
+        className="transition-all duration-300 hover:scale-[1.02]"
+      >
+        <div className="p-6 bg-black/60 backdrop-blur-xl rounded-[16px] min-h-[220px]">
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 rounded-xl bg-amber-400/10 flex items-center justify-center flex-shrink-0">
+              <svg className="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <div className="flex-1">
+              <h3 className="text-xl font-semibold mb-2 text-white">تطوير الواجهات الأمامية</h3>
+              <p className="text-white/80 text-sm leading-relaxed">
+                بناء واجهات مستخدم تفاعلية وسريعة باستخدام <span className="text-amber-400/80">React.js</span>، 
+                <span className="text-amber-400/80"> Angular</span>، 
+                <span className="text-amber-400/80"> Bootstrap</span>، 
+                <span className="text-amber-400/80"> JavaScript</span> و 
+                <span className="text-amber-400/80"> TypeScript</span>.
+              </p>
+              <div className="flex flex-wrap gap-2 mt-3">
+                <span className="text-[10px] px-2 py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">React</span>
+                <span className="text-[10px] px-2 py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">Angular</span>
+                <span className="text-[10px] px-2 py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">TypeScript</span>
+                <span className="text-[10px] px-2 py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">Bootstrap</span>
               </div>
             </div>
-          </motion.div>
-        </section>
+          </div>
+        </div>
+      </ElectricBorder>
 
+      {/* ===== الخدمة الثانية: تطوير الخلفية والـ APIs ===== */}
+      <ElectricBorder
+        color="#F59E0B"
+        speed={1.2}
+        chaos={0.13}
+        borderRadius={16}
+        className="transition-all duration-300 hover:scale-[1.02]"
+      >
+        <div className="p-6 bg-black/60 backdrop-blur-xl rounded-[16px] min-h-[220px]">
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 rounded-xl bg-amber-400/10 flex items-center justify-center flex-shrink-0">
+              <svg className="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
+              </svg>
+            </div>
+            <div className="flex-1">
+              <h3 className="text-xl font-semibold mb-2 text-white">تطوير الخلفية والـ APIs</h3>
+              <p className="text-white/80 text-sm leading-relaxed">
+                تصميم وتطوير أنظمة خلفية قوية وآمنة باستخدام <span className="text-amber-400/80">.NET Core</span>، 
+                <span className="text-amber-400/80"> Node.js</span> و 
+                <span className="text-amber-400/80"> Laravel</span>، مع بناء RESTful APIs و GraphQL APIs.
+              </p>
+              <div className="flex flex-wrap gap-2 mt-3">
+                <span className="text-[10px] px-2 py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">.NET Core</span>
+                <span className="text-[10px] px-2 py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">Node.js</span>
+                <span className="text-[10px] px-2 py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">Laravel</span>
+                <span className="text-[10px] px-2 py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">GraphQL</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ElectricBorder>
+
+      {/* ===== الخدمة الثالثة: تطبيقات الموبايل وسطح المكتب ===== */}
+      <ElectricBorder
+        color="#F59E0B"
+        speed={1.2}
+        chaos={0.13}
+        borderRadius={16}
+        className="transition-all duration-300 hover:scale-[1.02]"
+      >
+        <div className="p-6 bg-black/60 backdrop-blur-xl rounded-[16px] min-h-[220px]">
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 rounded-xl bg-amber-400/10 flex items-center justify-center flex-shrink-0">
+              <svg className="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <div className="flex-1">
+              <h3 className="text-xl font-semibold mb-2 text-white">تطبيقات الموبايل وسطح المكتب</h3>
+              <p className="text-white/80 text-sm leading-relaxed">
+                تطوير تطبيقات متعددة المنصات <span className="text-amber-400/80">(Cross-Platform)</span> باستخدام 
+                <span className="text-amber-400/80"> Flutter</span>، وتطبيقات سطح المكتب باستخدام 
+                <span className="text-amber-400/80"> Java</span> و <span className="text-amber-400/80"> Python</span>.
+              </p>
+              <div className="flex flex-wrap gap-2 mt-3">
+                <span className="text-[10px] px-2 py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">Flutter</span>
+                <span className="text-[10px] px-2 py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">Java</span>
+                <span className="text-[10px] px-2 py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">Python</span>
+                <span className="text-[10px] px-2 py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">Cross-Platform</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ElectricBorder>
+
+      {/* ===== الخدمة الرابعة: قواعد البيانات والسحابة ===== */}
+      <ElectricBorder
+        color="#F59E0B"
+        speed={1.2}
+        chaos={0.13}
+        borderRadius={16}
+        className="transition-all duration-300 hover:scale-[1.02]"
+      >
+        <div className="p-6 bg-black/60 backdrop-blur-xl rounded-[16px] min-h-[220px]">
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 rounded-xl bg-amber-400/10 flex items-center justify-center flex-shrink-0">
+              <svg className="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+              </svg>
+            </div>
+            <div className="flex-1">
+              <h3 className="text-xl font-semibold mb-2 text-white">قواعد البيانات والسحابة</h3>
+              <p className="text-white/80 text-sm leading-relaxed">
+                إدارة قواعد البيانات ونشر التطبيقات على منصات سحابية مثل <span className="text-amber-400/80">AWS</span> و 
+                <span className="text-amber-400/80"> Azure</span>، مع استخدام 
+                <span className="text-amber-400/80"> Docker</span> و <span className="text-amber-400/80"> Kubernetes</span>.
+              </p>
+              <div className="flex flex-wrap gap-2 mt-3">
+                <span className="text-[10px] px-2 py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">PostgreSQL</span>
+                <span className="text-[10px] px-2 py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">MongoDB</span>
+                <span className="text-[10px] px-2 py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">Docker</span>
+                <span className="text-[10px] px-2 py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">Kubernetes</span>
+                <span className="text-[10px] px-2 py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">AWS</span>
+                <span className="text-[10px] px-2 py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">Azure</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ElectricBorder>
+
+    </div>
+
+    {/* ===== إحصاءات مع CountUp ===== */}
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6, delay: 0.3 }}
+      className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4 p-8 rounded-2xl bg-black/30 backdrop-blur-md border border-white/5"
+    >
+      <div className="text-center">
+        <span className="block text-3xl font-bold text-amber-400">
+          <CountUp from={0} to={4} duration={2} separator="" className="count-up-text" />+
+        </span>
+        <span className="text-[10px] text-white/40 uppercase tracking-wider mt-1 block">سنوات خبرة</span>
+      </div>
+      <div className="text-center">
+        <span className="block text-3xl font-bold text-amber-400">
+          <CountUp from={0} to={123} duration={2.5} separator="" className="count-up-text" />+
+        </span>
+        <span className="text-[10px] text-white/40 uppercase tracking-wider mt-1 block">مشروع منجز</span>
+      </div>
+      <div className="text-center">
+        <span className="block text-3xl font-bold text-amber-400">
+          <CountUp from={0} to={200} duration={2.5} separator="" className="count-up-text" />+
+        </span>
+        <span className="text-[10px] text-white/40 uppercase tracking-wider mt-1 block">عميل سعيد</span>
+      </div>
+      <div className="text-center">
+        <span className="block text-3xl font-bold text-amber-400">24/7</span>
+        <span className="text-[10px] text-white/40 uppercase tracking-wider mt-1 block">دعم فني</span>
+      </div>
+    </motion.div>
+
+  </motion.div>
+</section>
         {/* ===== 5. قسم المشاريع (Portfolio) مع ProfileCard ===== */}
         <section id="portfolio" className="max-w-7xl mx-auto px-6 scroll-mt-28">
           <motion.div
@@ -939,142 +1230,126 @@ export default function PortfolioMain() {
               </div>
               
               {/* شريط سفلي من التقنيات في الاتجاه المعاكس */}
-              <div style={{ height: '120px', position: 'relative', overflow: 'hidden', marginTop: '1rem' }}>
-                <LogoLoop
-                  logos={techLogos.slice().reverse()}
-                  speed={60}
-                  direction="right"
-                  logoHeight={40}
-                  gap={60}
-                  hoverSpeed={15}
-                  scaleOnHover
-                  fadeOut
-                  fadeOutColor="#020202"
-                  ariaLabel="التقنيات والمهارات - الاتجاه المعاكس"
-                />
-              </div>
+              
             </div>
 
-            <p className="text-white/50 text-xs text-center mt-6">
+            {/* <p className="text-white/50 text-xs text-center mt-6">
               مرر فوق أيقونة لتكبيرها • تتحرك القائمة تلقائياً
-            </p>
+            </p> */}
           </motion.div>
         </section>
 
         {/* ===== 7. قسم شهادات التوصية (Testimonials) ===== */}
-        <section id="testimonials" className="max-w-4xl mx-auto px-6 scroll-mt-28">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <span className="text-amber-400 text-xs uppercase tracking-[0.3em] font-medium">Testimonials</span>
-            <h2 className="text-3xl sm:text-4xl font-bold mt-2 mb-12">ماذا قالوا عن عملي</h2>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="p-6 rounded-2xl bg-black/40 backdrop-blur-md border border-white/10 shadow-lg relative">
-                <span className="text-4xl text-amber-400/30 absolute top-4 left-6 font-serif">“</span>
-                <p className="text-white/90 text-sm leading-relaxed mb-6 relative z-10">
-                  &ldquo;محمد الحناني كان من أبرز طلاب الكلية تميزاً في مجال تطوير البرمجيات.&rdquo;
-                </p>
-                <div className="border-t border-white/10 pt-4">
-                  <h4 className="font-semibold text-white">د. فرحان الجابري</h4>
-                  <p className="text-xs text-amber-400 mt-0.5">عميد كلية GIC</p>
-                </div>
-              </div>
-
-              <div className="p-6 rounded-2xl bg-black/40 backdrop-blur-md border border-white/10 shadow-lg relative">
-                <span className="text-4xl text-amber-400/30 absolute top-4 left-6 font-serif">“</span>
-                <p className="text-white/90 text-sm leading-relaxed mb-6 relative z-10">
-                  &ldquo;خلال تقييمنا لمشروع محمد الحناني، لاحظنا تميزاً غير عادي في جودة الكود والتصميم.&rdquo;
-                </p>
-                <div className="border-t border-white/10 pt-4">
-                  <h4 className="font-semibold text-white">م. مهند المشرقي</h4>
-                  <p className="text-xs text-amber-400 mt-0.5">خبير أنظمة معلومات - عضو لجنة المناقشة</p>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </section>
+        
 
         {/* ===== 8. قسم اتصل بي (Contact) ===== */}
-        <section id="contact" className="max-w-4xl mx-auto px-6 scroll-mt-28">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+        {/* ===== 8. قسم اتصل بي (Contact) ===== */}
+<section id="contact" className="max-w-6xl mx-auto px-6 scroll-mt-28">
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.6 }}
+  >
+    <span className="text-amber-400 text-xs uppercase tracking-[0.3em] font-medium">Contact</span>
+    <h2 className="text-3xl sm:text-4xl font-bold mt-2 mb-4">تواصل معي لبدء مشروعك القادم</h2>
+    <p className="text-white/80 mb-12 drop-shadow">
+      سواء كنت بحاجة إلى تطبيق موبايل أو موقع إلكتروني، تواصل معي الآن وسنبدأ العمل مباشرة.
+    </p>
+
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      
+      {/* ===== معلومات الاتصال - الجانب الأيسر ===== */}
+      <div className="space-y-6 md:col-span-1 p-6 rounded-2xl bg-black/40 backdrop-blur-md border border-white/10 shadow-lg h-fit">
+        <div>
+          <span className="text-xs text-white/50 block mb-1">العنوان</span>
+          <p className="text-white/90 text-sm">Yemen, Sanaa, Airport Road</p>
+        </div>
+        <div>
+          <span className="text-xs text-white/50 block mb-1">الهاتف</span>
+          <p className="text-white/90 text-sm font-mono">+967 711 441 780</p>
+        </div>
+        <div>
+          <span className="text-xs text-white/50 block mb-1">البريد الإلكتروني</span>
+          <p className="text-white/90 text-sm font-mono">mohammedalhnani2004@gmail.com</p>
+        </div>
+      </div>
+
+      {/* ===== نموذج الاتصال - الجانب الأيمن ===== */}
+      <form 
+        onSubmit={(e) => {
+          e.preventDefault();
+          setFormStatus(true);
+          setTimeout(() => setFormStatus(false), 4000);
+        }} 
+        className="md:col-span-2 space-y-4 p-6 rounded-2xl bg-black/40 backdrop-blur-md border border-white/10 shadow-lg"
+      >
+        {/* الصف الأول: اسمك + بريدك الإلكتروني */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="relative">
+            <label className="block text-xs text-white/40 mb-1.5">اسمك</label>
+            <input
+              type="text"
+              placeholder="أدخل اسمك"
+              required
+              className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3.5 text-white placeholder:text-white/30 text-sm focus:outline-none focus:border-amber-400 transition-colors"
+            />
+          </div>
+          <div className="relative">
+            <label className="block text-xs text-white/40 mb-1.5">بريدك الإلكتروني</label>
+            <input
+              type="email"
+              placeholder="example@email.com"
+              required
+              className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3.5 text-white placeholder:text-white/30 text-sm focus:outline-none focus:border-amber-400 transition-colors"
+            />
+          </div>
+        </div>
+
+        {/* الصف الثاني: الموضوع */}
+        <div className="relative">
+          <label className="block text-xs text-white/40 mb-1.5">الموضوع</label>
+          <input
+            type="text"
+            placeholder="ما هو موضوع رسالتك؟"
+            required
+            className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3.5 text-white placeholder:text-white/30 text-sm focus:outline-none focus:border-amber-400 transition-colors"
+          />
+        </div>
+
+        {/* الصف الثالث: رسالتك */}
+        <div className="relative">
+          <label className="block text-xs text-white/40 mb-1.5">رسالتك</label>
+          <textarea
+            rows={5}
+            placeholder="اكتب رسالتك هنا..."
+            required
+            className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3.5 text-white placeholder:text-white/30 text-sm focus:outline-none focus:border-amber-400 transition-colors resize-none"
+          />
+        </div>
+
+        {/* زر الإرسال */}
+        <button
+          type="submit"
+          className="w-full py-4 rounded-xl bg-amber-400 text-black font-semibold hover:bg-amber-300 transition-colors shadow-lg shadow-amber-400/20 text-base"
+        >
+          إرسال الرسالة
+        </button>
+
+        {/* رسالة التأكيد */}
+        {formStatus && (
+          <motion.p 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-emerald-400 text-sm text-center mt-2"
           >
-            <span className="text-amber-400 text-xs uppercase tracking-[0.3em] font-medium">Contact</span>
-            <h2 className="text-3xl sm:text-4xl font-bold mt-2 mb-4">تواصل معي لبدء مشروعك القادم</h2>
-            <p className="text-white/80 mb-12 drop-shadow">سواء كنت بحاجة إلى تطبيق موبايل أو موقع إلكتروني، تواصل معي الآن وسنبدأ العمل مباشرة.</p>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {/* معلومات الاتصال */}
-              <div className="space-y-6 md:col-span-1 p-6 rounded-2xl bg-black/40 backdrop-blur-md border border-white/10 shadow-lg h-fit">
-                <div>
-                  <span className="text-xs text-white/50 block mb-1">العنوان</span>
-                  <p className="text-white/90 text-sm">Yemen, Sanaa, Airport Road</p>
-                </div>
-                <div>
-                  <span className="text-xs text-white/50 block mb-1">الهاتف</span>
-                  <p className="text-white/90 text-sm font-mono">+967 711 441 780</p>
-                </div>
-                <div>
-                  <span className="text-xs text-white/50 block mb-1">البريد الإلكتروني</span>
-                  <p className="text-white/90 text-sm font-mono">mohammedalhnani2004@gmail.com</p>
-                </div>
-              </div>
-
-              {/* نموذج الاتصال */}
-              <form 
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  setFormStatus(true);
-                  setTimeout(() => setFormStatus(false), 4000);
-                }} 
-                className="md:col-span-2 space-y-4 p-6 rounded-2xl bg-black/40 backdrop-blur-md border border-white/10 shadow-lg"
-              >
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <input
-                    type="text"
-                    placeholder="اسمك"
-                    required
-                    className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-white/40 text-sm focus:outline-none focus:border-amber-400 transition-colors"
-                  />
-                  <input
-                    type="email"
-                    placeholder="بريدك الإلكتروني"
-                    required
-                    className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-white/40 text-sm focus:outline-none focus:border-amber-400 transition-colors"
-                  />
-                </div>
-                <input
-                  type="text"
-                  placeholder="الموضوع"
-                  required
-                  className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-white/40 text-sm focus:outline-none focus:border-amber-400 transition-colors"
-                />
-                <textarea
-                  rows={4}
-                  placeholder="رسالتك"
-                  required
-                  className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-white/40 text-sm focus:outline-none focus:border-amber-400 transition-colors resize-none"
-                ></textarea>
-                <button
-                  type="submit"
-                  className="w-full py-4 rounded-xl bg-amber-400 text-black font-semibold hover:bg-amber-300 transition-colors shadow-lg shadow-amber-400/20"
-                >
-                  إرسال الرسالة
-                </button>
-                {formStatus && (
-                  <p className="text-emerald-400 text-xs text-center mt-2">✓ تم أرسال رسالتك بنجاح، شكراً لتواصلك!</p>
-                )}
-              </form>
-            </div>
-          </motion.div>
-        </section>
+            ✓ تم إرسال رسالتك بنجاح، شكراً لتواصلك!
+          </motion.p>
+        )}
+      </form>
+    </div>
+  </motion.div>
+</section>
 
         {/* ===== 9. التذييل (Footer) ===== */}
         <footer className="max-w-5xl mx-auto px-6 pt-16 pb-12 text-center bg-transparent">
