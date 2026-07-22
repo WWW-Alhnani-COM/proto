@@ -2,6 +2,292 @@
 
 import { motion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
+import ProfileCard from '../components/ProfileCard';
+import LogoLoop from '../components/LogoLoop';
+import { 
+  SiReact, 
+  SiNextdotjs, 
+  SiTypescript, 
+  SiTailwindcss,
+  SiFlutter,
+  SiLaravel,
+  SiFirebase,
+  SiMysql,
+  SiGit,
+  SiGithub,
+  SiVercel,
+  SiDocker
+} from 'react-icons/si';
+import { FaAws } from 'react-icons/fa';
+
+// ===== بيانات مشاريعك =====
+const projects = [
+  {
+    id: 1,
+    name: 'عطر أوسما',
+    title: 'Osma Perfume',
+    handle: 'osma-perfume',
+    status: 'مكتمل',
+    contactText: 'عرض المشروع',
+    avatarUrl: '/img/a12.jpg',
+    iconUrl: '/img/a12.jpg',
+    miniAvatarUrl: '/img/a12.jpg',
+    link: 'https://osma-perfume.vercel.app',
+    description: 'عطر فاخر بتصميم عصري وتجربة تسوق أنيقة.'
+  },
+  {
+    id: 2,
+    name: 'ACCMA للحسابات السحابية',
+    title: 'ACCMA Cloud Accounting',
+    handle: 'accmah',
+    status: 'مكتمل',
+    contactText: 'عرض المشروع',
+    avatarUrl: '/img/a.jpg',
+    iconUrl: '/img/a.jpg',
+    miniAvatarUrl: '/img/a.jpg',
+    link: 'https://accmah.com',
+    description: 'منصة محاسبة سحابية متكاملة للشركات والمؤسسات.'
+  },
+  {
+    id: 3,
+    name: 'نظام إدارة الشحن',
+    title: 'Shipping Management System',
+    handle: 'shipping-system',
+    status: 'قيد التطوير',
+    contactText: 'عرض المشروع',
+    avatarUrl: '/img/a2.jpg',
+    iconUrl: '/img/a2.jpg',
+    miniAvatarUrl: '/img/a2.jpg',
+    link: '#',
+    description: 'نظام متقدم لإدارة عمليات الشحن والتوصيل.'
+  },
+  {
+    id: 4,
+    name: 'أكاديمية ZealEra',
+    title: 'ZealEra Academy',
+    handle: 'zealera',
+    status: 'مكتمل',
+    contactText: 'عرض المشروع',
+    avatarUrl: '/img/a7.jpg',
+    iconUrl: '/img/a7.jpg',
+    miniAvatarUrl: '/img/a7.jpg',
+    link: 'https://esraazealera.com',
+    description: 'تعليم مبتكر للطلاب والمعلمين بمناهج تفاعلية.'
+  },
+  
+  {
+    id: 5,
+    name: 'مفتاحك',
+    title: 'Moftaahk',
+    handle: 'moftaahk',
+    status: 'مكتمل',
+    contactText: 'عرض المشروع',
+    avatarUrl: '/img/a11.jpg',
+    iconUrl: '/img/a11.jpg',
+    miniAvatarUrl: '/img/a11.jpg',
+    link: 'https://moftaahk.com',
+    description: 'حلول رقمية ذكية لإدارة المفاتيح والوصول.'
+  },
+  {
+    id: 7,
+    name: 'موقع Shuhnaty',
+    title: 'Shuhnaty',
+    handle: 'shuhnaty',
+    status: 'مكتمل',
+    contactText: 'عرض المشروع',
+    avatarUrl: '/img/a10.jpg',
+    iconUrl: '/img/a10.jpg',
+    miniAvatarUrl: '/img/a10.jpg',
+    link: 'https://shuhnaty.vercel.app',
+    description: 'منصة شحن متكاملة لتتبع الطرود والخدمات اللوجستية.'
+  },
+  {
+    id: 8,
+    name: 'إسلامي — التطبيق الإسلامي',
+    title: 'Islamy App',
+    handle: 'islamy-web',
+    status: 'مكتمل',
+    contactText: 'عرض المشروع',
+    avatarUrl: '/img/a5.jpg',
+    iconUrl: '/img/a5.jpg',
+    miniAvatarUrl: '/img/a5.jpg',
+    link: 'https://islamy-web.vercel.app',
+    description: 'تطبيق إسلامي شامل: أذكار، قرآن، مواقيت الصلاة.'
+  },
+  {
+    id: 9,
+    name: 'منصة Lernerra',
+    title: 'Lernerra Platform',
+    handle: 'lernerra',
+    status: 'مكتمل',
+    contactText: 'عرض المشروع',
+    avatarUrl: '/img/a7.jpg',
+    iconUrl: '/img/a7.jpg',
+    miniAvatarUrl: '/img/a7.jpg',
+    link: 'https://lernerra-platform.vercel.app',
+    description: 'منصة التعلم والتطوير المهني للمدربين والمتعلمين.'
+  },
+  {
+    id: 10,
+    name: 'شركة مداد العقارية',
+    title: 'Midad Real Estate',
+    handle: 'midad2',
+    status: 'مكتمل',
+    contactText: 'عرض المشروع',
+    avatarUrl: '/img/a1.jpg',
+    iconUrl: '/img/a1.jpg',
+    miniAvatarUrl: '/img/a1.jpg',
+    link: 'https://midad2-pi.vercel.app',
+    description: 'بوابة عقارية متكاملة للبيع والإيجار والاستشارات.'
+  },
+  {
+    id: 11,
+    name: 'Lahnui',
+    title: 'Lahnui',
+    handle: 'lahnui',
+    status: 'مكتمل',
+    contactText: 'عرض المشروع',
+    avatarUrl: '/img/a6.jpg',
+    iconUrl: '/img/a6.jpg',
+    miniAvatarUrl: '/img/a6.jpg',
+    link: 'https://lahnui.vercel.app',
+    description: 'عالم من الإلهام والأفكار الجديدة في قالب عصري.'
+  },
+  {
+    id: 12,
+    name: 'Mohamed Saad',
+    title: 'Mohamed Saad',
+    handle: 'mohamed-saad',
+    status: 'مكتمل',
+    contactText: 'عرض المشروع',
+    avatarUrl: '/img/a9.jpg',
+    iconUrl: '/img/a9.jpg',
+    miniAvatarUrl: '/img/a9.jpg',
+    link: 'https://mohamed-saad.com',
+    description: 'شغف يتجسّد — موقع شخصي للمبدع محمد سعد.'
+  },
+  {
+    id: 13,
+    name: 'منصة Etrain',
+    title: 'Etrain Education',
+    handle: 'etrain',
+    status: 'مكتمل',
+    contactText: 'عرض المشروع',
+    avatarUrl: '/img/a4.jpg',
+    iconUrl: '/img/a4.jpg',
+    miniAvatarUrl: '/img/a4.jpg',
+    link: 'https://etrain-nine.vercel.app',
+    description: 'منصة تعليمية متكاملة للتعليم التفاعلي عن بُعد.'
+  },
+  {
+    id: 14,
+    name: 'GroFit Wear',
+    title: 'GroFit Wear',
+    handle: 'grofit-wear',
+    status: 'مكتمل',
+    contactText: 'عرض المشروع',
+    avatarUrl: '/img/a8.jpg',
+    iconUrl: '/img/a8.jpg',
+    miniAvatarUrl: '/img/a8.jpg',
+    link: 'https://grofit-wear.com',
+    description: 'ارتدِ النشاط، عِش اللياقة — ملابس رياضية عصرية.'
+  },
+  {
+    id: 15,
+    name: 'نظام إدارة المطاعم Episys',
+    title: 'Episys Restaurant',
+    handle: 'episys',
+    status: 'مكتمل',
+    contactText: 'عرض المشروع',
+    avatarUrl: '/img/a3.jpg',
+    iconUrl: '/img/a3.jpg',
+    miniAvatarUrl: '/img/a3.jpg',
+    link: 'https://episys.vercel.app',
+    description: 'نظام إدارة المطاعم والطلب الذكي (Episys).'
+  }
+];
+
+// ===== بيانات التقنيات والمهارات =====
+const techLogos = [
+  { 
+    node: <SiReact className="text-[#61DAFB]" />, 
+    title: "React", 
+    href: "https://react.dev",
+    ariaLabel: "React JS"
+  },
+  { 
+    node: <SiNextdotjs className="text-white" />, 
+    title: "Next.js", 
+    href: "https://nextjs.org",
+    ariaLabel: "Next.js"
+  },
+  { 
+    node: <SiTypescript className="text-[#3178C6]" />, 
+    title: "TypeScript", 
+    href: "https://www.typescriptlang.org",
+    ariaLabel: "TypeScript"
+  },
+  { 
+    node: <SiTailwindcss className="text-[#06B6D4]" />, 
+    title: "Tailwind CSS", 
+    href: "https://tailwindcss.com",
+    ariaLabel: "Tailwind CSS"
+  },
+  { 
+    node: <SiFlutter className="text-[#02569B]" />, 
+    title: "Flutter", 
+    href: "https://flutter.dev",
+    ariaLabel: "Flutter"
+  },
+  { 
+    node: <SiLaravel className="text-[#FF2D20]" />, 
+    title: "Laravel", 
+    href: "https://laravel.com",
+    ariaLabel: "Laravel"
+  },
+  { 
+    node: <SiFirebase className="text-[#FFCA28]" />, 
+    title: "Firebase", 
+    href: "https://firebase.google.com",
+    ariaLabel: "Firebase"
+  },
+  { 
+    node: <SiMysql className="text-[#4479A1]" />, 
+    title: "MySQL", 
+    href: "https://mysql.com",
+    ariaLabel: "MySQL"
+  },
+  { 
+    node: <SiGit className="text-[#F05032]" />, 
+    title: "Git", 
+    href: "https://git-scm.com",
+    ariaLabel: "Git"
+  },
+  { 
+    node: <SiGithub className="text-white" />, 
+    title: "GitHub", 
+    href: "https://github.com",
+    ariaLabel: "GitHub"
+  },
+  { 
+    node: <SiVercel className="text-white" />, 
+    title: "Vercel", 
+    href: "https://vercel.com",
+    ariaLabel: "Vercel"
+  },
+  { 
+    node: <SiDocker className="text-[#2496ED]" />, 
+    title: "Docker", 
+    href: "https://docker.com",
+    ariaLabel: "Docker"
+  },
+  { 
+    node: <FaAws className="text-[#FF9900]" />, 
+    title: "AWS", 
+    href: "https://aws.amazon.com",
+    ariaLabel: "AWS"
+  },
+];
 
 // ===== عدد الإطارات للصور =====
 const FRAME_COUNT = 61;
@@ -185,6 +471,15 @@ export default function PortfolioMain() {
 
   const isHeroFinished = scrollProgress >= 1;
 
+  // دالة للتعامل مع النقر على زر المشروع
+  const handleProjectClick = (link: string) => {
+    if (link.startsWith('http')) {
+      window.open(link, '_blank');
+    } else {
+      console.log('Internal route:', link);
+    }
+  };
+
   return (
     <main className="relative bg-[#020202] text-white selection:bg-amber-400/20 selection:text-white font-sans">
       
@@ -208,6 +503,7 @@ export default function PortfolioMain() {
             <a href="#resume" className="hover:text-amber-400 transition-colors">السيرة الذاتية</a>
             <a href="#services" className="hover:text-amber-400 transition-colors">الخدمات</a>
             <a href="#portfolio" className="hover:text-amber-400 transition-colors">الأعمال</a>
+            <a href="#technologies" className="hover:text-amber-400 transition-colors">التقنيات</a>
             <a href="#testimonials" className="hover:text-amber-400 transition-colors">الآراء</a>
           </nav>
 
@@ -272,6 +568,13 @@ export default function PortfolioMain() {
               className="text-white/80 hover:text-amber-400 transition-colors py-2 border-b border-white/5"
             >
               الأعمال
+            </a>
+            <a 
+              href="#technologies" 
+              onClick={() => setMobileMenuOpen(false)}
+              className="text-white/80 hover:text-amber-400 transition-colors py-2 border-b border-white/5"
+            >
+              التقنيات
             </a>
             <a 
               href="#testimonials" 
@@ -531,8 +834,8 @@ export default function PortfolioMain() {
           </motion.div>
         </section>
 
-        {/* ===== 5. قسم الأعمال السابقة (Portfolio / Works) ===== */}
-        <section id="portfolio" className="max-w-5xl mx-auto px-6 scroll-mt-28">
+        {/* ===== 5. قسم المشاريع (Portfolio) مع ProfileCard ===== */}
+        <section id="portfolio" className="max-w-7xl mx-auto px-6 scroll-mt-28">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -540,45 +843,52 @@ export default function PortfolioMain() {
             transition={{ duration: 0.6 }}
           >
             <span className="text-amber-400 text-xs uppercase tracking-[0.3em] font-medium">My Work</span>
-            <h2 className="text-3xl sm:text-4xl font-bold mt-2 mb-12">Portfolio</h2>
+            <h2 className="text-3xl sm:text-4xl font-bold mt-2 mb-4">Portfolio</h2>
+            <p className="text-white/80 mb-12 text-base drop-shadow">
+              استكشف مشاريعي من خلال بطاقات التعريف التفاعلية
+            </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-              <div className="p-6 rounded-2xl bg-black/40 backdrop-blur-md border border-white/10 shadow-lg flex flex-col justify-between">
-                <div>
-                  <h3 className="text-lg font-semibold mb-2">تطبيق تتبع المواقع</h3>
-                  <p className="text-amber-400 text-xs font-mono mb-3">Location Tracking App</p>
-                  <p className="text-white/80 text-sm">تطبيق مخصص لتتبع المواقع الجغرافية بكفاءة عالية.</p>
-                </div>
-                <div className="mt-6 pt-4 border-t border-white/10 text-xs text-white/60 font-mono">
-                  Flutter, Google Maps API
-                </div>
-              </div>
-
-              <div className="p-6 rounded-2xl bg-black/40 backdrop-blur-md border border-white/10 shadow-lg flex flex-col justify-between">
-                <div>
-                  <h3 className="text-lg font-semibold mb-2">نظام إدارة الأساطيل</h3>
-                  <p className="text-amber-400 text-xs font-mono mb-3">Fleet Management System</p>
-                  <p className="text-white/80 text-sm">نظام متكامل لإدارة وتحليل حركة الأساطيل والمركبات.</p>
-                </div>
-                <div className="mt-6 pt-4 border-t border-white/10 text-xs text-white/60 font-mono">
-                  Laravel, MySQL, JavaScript
-                </div>
-              </div>
-
-              <div className="p-6 rounded-2xl bg-black/40 backdrop-blur-md border border-white/10 shadow-lg flex flex-col justify-between">
-                <div>
-                  <h3 className="text-lg font-semibold mb-2">نظام مصادقة Firebase</h3>
-                  <p className="text-amber-400 text-xs font-mono mb-3">Firebase Auth System</p>
-                  <p className="text-white/80 text-sm">نظام أمان وتسجيل دخول سريع وآمن للمستخدمين.</p>
-                </div>
-                <div className="mt-6 pt-4 border-t border-white/10 text-xs text-white/60 font-mono">
-                  Flutter, Firebase Auth
-                </div>
-              </div>
+            {/* شبكة البطاقات */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {projects.map((project, index) => (
+                <motion.div
+                  key={project.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="flex justify-center"
+                >
+                  <ProfileCard
+                    name={project.name}
+                    title={project.title}
+                    handle={project.handle}
+                    status={project.status}
+                    contactText={project.contactText}
+                    avatarUrl={project.avatarUrl}
+                    iconUrl={project.iconUrl}
+                    miniAvatarUrl={project.miniAvatarUrl}
+                    showUserInfo={true}
+                    enableTilt={true}
+                    enableMobileTilt={true}
+                    behindGlowEnabled={true}
+                    behindGlowColor="rgba(255, 215, 0, 0.3)"
+                    innerGradient="linear-gradient(145deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)"
+                    onContactClick={() => handleProjectClick(project.link)}
+                    className="w-full max-w-sm"
+                  />
+                </motion.div>
+              ))}
             </div>
 
             {/* دعوة لزيارة لينكد إن */}
-            <div className="p-8 rounded-2xl bg-black/50 backdrop-blur-md border border-amber-400/30 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-6 shadow-xl">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="mt-16 p-8 rounded-2xl bg-black/50 backdrop-blur-md border border-amber-400/30 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-6 shadow-xl"
+            >
               <div>
                 <h3 className="text-xl font-bold mb-2">المزيد من المشاريع والإنجازات</h3>
                 <p className="text-white/80 text-sm max-w-xl">
@@ -586,18 +896,72 @@ export default function PortfolioMain() {
                 </p>
               </div>
               <a
-                href="https://www.linkedin.com" 
+                href="https://www.linkedin.com/in/mohammed-al-hanani-942809278/" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="px-6 py-3 rounded-full bg-amber-400 text-black font-semibold hover:bg-amber-300 transition-colors whitespace-nowrap shadow-lg shadow-amber-400/20"
               >
                 تصفح مشاريعي على LinkedIn
               </a>
-            </div>
+            </motion.div>
           </motion.div>
         </section>
 
-        {/* ===== 6. قسم شهادات التوصية (Testimonials) ===== */}
+        {/* ===== 6. قسم التقنيات والمهارات (Technologies) ===== */}
+        <section id="technologies" className="max-w-6xl mx-auto px-6 scroll-mt-28">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <span className="text-amber-400 text-xs uppercase tracking-[0.3em] font-medium">Technologies</span>
+            <h2 className="text-3xl sm:text-4xl font-bold mt-2 mb-4">التقنيات التي أستخدمها</h2>
+            <p className="text-white/80 mb-10 text-base drop-shadow">
+              مجموعة من أحدث التقنيات والأدوات التي أعمل بها لتطوير حلول برمجية متكاملة
+            </p>
+
+            {/* LogoLoop - شريط التقنيات المتداول */}
+            <div className="relative w-full bg-black/20 rounded-2xl p-8 backdrop-blur-sm border border-white/5 overflow-hidden">
+              <div style={{ height: '120px', position: 'relative', overflow: 'hidden' }}>
+                <LogoLoop
+                  logos={techLogos}
+                  speed={80}
+                  direction="left"
+                  logoHeight={50}
+                  gap={50}
+                  hoverSpeed={20}
+                  scaleOnHover
+                  fadeOut
+                  fadeOutColor="#020202"
+                  ariaLabel="التقنيات والمهارات"
+                />
+              </div>
+              
+              {/* شريط سفلي من التقنيات في الاتجاه المعاكس */}
+              <div style={{ height: '120px', position: 'relative', overflow: 'hidden', marginTop: '1rem' }}>
+                <LogoLoop
+                  logos={techLogos.slice().reverse()}
+                  speed={60}
+                  direction="right"
+                  logoHeight={40}
+                  gap={60}
+                  hoverSpeed={15}
+                  scaleOnHover
+                  fadeOut
+                  fadeOutColor="#020202"
+                  ariaLabel="التقنيات والمهارات - الاتجاه المعاكس"
+                />
+              </div>
+            </div>
+
+            <p className="text-white/50 text-xs text-center mt-6">
+              مرر فوق أيقونة لتكبيرها • تتحرك القائمة تلقائياً
+            </p>
+          </motion.div>
+        </section>
+
+        {/* ===== 7. قسم شهادات التوصية (Testimonials) ===== */}
         <section id="testimonials" className="max-w-4xl mx-auto px-6 scroll-mt-28">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -634,7 +998,7 @@ export default function PortfolioMain() {
           </motion.div>
         </section>
 
-        {/* ===== 7. قسم اتصل بي (Contact) ===== */}
+        {/* ===== 8. قسم اتصل بي (Contact) ===== */}
         <section id="contact" className="max-w-4xl mx-auto px-6 scroll-mt-28">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -712,7 +1076,7 @@ export default function PortfolioMain() {
           </motion.div>
         </section>
 
-        {/* ===== 8. التذييل (Footer) ===== */}
+        {/* ===== 9. التذييل (Footer) ===== */}
         <footer className="max-w-5xl mx-auto px-6 pt-16 pb-12 text-center bg-transparent">
           <div className="flex flex-col items-center space-y-6">
             
@@ -723,7 +1087,7 @@ export default function PortfolioMain() {
               Full-Stack Web Developer | Building digital solutions that matter
             </p>
 
-            {/* أيقونات التواصل الاجتماعي الدائرية بالسماوي */}
+            {/* أيقونات التواصل الاجتماعي */}
             <div className="flex items-center justify-center gap-4 py-2">
               <a 
                 href="https://wa.me/967711441780" 
@@ -749,7 +1113,7 @@ export default function PortfolioMain() {
                 href="https://facebook.com" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-[#00f0ff] text-black flex items-blank justify-center hover:scale-110 transition-transform shadow-lg shadow-[#00f0ff]/20"
+                className="w-10 h-10 rounded-full bg-[#00f0ff] text-black flex items-center justify-center hover:scale-110 transition-transform shadow-lg shadow-[#00f0ff]/20"
               >
                 <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
                   <path d="M9 8H6v4h3v12h5V12h3.642L18 8h-4V6.333C14 5.37 14.5 5 15.5 5H18V0h-3.808C10.592 0 9 1.582 9 4.75V8z"/>
