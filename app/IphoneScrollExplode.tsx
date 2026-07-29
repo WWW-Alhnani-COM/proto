@@ -602,48 +602,54 @@ export default function PortfolioMain() {
         )}
       </header>
 
-      {/* ===== الخلفية الثابتة ===== */}
-      <div className="fixed inset-0 z-0 overflow-hidden bg-[#020202]">
-        <SplashCursor
-          RAINBOW_MODE={true}
-          SIM_RESOLUTION={48}
-          DYE_RESOLUTION={512}
-          SPLAT_RADIUS={0.15}
-          SPLAT_FORCE={3500}
-          DENSITY_DISSIPATION={6}
-          VELOCITY_DISSIPATION={10}
-          TRANSPARENT={true}
-          COLOR_UPDATE_SPEED={30}
-          SHADING={false}
-        />
-        
-        <canvas ref={canvasRef} className="h-full w-full opacity-60" />
-        
-        <div className="absolute inset-0 bg-black/45 pointer-events-none" />
+      {/* ===== الخلفية الثابتة والممتدة لجميع الصفحة ===== */}
+<div className="fixed inset-0 z-0 overflow-hidden bg-[#020202]">
+  
+  {/* ===== SplashCursor مع قوس قزح خفيف جداً ===== */}
+  <SplashCursor
+    RAINBOW_MODE={true}
+    SIM_RESOLUTION={12}
+    DYE_RESOLUTION={96}
+    SPLAT_RADIUS={0.02}
+    SPLAT_FORCE={500}
+    DENSITY_DISSIPATION={20}
+    VELOCITY_DISSIPATION={25}
+    TRANSPARENT={true}
+    COLOR_UPDATE_SPEED={2}
+    SHADING={false}
+  />
+  
+  <canvas ref={canvasRef} className="h-full w-full opacity-10" />
+  
+  <div className="absolute inset-0 bg-black/85 pointer-events-none" />
 
-        <div
-          className="absolute inset-0 pointer-events-none transition-opacity duration-300"
-          style={{
-            opacity: isInsideHero ? 1 : 0,
-            backdropFilter: "brightness(1.5) contrast(1.1)",
-            WebkitBackdropFilter: "brightness(1.5) contrast(1.1)",
-            maskImage: `radial-gradient(circle 80px at ${mousePos.x}px ${mousePos.y}px, black 0%, transparent 100%)`,
-            WebkitMaskImage: `radial-gradient(circle 80px at ${mousePos.x}px ${mousePos.y}px, black 0%, transparent 100%)`,
-          }}
-        />
+  {/* تأثير البقعة الضوئية - علقه أو احذفه */}
+  {/* <div
+    className="absolute inset-0 pointer-events-none transition-opacity duration-300"
+    style={{
+      opacity: isInsideHero ? 1 : 0,
+      backdropFilter: "brightness(1.5) contrast(1.1)",
+      WebkitBackdropFilter: "brightness(1.5) contrast(1.1)",
+      maskImage: `radial-gradient(circle 80px at ${mousePos.x}px ${mousePos.y}px, black 0%, transparent 100%)`,
+      WebkitMaskImage: `radial-gradient(circle 80px at ${mousePos.x}px ${mousePos.y}px, black 0%, transparent 100%)`,
+    }}
+  /> */}
 
-        {!isLoaded && (
-          <div className="absolute inset-0 z-30 flex items-center justify-center bg-[#020202] backdrop-blur-md">
-            <div className="flex flex-col items-center gap-4 text-center px-4">
-              <div className="h-10 w-10 sm:h-12 sm:w-12 animate-spin rounded-full border-[3px] border-white/10 border-t-amber-400" />
-              <div>
-                <p className="text-[10px] sm:text-xs uppercase tracking-[0.4em] text-white/50">جاري تحميل المعرض</p>
-                <p className="mt-2 text-sm sm:text-base font-medium text-white/90">استعد لاكتشاف أعمال Mohammed Al-Hanani</p>
-              </div>
-            </div>
-          </div>
-        )}
+  {/* Loading */}
+  {!isLoaded && (
+    <div className="absolute inset-0 z-30 flex items-center justify-center bg-[#020202] backdrop-blur-md">
+      <div className="flex flex-col items-center gap-4 text-center">
+        <div className="h-12 w-12 animate-spin rounded-full border-[3px] border-white/10 border-t-amber-400" />
+        <div>
+          <p className="text-xs uppercase tracking-[0.4em] text-white/50">جاري تحميل المعرض</p>
+          <p className="mt-2 text-base font-medium text-white/90">استعد لاكتشاف أعمال Mohammed Al-Hanani</p>
+        </div>
       </div>
+    </div>
+  )}
+</div>
+
+      
 
       {/* ===== قسم الهيرو ===== */}
       <div 
@@ -1089,106 +1095,107 @@ export default function PortfolioMain() {
         </section>
 
         {/* ===== قسم المشاريع (Portfolio) - المحسّن للجوال ===== */}
-        <section id="portfolio" className="max-w-7xl mx-auto px-4 sm:px-6 scroll-mt-28">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <div className="flex items-center gap-2 sm:gap-3 mb-2">
-              <span className="w-8 sm:w-10 h-0.5 bg-amber-400"></span>
-              <span className="text-amber-400 text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] font-medium">My Work</span>
-            </div>
-            
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 sm:gap-4 mb-6 sm:mb-8">
-              <div>
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mt-2">
-                  <span className="block sm:inline">Portfolio</span>
-                  <span className="block sm:inline text-amber-400"> — مشاريعي</span>
-                </h2>
-              </div>
-              <p className="text-white/70 sm:text-white/80 text-sm sm:text-base drop-shadow max-w-2xl">
-                {isMobile ? 'أحدث المشاريع' : 'استكشف مجموعة من مشاريعي المتميزة'}
-              </p>
-            </div>
+<section id="portfolio" className="max-w-7xl mx-auto px-3 sm:px-6 scroll-mt-28">
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.6 }}
+  >
+    <div className="flex items-center gap-2 sm:gap-3 mb-2">
+      <span className="w-8 sm:w-10 h-0.5 bg-amber-400"></span>
+      <span className="text-amber-400 text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] font-medium">My Work</span>
+    </div>
+    
+    <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 sm:gap-4 mb-6 sm:mb-8">
+      <div>
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mt-2">
+          <span className="block sm:inline">Portfolio</span>
+          <span className="block sm:inline text-amber-400"> — مشاريعي</span>
+        </h2>
+      </div>
+      <p className="text-white/70 sm:text-white/80 text-sm sm:text-base drop-shadow max-w-2xl">
+        {isMobile ? 'أحدث المشاريع' : 'استكشف مجموعة من مشاريعي المتميزة'}
+      </p>
+    </div>
 
-            {/* شبكة البطاقات المحسّنة للجوال */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
-              {displayedProjects.map((project, index) => (
-                <motion.div
-                  key={project.id}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.05 }}
-                  className="flex justify-center w-full"
-                >
-                  <ProfileCard
-                    name={project.name}
-                    title={project.title}
-                    handle={project.handle}
-                    status={project.status}
-                    contactText={project.contactText}
-                    avatarUrl={project.avatarUrl}
-                    iconUrl={project.iconUrl}
-                    miniAvatarUrl={project.miniAvatarUrl}
-                    showUserInfo={true}
-                    enableTilt={!isMobile}
-                    enableMobileTilt={true}
-                    behindGlowEnabled={true}
-                    behindGlowColor="rgba(255, 215, 0, 0.2)"
-                    innerGradient="linear-gradient(145deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)"
-                    onContactClick={() => handleProjectClick(project.link)}
-                    className="w-full max-w-xs sm:max-w-sm md:max-w-md"
-                  />
-                </motion.div>
-              ))}
-            </div>
+    {/* شبكة البطاقات - مع توسيط على الهاتف */}
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+      {displayedProjects.map((project, index) => (
+        <motion.div
+          key={project.id}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: index * 0.05 }}
+          className="flex justify-center w-full px-2 sm:px-0"  // ← إضافة padding جانبي
+        >
+          <ProfileCard
+            name={project.name}
+            title={project.title}
+            handle={project.handle}
+            status={project.status}
+            contactText={project.contactText}
+            avatarUrl={project.avatarUrl}
+            iconUrl={project.iconUrl}
+            miniAvatarUrl={project.miniAvatarUrl}
+            showUserInfo={true}
+            enableTilt={!isMobile}
+            enableMobileTilt={true}
+            behindGlowEnabled={true}
+            behindGlowColor="rgba(255, 215, 0, 0.2)"
+            innerGradient="linear-gradient(145deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)"
+            onContactClick={() => handleProjectClick(project.link)}
+            className="w-full max-w-[320px] sm:max-w-sm md:max-w-md mx-auto"  // ← تحديد العرض الأقصى
+          />
+        </motion.div>
+      ))}
+    </div>
 
-            {/* زر عرض المزيد للجوال */}
-            {isMobile && projects.length > 6 && (
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-                className="mt-8 flex justify-center"
-              >
-                <button 
-                  onClick={() => setShowAllProjects(!showAllProjects)}
-                  className="px-6 py-3 rounded-full bg-amber-400/10 text-amber-400 border border-amber-400/30 hover:bg-amber-400/20 transition-colors text-sm font-medium"
-                >
-                  {showAllProjects ? 'عرض أقل' : 'عرض جميع المشاريع'}
-                </button>
-              </motion.div>
-            )}
+    {/* زر عرض المزيد للجوال */}
+    {isMobile && projects.length > 6 && (
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6, delay: 0.3 }}
+        className="mt-8 flex justify-center"
+      >
+        <button 
+          onClick={() => setShowAllProjects(!showAllProjects)}
+          className="px-6 py-3 rounded-full bg-amber-400/10 text-amber-400 border border-amber-400/30 hover:bg-amber-400/20 transition-colors text-sm font-medium"
+        >
+          {showAllProjects ? 'عرض أقل' : 'عرض جميع المشاريع'}
+        </button>
+      </motion.div>
+    )}
 
-            {/* دعوة لزيارة لينكد إن */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="mt-12 sm:mt-16 p-6 sm:p-8 rounded-2xl bg-black/50 backdrop-blur-md border border-amber-400/30 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6 shadow-xl"
-            >
-              <div>
-                <h3 className="text-base sm:text-xl font-bold mb-1 sm:mb-2">المزيد من المشاريع والإنجازات</h3>
-                <p className="text-white/70 sm:text-white/80 text-xs sm:text-sm max-w-xl">
-                  لديّ المزيد من المشاريع الاحترافية. أدعوك لزيارة ملفي الشخصي على LinkedIn.
-                </p>
-              </div>
-              <a
-                href="https://www.linkedin.com/in/mohammed-al-hanani-942809278/" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="px-5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-amber-400 text-black font-semibold hover:bg-amber-300 transition-colors whitespace-nowrap shadow-lg shadow-amber-400/20 text-sm sm:text-base"
-              >
-                تصفح المشاريع
-              </a>
-            </motion.div>
-          </motion.div>
-        </section>
+    {/* دعوة لزيارة لينكد إن */}
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6, delay: 0.3 }}
+      className="mt-12 sm:mt-16 p-6 sm:p-8 rounded-2xl bg-black/50 backdrop-blur-md border border-amber-400/30 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6 shadow-xl"
+    >
+      <div>
+        <h3 className="text-base sm:text-xl font-bold mb-1 sm:mb-2">المزيد من المشاريع والإنجازات</h3>
+        <p className="text-white/70 sm:text-white/80 text-xs sm:text-sm max-w-xl">
+          لديّ المزيد من المشاريع الاحترافية. أدعوك لزيارة ملفي الشخصي على LinkedIn.
+        </p>
+      </div>
+      <a
+        href="https://www.linkedin.com/in/mohammed-al-hanani-942809278/" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        className="px-5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-amber-400 text-black font-semibold hover:bg-amber-300 transition-colors whitespace-nowrap shadow-lg shadow-amber-400/20 text-sm sm:text-base"
+      >
+        تصفح المشاريع
+      </a>
+    </motion.div>
+  </motion.div>
+</section>
+        
 
         {/* ===== قسم التقنيات ===== */}
         <section id="technologies" className="max-w-6xl mx-auto px-4 sm:px-6 scroll-mt-28">
