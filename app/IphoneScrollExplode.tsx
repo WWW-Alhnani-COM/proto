@@ -21,12 +21,9 @@ import {
 import { FaAws } from 'react-icons/fa';
 import CountUp from "@/components/CountUp";
 import PixelTransition from "@/components/PixelTransition";
-import ScrollStack, { ScrollStackItem } from '../components/ScrollStack';
-import '../components/ScrollStack.css';
 import SplashCursor from '@/components/SplashCursor';
-import ElectricBorder from '@/components/ElectricBorder';        // ✅ أضف هذا
-import '@/components/ElectricBorder.css';   
-
+import ElectricBorder from '@/components/ElectricBorder';
+import '@/components/ElectricBorder.css';
 
 // ===== بيانات مشاريعك =====
 const projects = [
@@ -82,7 +79,6 @@ const projects = [
     link: 'https://esraazealera.com',
     description: 'تعليم مبتكر للطلاب والمعلمين بمناهج تفاعلية.'
   },
-  
   {
     id: 5,
     name: 'مفتاحك',
@@ -334,7 +330,6 @@ const textBlocks = [
     start: 0.73,
     end: 0.80,
   },
-  
 ];
 
 // ===== دالة مسار الصور =====
@@ -359,10 +354,24 @@ export default function PortfolioMain() {
   // حالة القائمة المنبثقة للجوال (Mobile Menu)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  // حالة عرض المشاريع (للجوال)
+  const [showAllProjects, setShowAllProjects] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
   const framePaths = useMemo(
     () => Array.from({ length: FRAME_COUNT }, (_, index) => getFramePath(index)),
     []
   );
+
+  // كشف حجم الشاشة
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     const updateScrollProgress = () => {
@@ -489,50 +498,54 @@ export default function PortfolioMain() {
     }
   };
 
+  // تحديد عدد المشاريع المعروضة
+  const displayedProjects = isMobile && !showAllProjects 
+    ? projects.slice(0, 6) 
+    : projects;
+
   return (
     <main className="relative bg-[#020202] text-white selection:bg-amber-400/20 selection:text-white font-sans">
       
       {/* ===== الهيدر الاحترافي (Navbar) ===== */}
-      <header className="fixed top-0 left-0 right-0 z-50 px-6 py-4">
-        <div className="max-w-6xl mx-auto flex items-center justify-between rounded-2xl bg-black/40 backdrop-blur-xl border border-white/10 px-6 py-3 shadow-2xl">
+      <header className="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 py-3 sm:py-4">
+        <div className="max-w-6xl mx-auto flex items-center justify-between rounded-2xl bg-black/40 backdrop-blur-xl border border-white/10 px-4 sm:px-6 py-2 sm:py-3 shadow-2xl">
           
           {/* الشعار / الاسم */}
           <a href="#" className="flex items-center gap-2 group">
-            <div className="w-9 h-9 rounded-xl bg-amber-400 text-black flex items-center justify-center font-bold text-lg shadow-lg shadow-amber-400/20 group-hover:scale-105 transition-transform">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-amber-400 text-black flex items-center justify-center font-bold text-base sm:text-lg shadow-lg shadow-amber-400/20 group-hover:scale-105 transition-transform">
               M
             </div>
-            <span className="font-bold tracking-tight text-white group-hover:text-amber-400 transition-colors text-sm sm:text-base">
-              Mohammed Al-Hanani
+            <span className="font-bold tracking-tight text-white group-hover:text-amber-400 transition-colors text-xs sm:text-sm md:text-base">
+              <span className="hidden xs:inline">Mohammed Al-Hanani</span>
+              <span className="xs:hidden">M. Hanani</span>
             </span>
           </a>
 
           {/* روابط التنقل للشاشات الكبيرة */}
-          <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-white/80">
+          <nav className="hidden md:flex items-center gap-6 lg:gap-8 text-sm font-medium text-white/80">
             <a href="#about" className="hover:text-amber-400 transition-colors">عني</a>
-            <a href="#resume" className="hover:text-amber-400 transition-colors">السيرة الذاتية</a>
             <a href="#services" className="hover:text-amber-400 transition-colors">الخدمات</a>
             <a href="#portfolio" className="hover:text-amber-400 transition-colors">الأعمال</a>
             <a href="#technologies" className="hover:text-amber-400 transition-colors">التقنيات</a>
-            <a href="#testimonials" className="hover:text-amber-400 transition-colors">الآراء</a>
           </nav>
 
           {/* زر اتصل بي */}
           <div className="hidden md:block">
             <a
               href="#contact"
-              className="px-5 py-2 rounded-xl bg-amber-400 text-black font-semibold text-sm hover:bg-amber-300 transition-colors shadow-lg shadow-amber-400/20"
+              className="px-4 lg:px-5 py-1.5 lg:py-2 rounded-xl bg-amber-400 text-black font-semibold text-xs lg:text-sm hover:bg-amber-300 transition-colors shadow-lg shadow-amber-400/20"
             >
               اتصل بي
             </a>
           </div>
 
-          {/* زر القائمة للجوال (Hamburger Menu) */}
+          {/* زر القائمة للجوال */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="md:hidden text-white/80 hover:text-white focus:outline-none p-1"
             aria-label="Toggle Menu"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               {mobileMenuOpen ? (
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               ) : (
@@ -548,49 +561,35 @@ export default function PortfolioMain() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="max-w-6xl mx-auto mt-2 rounded-2xl bg-black/90 backdrop-blur-2xl border border-white/10 p-6 flex flex-col gap-4 md:hidden shadow-2xl text-center"
+            className="max-w-6xl mx-auto mt-2 rounded-2xl bg-black/90 backdrop-blur-2xl border border-white/10 p-4 sm:p-6 flex flex-col gap-3 sm:gap-4 md:hidden shadow-2xl text-center"
           >
             <a 
               href="#about" 
               onClick={() => setMobileMenuOpen(false)}
-              className="text-white/80 hover:text-amber-400 transition-colors py-2 border-b border-white/5"
+              className="text-white/80 hover:text-amber-400 transition-colors py-2 border-b border-white/5 text-sm"
             >
               عني
             </a>
             <a 
-              href="#resume" 
-              onClick={() => setMobileMenuOpen(false)}
-              className="text-white/80 hover:text-amber-400 transition-colors py-2 border-b border-white/5"
-            >
-              السيرة الذاتية
-            </a>
-            <a 
               href="#services" 
               onClick={() => setMobileMenuOpen(false)}
-              className="text-white/80 hover:text-amber-400 transition-colors py-2 border-b border-white/5"
+              className="text-white/80 hover:text-amber-400 transition-colors py-2 border-b border-white/5 text-sm"
             >
               الخدمات
             </a>
             <a 
               href="#portfolio" 
               onClick={() => setMobileMenuOpen(false)}
-              className="text-white/80 hover:text-amber-400 transition-colors py-2 border-b border-white/5"
+              className="text-white/80 hover:text-amber-400 transition-colors py-2 border-b border-white/5 text-sm"
             >
               الأعمال
             </a>
             <a 
               href="#technologies" 
               onClick={() => setMobileMenuOpen(false)}
-              className="text-white/80 hover:text-amber-400 transition-colors py-2 border-b border-white/5"
+              className="text-white/80 hover:text-amber-400 transition-colors py-2 border-b border-white/5 text-sm"
             >
               التقنيات
-            </a>
-            <a 
-              href="#testimonials" 
-              onClick={() => setMobileMenuOpen(false)}
-              className="text-white/80 hover:text-amber-400 transition-colors py-2 border-b border-white/5"
-            >
-              الآراء
             </a>
             <a
               href="#contact"
@@ -603,56 +602,50 @@ export default function PortfolioMain() {
         )}
       </header>
 
-      {/* ===== الخلفية الثابتة والممتدة لجميع الصفحة ===== */}
-{/* ===== الخلفية الثابتة والممتدة لجميع الصفحة ===== */}
-<div className="fixed inset-0 z-0 overflow-hidden bg-[#020202]">
-  
-  {/* ===== SplashCursor مخفف ===== */}
-  <SplashCursor
-    RAINBOW_MODE={true}              // ❌ إيقاف قوس قزح (يقلل الأداء)
-    // COLOR="#F59E0B"                   // 🟡 لون ذهبي ثابت
-    SIM_RESOLUTION={48}               // ⬇️ من 128 إلى 48 (أداء أفضل)
-    DYE_RESOLUTION={512}              // ⬇️ من 1440 إلى 512
-    SPLAT_RADIUS={0.15}               // ⬇️ من 0.25 إلى 0.15 (تأثير أصغر)
-    SPLAT_FORCE={3500}                // ⬇️ من 3000 إلى 1500 (قوة أقل)
-    DENSITY_DISSIPATION={6}           // ⬆️ من 4.5 إلى 6 (يتلاشى أسرع)
-    VELOCITY_DISSIPATION={10}          // ⬆️ من 3.5 إلى 5 (حركة أقل)
-    TRANSPARENT={true}
-    COLOR_UPDATE_SPEED={30}            // ⬇️ من 6 إلى 2 (تغير أبطأ)
-    SHADING={false}                   // ❌ إيقاف التظليل (يقلل الأداء)
-  />
-  
-  <canvas ref={canvasRef} className="h-full w-full opacity-60" />
-  
-  {/* طبقة التعتيم الأساسية */}
-  <div className="absolute inset-0 bg-black/45 pointer-events-none" />
+      {/* ===== الخلفية الثابتة ===== */}
+      <div className="fixed inset-0 z-0 overflow-hidden bg-[#020202]">
+        <SplashCursor
+          RAINBOW_MODE={true}
+          SIM_RESOLUTION={48}
+          DYE_RESOLUTION={512}
+          SPLAT_RADIUS={0.15}
+          SPLAT_FORCE={3500}
+          DENSITY_DISSIPATION={6}
+          VELOCITY_DISSIPATION={10}
+          TRANSPARENT={true}
+          COLOR_UPDATE_SPEED={30}
+          SHADING={false}
+        />
+        
+        <canvas ref={canvasRef} className="h-full w-full opacity-60" />
+        
+        <div className="absolute inset-0 bg-black/45 pointer-events-none" />
 
-  {/* تأثير البقعة الضوئية */}
-  <div
-    className="absolute inset-0 pointer-events-none transition-opacity duration-300"
-    style={{
-      opacity: isInsideHero ? 1 : 0,
-      backdropFilter: "brightness(1.5) contrast(1.1)",
-      WebkitBackdropFilter: "brightness(1.5) contrast(1.1)",
-      maskImage: `radial-gradient(circle 80px at ${mousePos.x}px ${mousePos.y}px, black 0%, transparent 100%)`,
-      WebkitMaskImage: `radial-gradient(circle 80px at ${mousePos.x}px ${mousePos.y}px, black 0%, transparent 100%)`,
-    }}
-  />
+        <div
+          className="absolute inset-0 pointer-events-none transition-opacity duration-300"
+          style={{
+            opacity: isInsideHero ? 1 : 0,
+            backdropFilter: "brightness(1.5) contrast(1.1)",
+            WebkitBackdropFilter: "brightness(1.5) contrast(1.1)",
+            maskImage: `radial-gradient(circle 80px at ${mousePos.x}px ${mousePos.y}px, black 0%, transparent 100%)`,
+            WebkitMaskImage: `radial-gradient(circle 80px at ${mousePos.x}px ${mousePos.y}px, black 0%, transparent 100%)`,
+          }}
+        />
 
-  {/* Loading */}
-  {!isLoaded && (
-    <div className="absolute inset-0 z-30 flex items-center justify-center bg-[#020202] backdrop-blur-md">
-      <div className="flex flex-col items-center gap-4 text-center">
-        <div className="h-12 w-12 animate-spin rounded-full border-[3px] border-white/10 border-t-amber-400" />
-        <div>
-          <p className="text-xs uppercase tracking-[0.4em] text-white/50">جاري تحميل المعرض</p>
-          <p className="mt-2 text-base font-medium text-white/90">استعد لاكتشاف أعمال Mohammed Al-Hanani</p>
-        </div>
+        {!isLoaded && (
+          <div className="absolute inset-0 z-30 flex items-center justify-center bg-[#020202] backdrop-blur-md">
+            <div className="flex flex-col items-center gap-4 text-center px-4">
+              <div className="h-10 w-10 sm:h-12 sm:w-12 animate-spin rounded-full border-[3px] border-white/10 border-t-amber-400" />
+              <div>
+                <p className="text-[10px] sm:text-xs uppercase tracking-[0.4em] text-white/50">جاري تحميل المعرض</p>
+                <p className="mt-2 text-sm sm:text-base font-medium text-white/90">استعد لاكتشاف أعمال Mohammed Al-Hanani</p>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
-    </div>
-  )}
-</div>
-      {/* ===== 1 & 2. قسم الهيرو والتمرير بالصور مع تعقب المؤشر ===== */}
+
+      {/* ===== قسم الهيرو ===== */}
       <div 
         className="h-[300vh] relative z-10"
         onMouseMove={(e) => {
@@ -666,12 +659,10 @@ export default function PortfolioMain() {
         onMouseEnter={() => setIsInsideHero(true)}
         onMouseLeave={() => setIsInsideHero(false)}
       >
-        
-        {/* حاوية النصوص الثابتة على الشاشة أثناء تمرير الهيرو */}
         <div className="fixed inset-0 z-20 pointer-events-none flex items-center justify-center">
-          <div className="absolute inset-x-0 top-24 flex justify-center px-6 text-center">
-            <p className="text-[11px] uppercase tracking-[0.5em] text-white/60 drop-shadow">
-              {isHeroFinished ? "✨ مرحباً بك في موقعي الرسمي" : "اسحب للأسفل لاستكشاف الإبداع (حرّك المؤشر لرؤية تأثير الكشف الدقيق)"}
+          <div className="absolute inset-x-0 top-16 sm:top-24 flex justify-center px-4 sm:px-6 text-center">
+            <p className="text-[9px] sm:text-[11px] uppercase tracking-[0.3em] sm:tracking-[0.5em] text-white/60 drop-shadow">
+              {isHeroFinished ? "✨ مرحباً بك في موقعي الرسمي" : "اسحب للأسفل لاستكشاف الإبداع"}
             </p>
           </div>
 
@@ -700,11 +691,11 @@ export default function PortfolioMain() {
             return (
               <motion.div
                 key={block.id}
-                className={`absolute max-w-[22rem] px-6 sm:max-w-[28rem] ${
+                className={`absolute max-w-[18rem] sm:max-w-[22rem] md:max-w-[28rem] px-4 sm:px-6 ${
                   block.align === "left"
-                    ? "left-6 top-1/2 -translate-y-1/2 text-left sm:left-16"
+                    ? "left-4 sm:left-6 md:left-16 top-1/2 -translate-y-1/2 text-left"
                     : block.align === "right"
-                      ? "right-6 top-1/2 -translate-y-1/2 text-right sm:right-16"
+                      ? "right-4 sm:right-6 md:right-16 top-1/2 -translate-y-1/2 text-right"
                       : "top-1/2 -translate-y-1/2 text-center"
                 }`}
                 initial={false}
@@ -722,14 +713,14 @@ export default function PortfolioMain() {
               >
                 <div>
                   <motion.p 
-                    className="mb-2 text-[11px] uppercase tracking-[0.45em] text-amber-400 drop-shadow-md font-medium"
+                    className="mb-1 sm:mb-2 text-[9px] sm:text-[11px] uppercase tracking-[0.3em] sm:tracking-[0.45em] text-amber-400 drop-shadow-md font-medium"
                     animate={{ letterSpacing: inRange ? "0.45em" : "0.2em" }}
                     transition={{ duration: 0.3 }}
                   >
                     {block.title}
                   </motion.p>
                   <motion.h2 
-                    className="text-xl font-bold leading-snug tracking-tight text-white drop-shadow-lg sm:text-3xl"
+                    className="text-base sm:text-xl md:text-3xl font-bold leading-snug tracking-tight text-white drop-shadow-lg"
                     animate={{ scale: inRange ? 1 : 0.98 }}
                     transition={{ duration: 0.3 }}
                   >
@@ -741,414 +732,397 @@ export default function PortfolioMain() {
           })}
         </div>
         
-        {/* مؤشر التمرير */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-2">
+        <div className="absolute bottom-8 sm:bottom-10 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-2">
           <motion.div
             animate={{ y: [0, 10, 0], opacity: [0.5, 1, 0.5] }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            className="text-white/40 text-xs uppercase tracking-[0.3em]"
+            className="text-white/40 text-[9px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em]"
           >
             {isHeroFinished ? "✓ تم" : "مرر للأسفل"}
           </motion.div>
           <motion.div
             animate={{ y: [0, 10, 0], opacity: [0.3, 0.8, 0.3] }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
-            className="w-6 h-10 rounded-full border-2 border-white/20 flex justify-center pt-2"
+            className="w-5 h-8 sm:w-6 sm:h-10 rounded-full border-2 border-white/20 flex justify-center pt-2"
           >
             <div className="w-1 h-2 rounded-full bg-white/40 animate-pulse" />
           </motion.div>
         </div>
       </div>
 
-      {/* ===== المحتوى الرئيسي (بخلفية شفافة لتظهر الخلفية المتحركة تحته) ===== */}
-      <div className="relative z-10 bg-transparent pt-20 pb-16 space-y-32">
+      {/* ===== المحتوى الرئيسي ===== */}
+      <div className="relative z-10 bg-transparent pt-16 sm:pt-20 pb-12 sm:pb-16 space-y-24 sm:space-y-32">
         
-        {/* ===== 2. قسم عني (About Me) ===== */}
-{/* ===== 2. قسم عني (About Me) ===== */}
-{/* ===== 2. قسم عني (About Me) ===== */}
-<section id="about" className="max-w-6xl mx-auto px-6 scroll-mt-28">
-  <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    transition={{ duration: 0.6 }}
-  >
-    <div className="flex items-center gap-3 mb-2">
-      <span className="w-10 h-0.5 bg-amber-400"></span>
-      <span className="text-amber-400 text-xs uppercase tracking-[0.3em] font-medium">About Me</span>
-    </div>
-    
-    <h2 className="text-3xl sm:text-4xl font-bold mt-2 mb-6">
-      مطور برمجيات <span className="text-amber-400">شغوف</span> بحل المشكلات
-    </h2>
-    
-    <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
-      
-      {/* ===== العمود الأيسر: الصورة الشخصية مع PixelTransition ===== */}
-      <div className="lg:col-span-2">
-        <div className="relative group">
-          {/* الإطار الخارجي مع تأثير التوهج */}
-          <div className="absolute -inset-1 bg-gradient-to-r from-amber-400/20 via-amber-400/10 to-amber-400/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-          
-          <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-black/40 backdrop-blur-sm p-2">
-            <PixelTransition
-              firstContent={
-                <img
-                  src="/img/profile-img.jpg"
-                  alt="Mohammed Al-Hanani"
-                  style={{ 
-                    width: "100%", 
-                    height: "100%", 
-                    objectFit: "cover",
-                    display: "block"
-                  }}
-                  onError={(e) => {
-                    e.currentTarget.src = 'https://ui-avatars.com/api/?name=Mohammed+Al-Hanani&size=400&background=F59E0B&color=fff&bold=true';
-                  }}
-                />
-              }
-              secondContent={
-                <div
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    display: "grid",
-                    placeItems: "center",
-                    backgroundColor: "#0a0a0a",
-                    backgroundImage: "radial-gradient(circle at center, #1a1a2e 0%, #0a0a0a 100%)",
-                    padding: "20px"
-                  }}
-                >
-                  <div style={{ textAlign: "center" }}>
-                    <p style={{ 
-                      fontWeight: 700, 
-                      fontSize: "2rem", 
-                      color: "#F59E0B",
-                      marginBottom: "8px"
-                    }}>
-                      مرحباً!
-                    </p>
-                    <p style={{ 
-                      fontSize: "0.9rem", 
-                      color: "#ffffff",
-                      opacity: 0.8,
-                      maxWidth: "200px"
-                    }}>
-                      محمد الحناني
-                    </p>
-                    <div style={{
-                      width: "40px",
-                      height: "2px",
-                      backgroundColor: "#F59E0B",
-                      margin: "12px auto",
-                      borderRadius: "2px"
-                    }} />
-                    <p style={{ 
-                      fontSize: "0.7rem", 
-                      color: "#ffffff",
-                      opacity: 0.5
-                    }}>
-                      Full-Stack Developer
-                    </p>
-                  </div>
-                </div>
-              }
-              gridSize={12}
-              pixelColor="#F59E0B"
-              animationStepDuration={0.5}
-              once={false}
-              aspectRatio="75%"
-              className="w-full"
-              style={{
-                width: "100%",
-                borderRadius: "12px",
-                border: "none",
-                backgroundColor: "transparent"
-              }}
-            />
-            
-            {/* شارة الخبرة */}
-            <div className="absolute bottom-4 right-4 bg-black/80 backdrop-blur-md border border-amber-400/30 rounded-xl px-4 py-2 shadow-xl z-10">
-              <span className="block text-2xl font-bold text-amber-400">4+</span>
-              <span className="text-[10px] text-white/60 uppercase tracking-wider">سنوات خبرة</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      {/* ===== العمود الأيمن: المعلومات ===== */}
-      <div className="lg:col-span-3 space-y-6">
-        <div>
-          <h3 className="text-2xl font-bold text-white mb-2">
-            Mohammed Al-Hanani
-          </h3>
-          <p className="text-amber-400 text-sm font-medium">
-            Full-Stack Developer | مهندس برمجيات
-          </p>
-        </div>
-        
-        <p className="text-white/80 leading-relaxed text-base">
-          مطور برمجيات شغوف بتطوير حلول تقنية مبتكرة وفعالة. أمتلك خبرة في بناء 
-          تطبيقات الويب والموبايل باستخدام أحدث التقنيات، مع التركيز على جودة الكود 
-          وتجربة المستخدم. أسعى دائماً لتقديم قيمة مضافة لعملائي من خلال حلول برمجية 
-          احترافية تلبي احتياجاتهم وتتجاوز توقعاتهم.
-        </p>
-
-        {/* ===== معلومات سريعة ===== */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <div className="p-3 rounded-xl bg-black/40 backdrop-blur-md border border-white/10 shadow-lg hover:border-amber-400/30 transition-colors">
-            <span className="text-[8px] text-white/40 uppercase tracking-wider block mb-0.5">الاسم</span>
-            <span className="font-medium text-white text-xs">Mohammed Al-Hanani</span>
-          </div>
-          <div className="p-3 rounded-xl bg-black/40 backdrop-blur-md border border-white/10 shadow-lg hover:border-amber-400/30 transition-colors">
-            <span className="text-[8px] text-white/40 uppercase tracking-wider block mb-0.5">البريد الإلكتروني</span>
-            <span className="font-medium text-white text-xs truncate block">Mohammadalhnani@gmail.com</span>
-          </div>
-          <div className="p-3 rounded-xl bg-black/40 backdrop-blur-md border border-white/10 shadow-lg hover:border-amber-400/30 transition-colors">
-            <span className="text-[8px] text-white/40 uppercase tracking-wider block mb-0.5">المكان</span>
-            <span className="font-medium text-white text-xs">Yemen, Sanaa</span>
-          </div>
-          <div className="p-3 rounded-xl bg-black/40 backdrop-blur-md border border-white/10 shadow-lg hover:border-amber-400/30 transition-colors">
-            <span className="text-[8px] text-white/40 uppercase tracking-wider block mb-0.5">الخبرة</span>
-            <span className="font-medium text-amber-400 text-xs">4+ سنوات</span>
-          </div>
-        </div>
-
-        {/* ===== وصف إضافي ===== */}
-        <div className="p-5 rounded-xl bg-gradient-to-r from-amber-400/5 to-transparent border border-amber-400/10">
-          <p className="text-white/70 text-sm leading-relaxed italic">
-            "أؤمن بأن التكنولوجيا الجيدة يجب أن تكون بسيطة وسهلة الاستخدام، 
-            ولذلك أركز على تقديم حلول برمجية تجمع بين القوة والجمال."
-          </p>
-        </div>
-      </div>
-    </div>
-  </motion.div>
-</section>
-
-        {/* ===== 3. قسم السيرة الذاتية (Resume) ===== */}
-{/* ===== 3. قسم السيرة الذاتية (Resume) ===== */}
-        {/* ===== 4. قسم الخدمات (Services) ===== */}
-{/* ===== 4. قسم الخدمات (Services) ===== */}
-{/* ===== 4. قسم الخدمات (Services) ===== */}
-{/* ===== 4. قسم الخدمات (Services) مع ScrollStack ===== */}
-{/* ===== 4. قسم الخدمات (Services) مع ElectricBorder ===== */}
-<section id="services" className="max-w-6xl mx-auto px-6 scroll-mt-28">
-  <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    transition={{ duration: 0.6 }}
-  >
-    <div className="flex items-center gap-3 mb-2">
-      <span className="w-10 h-0.5 bg-amber-400"></span>
-      <span className="text-amber-400 text-xs uppercase tracking-[0.3em] font-medium">My Expertise</span>
-    </div>
-    
-    <h2 className="text-3xl sm:text-4xl font-bold mt-2 mb-4">الخدمات التقنية المتكاملة</h2>
-    <p className="text-white/80 mb-12 text-base drop-shadow max-w-3xl">
-      أقدم حلولاً برمجية شاملة تغطي كامل دورة حياة التطوير، من الواجهات الأمامية إلى البنية التحتية السحابية
-    </p>
-
-    {/* ===== شبكة الخدمات مع ElectricBorder ===== */}
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      
-      {/* ===== الخدمة الأولى: تطوير الواجهات الأمامية ===== */}
-      <ElectricBorder
-        color="#F59E0B"
-        speed={1.2}
-        chaos={0.13}
-        borderRadius={16}
-        className="transition-all duration-300 hover:scale-[1.02]"
-      >
-        <div className="p-6 bg-black/60 backdrop-blur-xl rounded-[16px] min-h-[220px]">
-          <div className="flex items-start gap-4">
-            <div className="w-12 h-12 rounded-xl bg-amber-400/10 flex items-center justify-center flex-shrink-0">
-              <svg className="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-              </svg>
-            </div>
-            <div className="flex-1">
-              <h3 className="text-xl font-semibold mb-2 text-white">تطوير الواجهات الأمامية</h3>
-              <p className="text-white/80 text-sm leading-relaxed">
-                بناء واجهات مستخدم تفاعلية وسريعة باستخدام <span className="text-amber-400/80">React.js</span>، 
-                <span className="text-amber-400/80"> Angular</span>، 
-                <span className="text-amber-400/80"> Bootstrap</span>، 
-                <span className="text-amber-400/80"> JavaScript</span> و 
-                <span className="text-amber-400/80"> TypeScript</span>.
-              </p>
-              <div className="flex flex-wrap gap-2 mt-3">
-                <span className="text-[10px] px-2 py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">React</span>
-                <span className="text-[10px] px-2 py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">Angular</span>
-                <span className="text-[10px] px-2 py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">TypeScript</span>
-                <span className="text-[10px] px-2 py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">Bootstrap</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </ElectricBorder>
-
-      {/* ===== الخدمة الثانية: تطوير الخلفية والـ APIs ===== */}
-      <ElectricBorder
-        color="#F59E0B"
-        speed={1.2}
-        chaos={0.13}
-        borderRadius={16}
-        className="transition-all duration-300 hover:scale-[1.02]"
-      >
-        <div className="p-6 bg-black/60 backdrop-blur-xl rounded-[16px] min-h-[220px]">
-          <div className="flex items-start gap-4">
-            <div className="w-12 h-12 rounded-xl bg-amber-400/10 flex items-center justify-center flex-shrink-0">
-              <svg className="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
-              </svg>
-            </div>
-            <div className="flex-1">
-              <h3 className="text-xl font-semibold mb-2 text-white">تطوير الخلفية والـ APIs</h3>
-              <p className="text-white/80 text-sm leading-relaxed">
-                تصميم وتطوير أنظمة خلفية قوية وآمنة باستخدام <span className="text-amber-400/80">.NET Core</span>، 
-                <span className="text-amber-400/80"> Node.js</span> و 
-                <span className="text-amber-400/80"> Laravel</span>، مع بناء RESTful APIs و GraphQL APIs.
-              </p>
-              <div className="flex flex-wrap gap-2 mt-3">
-                <span className="text-[10px] px-2 py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">.NET Core</span>
-                <span className="text-[10px] px-2 py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">Node.js</span>
-                <span className="text-[10px] px-2 py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">Laravel</span>
-                <span className="text-[10px] px-2 py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">GraphQL</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </ElectricBorder>
-
-      {/* ===== الخدمة الثالثة: تطبيقات الموبايل وسطح المكتب ===== */}
-      <ElectricBorder
-        color="#F59E0B"
-        speed={1.2}
-        chaos={0.13}
-        borderRadius={16}
-        className="transition-all duration-300 hover:scale-[1.02]"
-      >
-        <div className="p-6 bg-black/60 backdrop-blur-xl rounded-[16px] min-h-[220px]">
-          <div className="flex items-start gap-4">
-            <div className="w-12 h-12 rounded-xl bg-amber-400/10 flex items-center justify-center flex-shrink-0">
-              <svg className="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
-              </svg>
-            </div>
-            <div className="flex-1">
-              <h3 className="text-xl font-semibold mb-2 text-white">تطبيقات الموبايل وسطح المكتب</h3>
-              <p className="text-white/80 text-sm leading-relaxed">
-                تطوير تطبيقات متعددة المنصات <span className="text-amber-400/80">(Cross-Platform)</span> باستخدام 
-                <span className="text-amber-400/80"> Flutter</span>، وتطبيقات سطح المكتب باستخدام 
-                <span className="text-amber-400/80"> Java</span> و <span className="text-amber-400/80"> Python</span>.
-              </p>
-              <div className="flex flex-wrap gap-2 mt-3">
-                <span className="text-[10px] px-2 py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">Flutter</span>
-                <span className="text-[10px] px-2 py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">Java</span>
-                <span className="text-[10px] px-2 py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">Python</span>
-                <span className="text-[10px] px-2 py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">Cross-Platform</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </ElectricBorder>
-
-      {/* ===== الخدمة الرابعة: قواعد البيانات والسحابة ===== */}
-      <ElectricBorder
-        color="#F59E0B"
-        speed={1.2}
-        chaos={0.13}
-        borderRadius={16}
-        className="transition-all duration-300 hover:scale-[1.02]"
-      >
-        <div className="p-6 bg-black/60 backdrop-blur-xl rounded-[16px] min-h-[220px]">
-          <div className="flex items-start gap-4">
-            <div className="w-12 h-12 rounded-xl bg-amber-400/10 flex items-center justify-center flex-shrink-0">
-              <svg className="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
-              </svg>
-            </div>
-            <div className="flex-1">
-              <h3 className="text-xl font-semibold mb-2 text-white">قواعد البيانات والسحابة</h3>
-              <p className="text-white/80 text-sm leading-relaxed">
-                إدارة قواعد البيانات ونشر التطبيقات على منصات سحابية مثل <span className="text-amber-400/80">AWS</span> و 
-                <span className="text-amber-400/80"> Azure</span>، مع استخدام 
-                <span className="text-amber-400/80"> Docker</span> و <span className="text-amber-400/80"> Kubernetes</span>.
-              </p>
-              <div className="flex flex-wrap gap-2 mt-3">
-                <span className="text-[10px] px-2 py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">PostgreSQL</span>
-                <span className="text-[10px] px-2 py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">MongoDB</span>
-                <span className="text-[10px] px-2 py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">Docker</span>
-                <span className="text-[10px] px-2 py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">Kubernetes</span>
-                <span className="text-[10px] px-2 py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">AWS</span>
-                <span className="text-[10px] px-2 py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">Azure</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </ElectricBorder>
-
-    </div>
-
-    {/* ===== إحصاءات مع CountUp ===== */}
-    <motion.div 
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6, delay: 0.3 }}
-      className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4 p-8 rounded-2xl bg-black/30 backdrop-blur-md border border-white/5"
-    >
-      <div className="text-center">
-        <span className="block text-3xl font-bold text-amber-400">
-          <CountUp from={0} to={4} duration={2} separator="" className="count-up-text" />+
-        </span>
-        <span className="text-[10px] text-white/40 uppercase tracking-wider mt-1 block">سنوات خبرة</span>
-      </div>
-      <div className="text-center">
-        <span className="block text-3xl font-bold text-amber-400">
-          <CountUp from={0} to={123} duration={2.5} separator="" className="count-up-text" />+
-        </span>
-        <span className="text-[10px] text-white/40 uppercase tracking-wider mt-1 block">مشروع منجز</span>
-      </div>
-      <div className="text-center">
-        <span className="block text-3xl font-bold text-amber-400">
-          <CountUp from={0} to={200} duration={2.5} separator="" className="count-up-text" />+
-        </span>
-        <span className="text-[10px] text-white/40 uppercase tracking-wider mt-1 block">عميل سعيد</span>
-      </div>
-      <div className="text-center">
-        <span className="block text-3xl font-bold text-amber-400">24/7</span>
-        <span className="text-[10px] text-white/40 uppercase tracking-wider mt-1 block">دعم فني</span>
-      </div>
-    </motion.div>
-
-  </motion.div>
-</section>
-        {/* ===== 5. قسم المشاريع (Portfolio) مع ProfileCard ===== */}
-        <section id="portfolio" className="max-w-7xl mx-auto px-6 scroll-mt-28">
+        {/* ===== قسم عني ===== */}
+        <section id="about" className="max-w-6xl mx-auto px-4 sm:px-6 scroll-mt-28">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <span className="text-amber-400 text-xs uppercase tracking-[0.3em] font-medium">My Work</span>
-            <h2 className="text-3xl sm:text-4xl font-bold mt-2 mb-4">Portfolio</h2>
-            <p className="text-white/80 mb-12 text-base drop-shadow">
-              استكشف مشاريعي من خلال بطاقات التعريف التفاعلية
+            <div className="flex items-center gap-2 sm:gap-3 mb-2">
+              <span className="w-8 sm:w-10 h-0.5 bg-amber-400"></span>
+              <span className="text-amber-400 text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] font-medium">About Me</span>
+            </div>
+            
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mt-2 mb-4 sm:mb-6">
+              مطور برمجيات <span className="text-amber-400">شغوف</span> بحل المشكلات
+            </h2>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 sm:gap-8">
+              
+              <div className="lg:col-span-2">
+                <div className="relative group">
+                  <div className="absolute -inset-1 bg-gradient-to-r from-amber-400/20 via-amber-400/10 to-amber-400/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  
+                  <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-black/40 backdrop-blur-sm p-2">
+                    <PixelTransition
+                      firstContent={
+                        <img
+                          src="/img/profile-img.jpg"
+                          alt="Mohammed Al-Hanani"
+                          style={{ 
+                            width: "100%", 
+                            height: "100%", 
+                            objectFit: "cover",
+                            display: "block"
+                          }}
+                          onError={(e) => {
+                            e.currentTarget.src = 'https://ui-avatars.com/api/?name=Mohammed+Al-Hanani&size=400&background=F59E0B&color=fff&bold=true';
+                          }}
+                        />
+                      }
+                      secondContent={
+                        <div
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            display: "grid",
+                            placeItems: "center",
+                            backgroundColor: "#0a0a0a",
+                            backgroundImage: "radial-gradient(circle at center, #1a1a2e 0%, #0a0a0a 100%)",
+                            padding: "20px"
+                          }}
+                        >
+                          <div style={{ textAlign: "center" }}>
+                            <p style={{ 
+                              fontWeight: 700, 
+                              fontSize: "1.5rem", 
+                              color: "#F59E0B",
+                              marginBottom: "8px"
+                            }}>
+                              مرحباً!
+                            </p>
+                            <p style={{ 
+                              fontSize: "0.8rem", 
+                              color: "#ffffff",
+                              opacity: 0.8,
+                              maxWidth: "200px"
+                            }}>
+                              محمد الحناني
+                            </p>
+                            <div style={{
+                              width: "40px",
+                              height: "2px",
+                              backgroundColor: "#F59E0B",
+                              margin: "12px auto",
+                              borderRadius: "2px"
+                            }} />
+                            <p style={{ 
+                              fontSize: "0.7rem", 
+                              color: "#ffffff",
+                              opacity: 0.5
+                            }}>
+                              Full-Stack Developer
+                            </p>
+                          </div>
+                        </div>
+                      }
+                      gridSize={12}
+                      pixelColor="#F59E0B"
+                      animationStepDuration={0.5}
+                      once={false}
+                      aspectRatio="75%"
+                      className="w-full"
+                      style={{
+                        width: "100%",
+                        borderRadius: "12px",
+                        border: "none",
+                        backgroundColor: "transparent"
+                      }}
+                    />
+                    
+                    <div className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 bg-black/80 backdrop-blur-md border border-amber-400/30 rounded-xl px-3 py-1.5 sm:px-4 sm:py-2 shadow-xl z-10">
+                      <span className="block text-xl sm:text-2xl font-bold text-amber-400">4+</span>
+                      <span className="text-[8px] sm:text-[10px] text-white/60 uppercase tracking-wider">سنوات خبرة</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="lg:col-span-3 space-y-4 sm:space-y-6">
+                <div>
+                  <h3 className="text-xl sm:text-2xl font-bold text-white mb-1 sm:mb-2">
+                    Mohammed Al-Hanani
+                  </h3>
+                  <p className="text-amber-400 text-xs sm:text-sm font-medium">
+                    Full-Stack Developer | مهندس برمجيات
+                  </p>
+                </div>
+                
+                <p className="text-white/70 sm:text-white/80 leading-relaxed text-sm sm:text-base">
+                  مطور برمجيات شغوف بتطوير حلول تقنية مبتكرة وفعالة. أمتلك خبرة في بناء 
+                  تطبيقات الويب والموبايل باستخدام أحدث التقنيات، مع التركيز على جودة الكود 
+                  وتجربة المستخدم. أسعى دائماً لتقديم قيمة مضافة لعملائي من خلال حلول برمجية 
+                  احترافية تلبي احتياجاتهم وتتجاوز توقعاتهم.
+                </p>
+
+                <div className="grid grid-cols-2 gap-2 sm:gap-3">
+                  <div className="p-2 sm:p-3 rounded-xl bg-black/40 backdrop-blur-md border border-white/10 shadow-lg hover:border-amber-400/30 transition-colors">
+                    <span className="text-[7px] sm:text-[8px] text-white/40 uppercase tracking-wider block mb-0.5">الاسم</span>
+                    <span className="font-medium text-white text-[10px] sm:text-xs">Mohammed Al-Hanani</span>
+                  </div>
+                  <div className="p-2 sm:p-3 rounded-xl bg-black/40 backdrop-blur-md border border-white/10 shadow-lg hover:border-amber-400/30 transition-colors">
+                    <span className="text-[7px] sm:text-[8px] text-white/40 uppercase tracking-wider block mb-0.5">البريد الإلكتروني</span>
+                    <span className="font-medium text-white text-[10px] sm:text-xs truncate block">Mohammadalhnani@gmail.com</span>
+                  </div>
+                  <div className="p-2 sm:p-3 rounded-xl bg-black/40 backdrop-blur-md border border-white/10 shadow-lg hover:border-amber-400/30 transition-colors">
+                    <span className="text-[7px] sm:text-[8px] text-white/40 uppercase tracking-wider block mb-0.5">المكان</span>
+                    <span className="font-medium text-white text-[10px] sm:text-xs">Yemen, Sanaa</span>
+                  </div>
+                  <div className="p-2 sm:p-3 rounded-xl bg-black/40 backdrop-blur-md border border-white/10 shadow-lg hover:border-amber-400/30 transition-colors">
+                    <span className="text-[7px] sm:text-[8px] text-white/40 uppercase tracking-wider block mb-0.5">الخبرة</span>
+                    <span className="font-medium text-amber-400 text-[10px] sm:text-xs">4+ سنوات</span>
+                  </div>
+                </div>
+
+                <div className="p-4 sm:p-5 rounded-xl bg-gradient-to-r from-amber-400/5 to-transparent border border-amber-400/10">
+                  <p className="text-white/60 sm:text-white/70 text-xs sm:text-sm leading-relaxed italic">
+                    "أؤمن بأن التكنولوجيا الجيدة يجب أن تكون بسيطة وسهلة الاستخدام، 
+                    ولذلك أركز على تقديم حلول برمجية تجمع بين القوة والجمال."
+                  </p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </section>
+
+        {/* ===== قسم الخدمات ===== */}
+        <section id="services" className="max-w-6xl mx-auto px-4 sm:px-6 scroll-mt-28">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="flex items-center gap-2 sm:gap-3 mb-2">
+              <span className="w-8 sm:w-10 h-0.5 bg-amber-400"></span>
+              <span className="text-amber-400 text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] font-medium">My Expertise</span>
+            </div>
+            
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mt-2 mb-2 sm:mb-4">الخدمات التقنية المتكاملة</h2>
+            <p className="text-white/70 sm:text-white/80 mb-8 sm:mb-12 text-sm sm:text-base drop-shadow max-w-3xl">
+              أقدم حلولاً برمجية شاملة تغطي كامل دورة حياة التطوير، من الواجهات الأمامية إلى البنية التحتية السحابية
             </p>
 
-            {/* شبكة البطاقات */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {projects.map((project, index) => (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+              
+              <ElectricBorder
+                color="#F59E0B"
+                speed={1.2}
+                chaos={0.13}
+                borderRadius={16}
+                className="transition-all duration-300 hover:scale-[1.02]"
+              >
+                <div className="p-4 sm:p-6 bg-black/60 backdrop-blur-xl rounded-[16px] min-h-[180px] sm:min-h-[220px]">
+                  <div className="flex items-start gap-3 sm:gap-4">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-amber-400/10 flex items-center justify-center flex-shrink-0">
+                      <svg className="w-5 h-5 sm:w-6 sm:h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-base sm:text-xl font-semibold mb-1 sm:mb-2 text-white">تطوير الواجهات الأمامية</h3>
+                      <p className="text-white/70 sm:text-white/80 text-xs sm:text-sm leading-relaxed">
+                        بناء واجهات مستخدم تفاعلية وسريعة باستخدام <span className="text-amber-400/80">React.js</span>، 
+                        <span className="text-amber-400/80"> Angular</span>، 
+                        <span className="text-amber-400/80"> Bootstrap</span>، 
+                        <span className="text-amber-400/80"> JavaScript</span> و 
+                        <span className="text-amber-400/80"> TypeScript</span>.
+                      </p>
+                      <div className="flex flex-wrap gap-1.5 sm:gap-2 mt-2 sm:mt-3">
+                        <span className="text-[8px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">React</span>
+                        <span className="text-[8px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">Angular</span>
+                        <span className="text-[8px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">TypeScript</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ElectricBorder>
+
+              <ElectricBorder
+                color="#F59E0B"
+                speed={1.2}
+                chaos={0.13}
+                borderRadius={16}
+                className="transition-all duration-300 hover:scale-[1.02]"
+              >
+                <div className="p-4 sm:p-6 bg-black/60 backdrop-blur-xl rounded-[16px] min-h-[180px] sm:min-h-[220px]">
+                  <div className="flex items-start gap-3 sm:gap-4">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-amber-400/10 flex items-center justify-center flex-shrink-0">
+                      <svg className="w-5 h-5 sm:w-6 sm:h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
+                      </svg>
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-base sm:text-xl font-semibold mb-1 sm:mb-2 text-white">تطوير الخلفية والـ APIs</h3>
+                      <p className="text-white/70 sm:text-white/80 text-xs sm:text-sm leading-relaxed">
+                        تصميم وتطوير أنظمة خلفية قوية وآمنة باستخدام <span className="text-amber-400/80">.NET Core</span>، 
+                        <span className="text-amber-400/80"> Node.js</span> و 
+                        <span className="text-amber-400/80"> Laravel</span>.
+                      </p>
+                      <div className="flex flex-wrap gap-1.5 sm:gap-2 mt-2 sm:mt-3">
+                        <span className="text-[8px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">.NET Core</span>
+                        <span className="text-[8px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">Node.js</span>
+                        <span className="text-[8px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">Laravel</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ElectricBorder>
+
+              <ElectricBorder
+                color="#F59E0B"
+                speed={1.2}
+                chaos={0.13}
+                borderRadius={16}
+                className="transition-all duration-300 hover:scale-[1.02]"
+              >
+                <div className="p-4 sm:p-6 bg-black/60 backdrop-blur-xl rounded-[16px] min-h-[180px] sm:min-h-[220px]">
+                  <div className="flex items-start gap-3 sm:gap-4">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-amber-400/10 flex items-center justify-center flex-shrink-0">
+                      <svg className="w-5 h-5 sm:w-6 sm:h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-base sm:text-xl font-semibold mb-1 sm:mb-2 text-white">تطبيقات الموبايل</h3>
+                      <p className="text-white/70 sm:text-white/80 text-xs sm:text-sm leading-relaxed">
+                        تطوير تطبيقات متعددة المنصات <span className="text-amber-400/80">(Cross-Platform)</span> باستخدام 
+                        <span className="text-amber-400/80"> Flutter</span>.
+                      </p>
+                      <div className="flex flex-wrap gap-1.5 sm:gap-2 mt-2 sm:mt-3">
+                        <span className="text-[8px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">Flutter</span>
+                        <span className="text-[8px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">Java</span>
+                        <span className="text-[8px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">Python</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ElectricBorder>
+
+              <ElectricBorder
+                color="#F59E0B"
+                speed={1.2}
+                chaos={0.13}
+                borderRadius={16}
+                className="transition-all duration-300 hover:scale-[1.02]"
+              >
+                <div className="p-4 sm:p-6 bg-black/60 backdrop-blur-xl rounded-[16px] min-h-[180px] sm:min-h-[220px]">
+                  <div className="flex items-start gap-3 sm:gap-4">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-amber-400/10 flex items-center justify-center flex-shrink-0">
+                      <svg className="w-5 h-5 sm:w-6 sm:h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+                      </svg>
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-base sm:text-xl font-semibold mb-1 sm:mb-2 text-white">قواعد البيانات والسحابة</h3>
+                      <p className="text-white/70 sm:text-white/80 text-xs sm:text-sm leading-relaxed">
+                        إدارة قواعد البيانات ونشر التطبيقات على منصات سحابية مثل <span className="text-amber-400/80">AWS</span> و 
+                        <span className="text-amber-400/80"> Azure</span>.
+                      </p>
+                      <div className="flex flex-wrap gap-1.5 sm:gap-2 mt-2 sm:mt-3">
+                        <span className="text-[8px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">Docker</span>
+                        <span className="text-[8px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">AWS</span>
+                        <span className="text-[8px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">Azure</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ElectricBorder>
+
+            </div>
+
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="mt-8 sm:mt-12 grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 p-4 sm:p-8 rounded-2xl bg-black/30 backdrop-blur-md border border-white/5"
+            >
+              <div className="text-center">
+                <span className="block text-2xl sm:text-3xl font-bold text-amber-400">
+                  <CountUp from={0} to={4} duration={2} separator="" className="count-up-text" />+
+                </span>
+                <span className="text-[8px] sm:text-[10px] text-white/40 uppercase tracking-wider mt-1 block">سنوات خبرة</span>
+              </div>
+              <div className="text-center">
+                <span className="block text-2xl sm:text-3xl font-bold text-amber-400">
+                  <CountUp from={0} to={123} duration={2.5} separator="" className="count-up-text" />+
+                </span>
+                <span className="text-[8px] sm:text-[10px] text-white/40 uppercase tracking-wider mt-1 block">مشروع منجز</span>
+              </div>
+              <div className="text-center">
+                <span className="block text-2xl sm:text-3xl font-bold text-amber-400">
+                  <CountUp from={0} to={200} duration={2.5} separator="" className="count-up-text" />+
+                </span>
+                <span className="text-[8px] sm:text-[10px] text-white/40 uppercase tracking-wider mt-1 block">عميل سعيد</span>
+              </div>
+              <div className="text-center">
+                <span className="block text-2xl sm:text-3xl font-bold text-amber-400">24/7</span>
+                <span className="text-[8px] sm:text-[10px] text-white/40 uppercase tracking-wider mt-1 block">دعم فني</span>
+              </div>
+            </motion.div>
+
+          </motion.div>
+        </section>
+
+        {/* ===== قسم المشاريع (Portfolio) - المحسّن للجوال ===== */}
+        <section id="portfolio" className="max-w-7xl mx-auto px-4 sm:px-6 scroll-mt-28">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="flex items-center gap-2 sm:gap-3 mb-2">
+              <span className="w-8 sm:w-10 h-0.5 bg-amber-400"></span>
+              <span className="text-amber-400 text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] font-medium">My Work</span>
+            </div>
+            
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 sm:gap-4 mb-6 sm:mb-8">
+              <div>
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mt-2">
+                  <span className="block sm:inline">Portfolio</span>
+                  <span className="block sm:inline text-amber-400"> — مشاريعي</span>
+                </h2>
+              </div>
+              <p className="text-white/70 sm:text-white/80 text-sm sm:text-base drop-shadow max-w-2xl">
+                {isMobile ? 'أحدث المشاريع' : 'استكشف مجموعة من مشاريعي المتميزة'}
+              </p>
+            </div>
+
+            {/* شبكة البطاقات المحسّنة للجوال */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+              {displayedProjects.map((project, index) => (
                 <motion.div
                   key={project.id}
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="flex justify-center"
+                  transition={{ duration: 0.5, delay: index * 0.05 }}
+                  className="flex justify-center w-full"
                 >
                   <ProfileCard
                     name={project.name}
@@ -1160,17 +1134,35 @@ export default function PortfolioMain() {
                     iconUrl={project.iconUrl}
                     miniAvatarUrl={project.miniAvatarUrl}
                     showUserInfo={true}
-                    enableTilt={true}
+                    enableTilt={!isMobile}
                     enableMobileTilt={true}
                     behindGlowEnabled={true}
-                    behindGlowColor="rgba(255, 215, 0, 0.3)"
+                    behindGlowColor="rgba(255, 215, 0, 0.2)"
                     innerGradient="linear-gradient(145deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)"
                     onContactClick={() => handleProjectClick(project.link)}
-                    className="w-full max-w-sm"
+                    className="w-full max-w-xs sm:max-w-sm md:max-w-md"
                   />
                 </motion.div>
               ))}
             </div>
+
+            {/* زر عرض المزيد للجوال */}
+            {isMobile && projects.length > 6 && (
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                className="mt-8 flex justify-center"
+              >
+                <button 
+                  onClick={() => setShowAllProjects(!showAllProjects)}
+                  className="px-6 py-3 rounded-full bg-amber-400/10 text-amber-400 border border-amber-400/30 hover:bg-amber-400/20 transition-colors text-sm font-medium"
+                >
+                  {showAllProjects ? 'عرض أقل' : 'عرض جميع المشاريع'}
+                </button>
+              </motion.div>
+            )}
 
             {/* دعوة لزيارة لينكد إن */}
             <motion.div 
@@ -1178,49 +1170,52 @@ export default function PortfolioMain() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="mt-16 p-8 rounded-2xl bg-black/50 backdrop-blur-md border border-amber-400/30 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-6 shadow-xl"
+              className="mt-12 sm:mt-16 p-6 sm:p-8 rounded-2xl bg-black/50 backdrop-blur-md border border-amber-400/30 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6 shadow-xl"
             >
               <div>
-                <h3 className="text-xl font-bold mb-2">المزيد من المشاريع والإنجازات</h3>
-                <p className="text-white/80 text-sm max-w-xl">
-                  لديّ المزيد من المشاريع الاحترافية والإنجازات التي أنجزتها. أدعوك لزيارة ملفي الشخصي على LinkedIn لمشاهدة مجموعة كاملة من أعمالي وخبراتي.
+                <h3 className="text-base sm:text-xl font-bold mb-1 sm:mb-2">المزيد من المشاريع والإنجازات</h3>
+                <p className="text-white/70 sm:text-white/80 text-xs sm:text-sm max-w-xl">
+                  لديّ المزيد من المشاريع الاحترافية. أدعوك لزيارة ملفي الشخصي على LinkedIn.
                 </p>
               </div>
               <a
                 href="https://www.linkedin.com/in/mohammed-al-hanani-942809278/" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="px-6 py-3 rounded-full bg-amber-400 text-black font-semibold hover:bg-amber-300 transition-colors whitespace-nowrap shadow-lg shadow-amber-400/20"
+                className="px-5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-amber-400 text-black font-semibold hover:bg-amber-300 transition-colors whitespace-nowrap shadow-lg shadow-amber-400/20 text-sm sm:text-base"
               >
-                تصفح مشاريعي على LinkedIn
+                تصفح المشاريع
               </a>
             </motion.div>
           </motion.div>
         </section>
 
-        {/* ===== 6. قسم التقنيات والمهارات (Technologies) ===== */}
-        <section id="technologies" className="max-w-6xl mx-auto px-6 scroll-mt-28">
+        {/* ===== قسم التقنيات ===== */}
+        <section id="technologies" className="max-w-6xl mx-auto px-4 sm:px-6 scroll-mt-28">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <span className="text-amber-400 text-xs uppercase tracking-[0.3em] font-medium">Technologies</span>
-            <h2 className="text-3xl sm:text-4xl font-bold mt-2 mb-4">التقنيات التي أستخدمها</h2>
-            <p className="text-white/80 mb-10 text-base drop-shadow">
+            <div className="flex items-center gap-2 sm:gap-3 mb-2">
+              <span className="w-8 sm:w-10 h-0.5 bg-amber-400"></span>
+              <span className="text-amber-400 text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] font-medium">Technologies</span>
+            </div>
+            
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mt-2 mb-2 sm:mb-4">التقنيات التي أستخدمها</h2>
+            <p className="text-white/70 sm:text-white/80 mb-8 sm:mb-10 text-sm sm:text-base drop-shadow">
               مجموعة من أحدث التقنيات والأدوات التي أعمل بها لتطوير حلول برمجية متكاملة
             </p>
 
-            {/* LogoLoop - شريط التقنيات المتداول */}
-            <div className="relative w-full bg-black/20 rounded-2xl p-8 backdrop-blur-sm border border-white/5 overflow-hidden">
-              <div style={{ height: '120px', position: 'relative', overflow: 'hidden' }}>
+            <div className="relative w-full bg-black/20 rounded-2xl p-4 sm:p-8 backdrop-blur-sm border border-white/5 overflow-hidden">
+              <div style={{ height: '100px', position: 'relative', overflow: 'hidden' }}>
                 <LogoLoop
                   logos={techLogos}
                   speed={80}
                   direction="left"
-                  logoHeight={50}
-                  gap={50}
+                  logoHeight={isMobile ? 35 : 50}
+                  gap={isMobile ? 30 : 50}
                   hoverSpeed={20}
                   scaleOnHover
                   fadeOut
@@ -1228,149 +1223,134 @@ export default function PortfolioMain() {
                   ariaLabel="التقنيات والمهارات"
                 />
               </div>
-              
-              {/* شريط سفلي من التقنيات في الاتجاه المعاكس */}
-              
             </div>
-
-            {/* <p className="text-white/50 text-xs text-center mt-6">
-              مرر فوق أيقونة لتكبيرها • تتحرك القائمة تلقائياً
-            </p> */}
           </motion.div>
         </section>
 
-        {/* ===== 7. قسم شهادات التوصية (Testimonials) ===== */}
-        
-
-        {/* ===== 8. قسم اتصل بي (Contact) ===== */}
-        {/* ===== 8. قسم اتصل بي (Contact) ===== */}
-<section id="contact" className="max-w-6xl mx-auto px-6 scroll-mt-28">
-  <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    transition={{ duration: 0.6 }}
-  >
-    <span className="text-amber-400 text-xs uppercase tracking-[0.3em] font-medium">Contact</span>
-    <h2 className="text-3xl sm:text-4xl font-bold mt-2 mb-4">تواصل معي لبدء مشروعك القادم</h2>
-    <p className="text-white/80 mb-12 drop-shadow">
-      سواء كنت بحاجة إلى تطبيق موبايل أو موقع إلكتروني، تواصل معي الآن وسنبدأ العمل مباشرة.
-    </p>
-
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-      
-      {/* ===== معلومات الاتصال - الجانب الأيسر ===== */}
-      <div className="space-y-6 md:col-span-1 p-6 rounded-2xl bg-black/40 backdrop-blur-md border border-white/10 shadow-lg h-fit">
-        <div>
-          <span className="text-xs text-white/50 block mb-1">العنوان</span>
-          <p className="text-white/90 text-sm">Yemen, Sanaa, Airport Road</p>
-        </div>
-        <div>
-          <span className="text-xs text-white/50 block mb-1">الهاتف</span>
-          <p className="text-white/90 text-sm font-mono">+967 711 441 780</p>
-        </div>
-        <div>
-          <span className="text-xs text-white/50 block mb-1">البريد الإلكتروني</span>
-          <p className="text-white/90 text-sm font-mono">mohammedalhnani2004@gmail.com</p>
-        </div>
-      </div>
-
-      {/* ===== نموذج الاتصال - الجانب الأيمن ===== */}
-      <form 
-        onSubmit={(e) => {
-          e.preventDefault();
-          setFormStatus(true);
-          setTimeout(() => setFormStatus(false), 4000);
-        }} 
-        className="md:col-span-2 space-y-4 p-6 rounded-2xl bg-black/40 backdrop-blur-md border border-white/10 shadow-lg"
-      >
-        {/* الصف الأول: اسمك + بريدك الإلكتروني */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="relative">
-            <label className="block text-xs text-white/40 mb-1.5">اسمك</label>
-            <input
-              type="text"
-              placeholder="أدخل اسمك"
-              required
-              className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3.5 text-white placeholder:text-white/30 text-sm focus:outline-none focus:border-amber-400 transition-colors"
-            />
-          </div>
-          <div className="relative">
-            <label className="block text-xs text-white/40 mb-1.5">بريدك الإلكتروني</label>
-            <input
-              type="email"
-              placeholder="example@email.com"
-              required
-              className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3.5 text-white placeholder:text-white/30 text-sm focus:outline-none focus:border-amber-400 transition-colors"
-            />
-          </div>
-        </div>
-
-        {/* الصف الثاني: الموضوع */}
-        <div className="relative">
-          <label className="block text-xs text-white/40 mb-1.5">الموضوع</label>
-          <input
-            type="text"
-            placeholder="ما هو موضوع رسالتك؟"
-            required
-            className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3.5 text-white placeholder:text-white/30 text-sm focus:outline-none focus:border-amber-400 transition-colors"
-          />
-        </div>
-
-        {/* الصف الثالث: رسالتك */}
-        <div className="relative">
-          <label className="block text-xs text-white/40 mb-1.5">رسالتك</label>
-          <textarea
-            rows={5}
-            placeholder="اكتب رسالتك هنا..."
-            required
-            className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3.5 text-white placeholder:text-white/30 text-sm focus:outline-none focus:border-amber-400 transition-colors resize-none"
-          />
-        </div>
-
-        {/* زر الإرسال */}
-        <button
-          type="submit"
-          className="w-full py-4 rounded-xl bg-amber-400 text-black font-semibold hover:bg-amber-300 transition-colors shadow-lg shadow-amber-400/20 text-base"
-        >
-          إرسال الرسالة
-        </button>
-
-        {/* رسالة التأكيد */}
-        {formStatus && (
-          <motion.p 
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-emerald-400 text-sm text-center mt-2"
+        {/* ===== قسم اتصل بي ===== */}
+        <section id="contact" className="max-w-6xl mx-auto px-4 sm:px-6 scroll-mt-28">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
           >
-            ✓ تم إرسال رسالتك بنجاح، شكراً لتواصلك!
-          </motion.p>
-        )}
-      </form>
-    </div>
-  </motion.div>
-</section>
-
-        {/* ===== 9. التذييل (Footer) ===== */}
-        <footer className="max-w-5xl mx-auto px-6 pt-16 pb-12 text-center bg-transparent">
-          <div className="flex flex-col items-center space-y-6">
+            <div className="flex items-center gap-2 sm:gap-3 mb-2">
+              <span className="w-8 sm:w-10 h-0.5 bg-amber-400"></span>
+              <span className="text-amber-400 text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] font-medium">Contact</span>
+            </div>
             
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mt-2 mb-2 sm:mb-4">تواصل معي لبدء مشروعك القادم</h2>
+            <p className="text-white/70 sm:text-white/80 mb-8 sm:mb-12 drop-shadow text-sm sm:text-base">
+              سواء كنت بحاجة إلى تطبيق موبايل أو موقع إلكتروني، تواصل معي الآن وسنبدأ العمل مباشرة.
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+              
+              <div className="space-y-4 sm:space-y-6 md:col-span-1 p-4 sm:p-6 rounded-2xl bg-black/40 backdrop-blur-md border border-white/10 shadow-lg h-fit">
+                <div>
+                  <span className="text-[10px] sm:text-xs text-white/50 block mb-1">العنوان</span>
+                  <p className="text-white/90 text-xs sm:text-sm">Yemen, Sanaa, Airport Road</p>
+                </div>
+                <div>
+                  <span className="text-[10px] sm:text-xs text-white/50 block mb-1">الهاتف</span>
+                  <p className="text-white/90 text-xs sm:text-sm font-mono">+967 711 441 780</p>
+                </div>
+                <div>
+                  <span className="text-[10px] sm:text-xs text-white/50 block mb-1">البريد الإلكتروني</span>
+                  <p className="text-white/90 text-xs sm:text-sm font-mono break-all">mohammedalhnani2004@gmail.com</p>
+                </div>
+              </div>
+
+              <form 
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  setFormStatus(true);
+                  setTimeout(() => setFormStatus(false), 4000);
+                }} 
+                className="md:col-span-2 space-y-3 sm:space-y-4 p-4 sm:p-6 rounded-2xl bg-black/40 backdrop-blur-md border border-white/10 shadow-lg"
+              >
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                  <div className="relative">
+                    <label className="block text-[10px] sm:text-xs text-white/40 mb-1.5">اسمك</label>
+                    <input
+                      type="text"
+                      placeholder="أدخل اسمك"
+                      required
+                      className="w-full bg-black/50 border border-white/10 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3.5 text-white placeholder:text-white/30 text-xs sm:text-sm focus:outline-none focus:border-amber-400 transition-colors"
+                    />
+                  </div>
+                  <div className="relative">
+                    <label className="block text-[10px] sm:text-xs text-white/40 mb-1.5">بريدك الإلكتروني</label>
+                    <input
+                      type="email"
+                      placeholder="example@email.com"
+                      required
+                      className="w-full bg-black/50 border border-white/10 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3.5 text-white placeholder:text-white/30 text-xs sm:text-sm focus:outline-none focus:border-amber-400 transition-colors"
+                    />
+                  </div>
+                </div>
+
+                <div className="relative">
+                  <label className="block text-[10px] sm:text-xs text-white/40 mb-1.5">الموضوع</label>
+                  <input
+                    type="text"
+                    placeholder="ما هو موضوع رسالتك؟"
+                    required
+                    className="w-full bg-black/50 border border-white/10 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3.5 text-white placeholder:text-white/30 text-xs sm:text-sm focus:outline-none focus:border-amber-400 transition-colors"
+                  />
+                </div>
+
+                <div className="relative">
+                  <label className="block text-[10px] sm:text-xs text-white/40 mb-1.5">رسالتك</label>
+                  <textarea
+                    rows={4}
+                    placeholder="اكتب رسالتك هنا..."
+                    required
+                    className="w-full bg-black/50 border border-white/10 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3.5 text-white placeholder:text-white/30 text-xs sm:text-sm focus:outline-none focus:border-amber-400 transition-colors resize-none"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full py-3 sm:py-4 rounded-xl bg-amber-400 text-black font-semibold hover:bg-amber-300 transition-colors shadow-lg shadow-amber-400/20 text-sm sm:text-base"
+                >
+                  إرسال الرسالة
+                </button>
+
+                {formStatus && (
+                  <motion.p 
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-emerald-400 text-xs sm:text-sm text-center mt-2"
+                  >
+                    ✓ تم إرسال رسالتك بنجاح، شكراً لتواصلك!
+                  </motion.p>
+                )}
+              </form>
+            </div>
+          </motion.div>
+        </section>
+
+        {/* ===== التذييل ===== */}
+        <footer className="max-w-5xl mx-auto px-4 sm:px-6 pt-12 sm:pt-16 pb-8 sm:pb-12 text-center bg-transparent">
+          <div className="flex flex-col items-center space-y-4 sm:space-y-6">
+            
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-white">
               Mohammed Al-Hanani
             </h2>
-            <p className="text-white/80 text-sm italic sm:text-base">
+            <p className="text-white/70 sm:text-white/80 text-xs sm:text-sm italic">
               Full-Stack Web Developer | Building digital solutions that matter
             </p>
 
-            {/* أيقونات التواصل الاجتماعي */}
-            <div className="flex items-center justify-center gap-4 py-2">
+            <div className="flex items-center justify-center gap-3 sm:gap-4 py-2">
               <a 
                 href="https://wa.me/967711441780" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-[#00f0ff] text-black flex items-center justify-center hover:scale-110 transition-transform shadow-lg shadow-[#00f0ff]/20"
+                className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#00f0ff] text-black flex items-center justify-center hover:scale-110 transition-transform shadow-lg shadow-[#00f0ff]/20"
               >
-                <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 sm:w-5 sm:h-5 fill-current" viewBox="0 0 24 24">
                   <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
                 </svg>
               </a>
@@ -1378,9 +1358,9 @@ export default function PortfolioMain() {
                 href="https://github.com/MohammedAlHanani" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-[#00f0ff] text-black flex items-center justify-center hover:scale-110 transition-transform shadow-lg shadow-[#00f0ff]/20"
+                className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#00f0ff] text-black flex items-center justify-center hover:scale-110 transition-transform shadow-lg shadow-[#00f0ff]/20"
               >
-                <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 sm:w-5 sm:h-5 fill-current" viewBox="0 0 24 24">
                   <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
                 </svg>
               </a>
@@ -1388,15 +1368,15 @@ export default function PortfolioMain() {
                 href="https://facebook.com" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-[#00f0ff] text-black flex items-center justify-center hover:scale-110 transition-transform shadow-lg shadow-[#00f0ff]/20"
+                className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#00f0ff] text-black flex items-center justify-center hover:scale-110 transition-transform shadow-lg shadow-[#00f0ff]/20"
               >
-                <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 sm:w-5 sm:h-5 fill-current" viewBox="0 0 24 24">
                   <path d="M9 8H6v4h3v12h5V12h3.642L18 8h-4V6.333C14 5.37 14.5 5 15.5 5H18V0h-3.808C10.592 0 9 1.582 9 4.75V8z"/>
                 </svg>
               </a>
             </div>
 
-            <p className="text-xs text-white/40 pt-4 border-t border-white/10 w-full">
+            <p className="text-[10px] sm:text-xs text-white/40 pt-4 border-t border-white/10 w-full">
               © {new Date().getFullYear()} Mohammed Al-Hanani. All rights reserved.
             </p>
 
@@ -1406,4 +1386,4 @@ export default function PortfolioMain() {
       </div>
     </main>
   );
-}
+    }
