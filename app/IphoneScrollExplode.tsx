@@ -473,79 +473,103 @@ export default function PortfolioMain() {
     document.documentElement.style.overflowY = "auto";
   }, []);
 
-  // ===== تحسين Canvas لرسم الصور فور توفرها =====
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas || !frames.length) return;
+// ===== Canvas لرسم الإطارات =====
+useEffect(() => {
+  const canvas = canvasRef.current;
+  if (!canvas) return;
 
-    const context = canvas.getContext("2d");
-    if (!context) return;
+  const context = canvas.getContext("2d");
+  if (!context) return;
 
-    const draw = () => {
-      // البحث عن أول صورة متاحة في الإطار المطلوب
-      let targetIndex = Math.min(frames.length - 1, Math.max(0, Math.round(scrollProgress * (frames.length - 1))));
-      
-      // إذا كانت الصورة في هذا الإطار غير محملة، ابحث عن أقرب صورة محملة
-      let image = frames[targetIndex];
-      let attempts = 0;
-      while (!image && attempts < frames.length) {
-        targetIndex = (targetIndex + 1) % frames.length;
-        image = frames[targetIndex];
-        attempts++;
-      }
-      
-      if (!image) return;
+  const draw = () => {
+    // إذا لم توجد إطارات، امسح الشاشة
+    if (!frames.length) {
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      return;
+    }
 
-      const rect = canvas.getBoundingClientRect();
-      const dpr = window.devicePixelRatio || 1;
-      const width = Math.max(1, Math.round(rect.width * dpr));
-      const height = Math.max(1, Math.round(rect.height * dpr));
+    // حساب الإطار المطلوب بناءً على التمرير
+    const frameIndex = Math.min(frames.length - 1, Math.max(0, Math.round(scrollProgress * (frames.length - 1))));
+    const image = frames[frameIndex];
+    
+    // إذا لم تكن الصورة محملة، ابحث عن أقرب صورة
+    let finalImage = image;
+    let finalIndex = frameIndex;
+    let attempts = 0;
+    while (!finalImage && attempts < frames.length) {
+      finalIndex = (finalIndex + 1) % frames.length;
+      finalImage = frames[finalIndex];
+      attempts++;
+    }
+    
+    if (!finalImage) return;
 
-      if (canvas.width !== width || canvas.height !== height) {
-        canvas.width = width;
-        canvas.height = height;
-      }
+    const rect = canvas.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    const width = Math.max(1, Math.round(rect.width * dpr));
+    const height = Math.max(1, Math.round(rect.height * dpr));
 
-      context.setTransform(dpr, 0, 0, dpr, 0, 0);
-      context.clearRect(0, 0, rect.width, rect.height);
-      context.imageSmoothingEnabled = true;
+    if (canvas.width !== width || canvas.height !== height) {
+      canvas.width = width;
+      canvas.height = height;
+    }
 
-      const naturalAspect = image.naturalWidth / image.naturalHeight;
-      const canvasAspect = rect.width / rect.height;
+    context.setTransform(dpr, 0, 0, dpr, 0, 0);
+    context.clearRect(0, 0, rect.width, rect.height);
+    context.imageSmoothingEnabled = true;
 
-      let drawWidth = rect.width;
-      let drawHeight = rect.height;
-      let offsetX = 0;
-      let offsetY = 0;
+    const naturalAspect = finalImage.naturalWidth / finalImage.naturalHeight;
+    const canvasAspect = rect.width / rect.height;
 
-      if (naturalAspect > canvasAspect) {
-        drawHeight = rect.height;
-        drawWidth = drawHeight * naturalAspect;
-        offsetX = (rect.width - drawWidth) / 2;
-        offsetY = 0;
-      } else {
-        drawWidth = rect.width;
-        drawHeight = drawWidth / naturalAspect;
-        offsetX = 0;
-        offsetY = (rect.height - drawHeight) / 2;
-      }
+    let drawWidth = rect.width;
+    let drawHeight = rect.height;
+    let offsetX = 0;
+    let offsetY = 0;
 
-      context.drawImage(image, offsetX, offsetY, drawWidth, drawHeight);
-    };
+    if (naturalAspect > canvasAspect) {
+      drawHeight = rect.height;
+      drawWidth = drawHeight * naturalAspect;
+      offsetX = (rect.width - drawWidth) / 2;
+      offsetY = 0;
+    } else {
+      drawWidth = rect.width;
+      drawHeight = drawWidth / naturalAspect;
+      offsetX = 0;
+      offsetY = (rect.height - drawHeight) / 2;
+    }
 
-    draw();
+    context.drawImage(finalImage, offsetX, offsetY, drawWidth, drawHeight);
+  };
 
-    // إعادة الرسم عند تغيير الإطارات أو التمرير
-    const resizeObserver = new ResizeObserver(() => draw());
-    resizeObserver.observe(canvas);
+  // رسم فوري
+  draw();
 
-    window.addEventListener("resize", draw);
+  // إعادة الرسم عند تغيير حجم الشاشة
+  const handleResize = () => draw();
+  window.addEventListener('resize', handleResize);
 
-    return () => {
-      resizeObserver.disconnect();
-      window.removeEventListener("resize", draw);
-    };
-  }, [frames, scrollProgress]);
+  // إعادة الرسم عند تغيير الإطارات أو التمرير
+  // استخدام requestAnimationFrame لتجنب الرسم المتكرر
+  let rafId: number | null = null;
+  const drawSmooth = () => {
+    if (rafId) {
+      cancelAnimationFrame(rafId);
+    }
+    rafId = requestAnimationFrame(draw);
+  };
+
+  // مراقبة تغييرات scrollProgress و frames
+  const timeoutId = setTimeout(drawSmooth, 0);
+
+  return () => {
+    window.removeEventListener('resize', handleResize);
+    if (rafId) {
+      cancelAnimationFrame(rafId);
+    }
+    clearTimeout(timeoutId);
+  };
+}, [frames, scrollProgress]); 
+
 
   const isHeroFinished = scrollProgress >= 1;
 
