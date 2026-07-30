@@ -293,7 +293,7 @@ const techLogos = [
 ];
 
 // ===== عدد الإطارات للصور =====
-const FRAME_COUNT = 61; // تم التخفيض من 61 إلى 30 للتحسين
+const FRAME_COUNT = 61;
 
 // ===== بيانات النصوص في الهيرو =====
 const textBlocks = [
@@ -342,6 +342,7 @@ export default function PortfolioMain() {
   const [frames, setFrames] = useState<HTMLImageElement[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [isFirstFrameReady, setIsFirstFrameReady] = useState(false);
 
   // إحداثيات مؤشر الفأرة لتتبع البقعة الكاشفة
   const [mousePos, setMousePos] = useState({ x: -1000, y: -1000 });
@@ -406,26 +407,42 @@ export default function PortfolioMain() {
   // ===== تحميل الصور بشكل متوازي مع أولوية للصور الأولى =====
   useEffect(() => {
     let cancelled = false;
-    const loadedFrames: HTMLImageElement[] = [];
+    const loadedFrames: HTMLImageElement[] = new Array(framePaths.length);
     let completed = 0;
 
     const loadImage = (path: string, index: number) => {
       const image = new window.Image();
       // تحميل أول 10 صور بشكل فوري، والباقي بشكل متأخر
       image.loading = index < 10 ? "eager" : "lazy";
-      image.onload = image.onerror = () => {
+      image.onload = () => {
         if (cancelled) return;
         loadedFrames[index] = image;
         completed += 1;
         
-        // تحديث الحالة تدريجياً بدلاً من انتظار كل الصور
-        if (completed >= 8 && !isLoaded) {
-          setFrames(loadedFrames.filter(Boolean));
+        // تحديث الحالة تدريجياً
+        setFrames([...loadedFrames]);
+        
+        // إظهار المحتوى عند تحميل أول إطار
+        if (index === 0) {
+          setIsFirstFrameReady(true);
           setIsLoaded(true);
         }
         
+        // إظهار المحتوى عند تحميل 8 إطارات
+        if (completed >= 8 && !isLoaded) {
+          setIsLoaded(true);
+        }
+        
+        // اكتمال جميع الصور
         if (completed === framePaths.length) {
-          setFrames(loadedFrames);
+          setIsLoaded(true);
+        }
+      };
+      image.onerror = () => {
+        if (cancelled) return;
+        completed += 1;
+        if (completed >= 8 && !isLoaded) {
+          setIsLoaded(true);
         }
       };
       image.src = path;
@@ -436,12 +453,12 @@ export default function PortfolioMain() {
       loadImage(path, index);
     });
 
-    // مهلة أمان: إظهار المحتوى بعد 2 ثانية حتى لو لم تكتمل الصور
+    // مهلة أمان: إظهار المحتوى بعد 1.5 ثانية حتى لو لم تكتمل الصور
     const timer = setTimeout(() => {
       if (!isLoaded) {
         setIsLoaded(true);
       }
-    }, 2000);
+    }, 1500);
 
     return () => {
       cancelled = true;
@@ -464,12 +481,21 @@ export default function PortfolioMain() {
     const context = canvas.getContext("2d");
     if (!context) return;
 
-    // استخدام أول صورة متاحة إذا لم تكن كل الصور محملة
-    const frameIndex = Math.min(frames.length - 1, Math.max(0, Math.round(scrollProgress * (frames.length - 1))));
-    const image = frames[frameIndex];
-    if (!image) return;
-
     const draw = () => {
+      // البحث عن أول صورة متاحة في الإطار المطلوب
+      let targetIndex = Math.min(frames.length - 1, Math.max(0, Math.round(scrollProgress * (frames.length - 1))));
+      
+      // إذا كانت الصورة في هذا الإطار غير محملة، ابحث عن أقرب صورة محملة
+      let image = frames[targetIndex];
+      let attempts = 0;
+      while (!image && attempts < frames.length) {
+        targetIndex = (targetIndex + 1) % frames.length;
+        image = frames[targetIndex];
+        attempts++;
+      }
+      
+      if (!image) return;
+
       const rect = canvas.getBoundingClientRect();
       const dpr = window.devicePixelRatio || 1;
       const width = Math.max(1, Math.round(rect.width * dpr));
@@ -508,9 +534,17 @@ export default function PortfolioMain() {
     };
 
     draw();
+
+    // إعادة الرسم عند تغيير الإطارات أو التمرير
+    const resizeObserver = new ResizeObserver(() => draw());
+    resizeObserver.observe(canvas);
+
     window.addEventListener("resize", draw);
 
-    return () => window.removeEventListener("resize", draw);
+    return () => {
+      resizeObserver.disconnect();
+      window.removeEventListener("resize", draw);
+    };
   }, [frames, scrollProgress]);
 
   const isHeroFinished = scrollProgress >= 1;
@@ -1390,4 +1424,4 @@ export default function PortfolioMain() {
       </div>
     </main>
   );
-    }
+      }
