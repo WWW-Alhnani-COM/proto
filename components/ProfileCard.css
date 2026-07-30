@@ -425,6 +425,7 @@
   }
 }
 
+/* ===== تعديلات الشاشات المتوسطة (تابلت) ===== */
 @media (max-width: 768px) {
   .pc-card {
     height: 70svh;
@@ -471,6 +472,7 @@
   }
 }
 
+/* ===== تعديلات شاشات الهواتف الكبيرة (480px - 768px) ===== */
 @media (max-width: 480px) {
   .pc-card {
     height: 60svh;
@@ -519,27 +521,33 @@
   }
 }
 
-@media (max-width: 320px) {
+/* ===== تعديلات شاشات الهواتف الصغيرة (حتى 480px) ===== */
+@media (max-width: 430px) {
+  .pc-card-wrapper {
+    padding-left: 8px;
+    padding-right: 8px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
   .pc-card {
-    height: 55svh;
-    max-height: 320px;
-  }
-
-  .pc-details h3 {
-    font-size: min(3svh, 1.5em);
-  }
-
-  .pc-details p {
-    font-size: 11px;
+    height: 58svh;
+    max-height: 360px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .pc-user-info {
-    padding: 6px 8px;
+    --ui-inset: 10px;
+    padding: 8px 8px;
+    left: 10px;
+    right: 10px;
   }
 
   .pc-mini-avatar {
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
   }
 
   .pc-user-details {
@@ -559,4 +567,110 @@
     font-size: 9px;
     border-radius: 50px;
   }
+
+  .pc-details h3 {
+    font-size: min(3svh, 1.6em);
+  }
+
+  .pc-details p {
+    font-size: 10px;
+    top: -6px;
+  }
 }
+
+/* ===== تعديلات الشاشات الصغيرة جداً (حتى 380px) ===== */
+@media (max-width: 380px) {
+  .pc-card-wrapper {
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+
+  .pc-card {
+    height: 55svh;
+    max-height: 330px;
+  }
+
+  .pc-user-info {
+    --ui-inset: 8px;
+    padding: 6px 6px;
+    left: 8px;
+    right: 8px;
+  }
+
+  .pc-mini-avatar {
+    width: 18px;
+    height: 18px;
+  }
+
+  .pc-user-details {
+    gap: 4px;
+  }
+
+  .pc-handle {
+    font-size: 10px;
+  }
+
+  .pc-status {
+    font-size: 7px;
+  }
+
+  .pc-contact-btn {
+    padding: 3px 6px;
+    font-size: 8px;
+    border-radius: 50px;
+  }
+
+  .pc-details h3 {
+    font-size: min(2.8svh, 1.3em);
+  }
+
+  .pc-details p {
+    font-size: 9px;
+    top: -4px;
+  }
+}
+
+/* ===== تعديلات الشاشات الصغيرة جداً (حتى 320px) ===== */
+@media (max-width: 320px) {
+  .pc-card {
+    height: 50svh;
+    max-height: 300px;
+  }
+
+  .pc-details h3 {
+    font-size: min(2.5svh, 1.2em);
+  }
+
+  .pc-details p {
+    font-size: 8px;
+  }
+
+  .pc-user-info {
+    --ui-inset: 6px;
+    padding: 4px 6px;
+    left: 6px;
+    right: 6px;
+  }
+
+  .pc-mini-avatar {
+    width: 16px;
+    height: 16px;
+  }
+
+  .pc-user-details {
+    gap: 4px;
+  }
+
+  .pc-handle {
+    font-size: 9px;
+  }
+
+  .pc-status {
+    font-size: 7px;
+  }
+
+  .pc-contact-btn {
+    padding: 2px 6px;
+    font-size: 7px;
+  }
+  }
