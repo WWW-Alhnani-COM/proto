@@ -293,7 +293,7 @@ const techLogos = [
 ];
 
 // ===== عدد الإطارات للصور =====
-const FRAME_COUNT = 30; // تم التخفيض من 61 إلى 30 للتحسين
+const FRAME_COUNT = 61; // تم التخفيض من 61 إلى 30 للتحسين
 
 // ===== بيانات النصوص في الهيرو =====
 const textBlocks = [
@@ -372,6 +372,7 @@ export default function PortfolioMain() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
+  // ===== تحسين معالجة السكرول =====
   useEffect(() => {
     const updateScrollProgress = () => {
       const heroScrollDistance = window.innerHeight * 3;
@@ -380,6 +381,7 @@ export default function PortfolioMain() {
       setScrollProgress(nextProgress);
     };
 
+    // تحديث فوري
     updateScrollProgress();
 
     let frameId = 0;
@@ -390,8 +392,9 @@ export default function PortfolioMain() {
       frameId = window.requestAnimationFrame(updateScrollProgress);
     };
 
+    // استخدام passive: true لتحسين الأداء
     window.addEventListener("scroll", handleScroll, { passive: true });
-    window.addEventListener("resize", handleScroll);
+    window.addEventListener("resize", handleScroll, { passive: true });
 
     return () => {
       window.cancelAnimationFrame(frameId);
@@ -400,30 +403,51 @@ export default function PortfolioMain() {
     };
   }, []);
 
+  // ===== تحميل الصور بشكل متوازي مع أولوية للصور الأولى =====
   useEffect(() => {
     let cancelled = false;
     const loadedFrames: HTMLImageElement[] = [];
     let completed = 0;
 
-    framePaths.forEach((path, index) => {
+    const loadImage = (path: string, index: number) => {
       const image = new window.Image();
-      image.loading = "lazy"; // ✅ Lazy Loading للصور
+      // تحميل أول 10 صور بشكل فوري، والباقي بشكل متأخر
+      image.loading = index < 10 ? "eager" : "lazy";
       image.onload = image.onerror = () => {
         if (cancelled) return;
         loadedFrames[index] = image;
         completed += 1;
+        
+        // تحديث الحالة تدريجياً بدلاً من انتظار كل الصور
+        if (completed >= 8 && !isLoaded) {
+          setFrames(loadedFrames.filter(Boolean));
+          setIsLoaded(true);
+        }
+        
         if (completed === framePaths.length) {
           setFrames(loadedFrames);
-          setIsLoaded(true);
         }
       };
       image.src = path;
+    };
+
+    // تحميل الصور بشكل متوازي
+    framePaths.forEach((path, index) => {
+      loadImage(path, index);
     });
+
+    // مهلة أمان: إظهار المحتوى بعد 2 ثانية حتى لو لم تكتمل الصور
+    const timer = setTimeout(() => {
+      if (!isLoaded) {
+        setIsLoaded(true);
+      }
+    }, 2000);
 
     return () => {
       cancelled = true;
+      clearTimeout(timer);
     };
-  }, [framePaths]);
+  }, [framePaths, isLoaded]);
 
   useEffect(() => {
     document.body.style.overflowX = "hidden";
@@ -432,15 +456,17 @@ export default function PortfolioMain() {
     document.documentElement.style.overflowY = "auto";
   }, []);
 
+  // ===== تحسين Canvas لرسم الصور فور توفرها =====
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas || !isLoaded || !frames.length) return;
+    if (!canvas || !frames.length) return;
 
     const context = canvas.getContext("2d");
     if (!context) return;
 
-    const image =
-      frames[Math.min(frames.length - 1, Math.max(0, Math.round(scrollProgress * (frames.length - 1))))];
+    // استخدام أول صورة متاحة إذا لم تكن كل الصور محملة
+    const frameIndex = Math.min(frames.length - 1, Math.max(0, Math.round(scrollProgress * (frames.length - 1))));
+    const image = frames[frameIndex];
     if (!image) return;
 
     const draw = () => {
@@ -485,7 +511,7 @@ export default function PortfolioMain() {
     window.addEventListener("resize", draw);
 
     return () => window.removeEventListener("resize", draw);
-  }, [frames, isLoaded, scrollProgress]);
+  }, [frames, scrollProgress]);
 
   const isHeroFinished = scrollProgress >= 1;
 
@@ -602,12 +628,12 @@ export default function PortfolioMain() {
         )}
       </header>
 
-      {/* ===== الخلفية الثابتة - تم إزالة SplashCursor ===== */}
+      {/* ===== الخلفية الثابتة ===== */}
       <div className="fixed inset-0 z-0 overflow-hidden bg-[#020202]">
         <canvas ref={canvasRef} className="h-full w-full opacity-60" />
         <div className="absolute inset-0 bg-black/45 pointer-events-none" />
 
-        {/* Loading */}
+        {/* Loading - يظهر فقط في البداية */}
         {!isLoaded && (
           <div className="absolute inset-0 z-30 flex items-center justify-center bg-[#020202] backdrop-blur-md">
             <div className="flex flex-col items-center gap-4 text-center">
@@ -1066,7 +1092,7 @@ export default function PortfolioMain() {
           </motion.div>
         </section>
 
-        {/* ===== قسم المشاريع (Portfolio) - مع توسيط مثالي للهاتف ===== */}
+        {/* ===== قسم المشاريع (Portfolio) ===== */}
         <section id="portfolio" className="max-w-7xl mx-auto px-4 sm:px-6 scroll-mt-28">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -1091,7 +1117,7 @@ export default function PortfolioMain() {
               </p>
             </div>
 
-            {/* شبكة البطاقات - توسيط مثالي للهاتف */}
+            {/* شبكة البطاقات */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
               {displayedProjects.map((project, index) => (
                 <motion.div
@@ -1364,4 +1390,4 @@ export default function PortfolioMain() {
       </div>
     </main>
   );
-            }
+    }
