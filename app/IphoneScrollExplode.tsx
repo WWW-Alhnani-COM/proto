@@ -19,6 +19,7 @@ import {
   SiDocker
 } from 'react-icons/si';
 import { FaAws } from 'react-icons/fa';
+import { FaSun, FaMoon } from 'react-icons/fa';
 import CountUp from "@/components/CountUp";
 import PixelTransition from "@/components/PixelTransition";
 import ElectricBorder from '@/components/ElectricBorder';
@@ -219,7 +220,7 @@ const techLogos = [
     ariaLabel: "React JS"
   },
   { 
-    node: <SiNextdotjs className="text-white" />, 
+    node: <SiNextdotjs className="text-white dark:text-white" />, 
     title: "Next.js", 
     href: "https://nextjs.org",
     ariaLabel: "Next.js"
@@ -267,13 +268,13 @@ const techLogos = [
     ariaLabel: "Git"
   },
   { 
-    node: <SiGithub className="text-white" />, 
+    node: <SiGithub className="text-white dark:text-white" />, 
     title: "GitHub", 
     href: "https://github.com",
     ariaLabel: "GitHub"
   },
   { 
-    node: <SiVercel className="text-white" />, 
+    node: <SiVercel className="text-white dark:text-white" />, 
     title: "Vercel", 
     href: "https://vercel.com",
     ariaLabel: "Vercel"
@@ -357,6 +358,18 @@ export default function PortfolioMain() {
   // حالة عرض المشاريع (للجوال)
   const [showAllProjects, setShowAllProjects] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+
+  // ===== حالة الثيم (داكن/نهاري) =====
+  const [isDark, setIsDark] = useState(false);
+
+  // تأثير تبديل الثيم
+  useEffect(() => {
+    if (isDark) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [isDark]);
 
   const framePaths = useMemo(
     () => Array.from({ length: FRAME_COUNT }, (_, index) => getFramePath(index)),
@@ -588,33 +601,40 @@ useEffect(() => {
     : projects;
 
   return (
-    <main className="relative bg-[#020202] text-white selection:bg-amber-400/20 selection:text-white font-sans">
+    <main className="relative bg-white dark:bg-[#020202] text-black dark:text-white selection:bg-amber-400/20 selection:text-white font-sans transition-colors duration-300">
       
       {/* ===== الهيدر الاحترافي (Navbar) ===== */}
       <header className="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 py-3 sm:py-4">
-        <div className="max-w-6xl mx-auto flex items-center justify-between rounded-2xl bg-black/40 backdrop-blur-xl border border-white/10 px-4 sm:px-6 py-2 sm:py-3 shadow-2xl">
+        <div className="max-w-6xl mx-auto flex items-center justify-between rounded-2xl bg-white/70 dark:bg-black/40 backdrop-blur-xl border border-black/10 dark:border-white/10 px-4 sm:px-6 py-2 sm:py-3 shadow-2xl transition-colors duration-300">
           
           {/* الشعار / الاسم */}
           <a href="#" className="flex items-center gap-2 group">
             <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-amber-400 text-black flex items-center justify-center font-bold text-base sm:text-lg shadow-lg shadow-amber-400/20 group-hover:scale-105 transition-transform">
               M
             </div>
-            <span className="font-bold tracking-tight text-white group-hover:text-amber-400 transition-colors text-xs sm:text-sm md:text-base">
+            <span className="font-bold tracking-tight text-black dark:text-white group-hover:text-amber-400 transition-colors text-xs sm:text-sm md:text-base">
               <span className="hidden xs:inline">Mohammed Al-Hanani</span>
               <span className="xs:hidden">M. Hanani</span>
             </span>
           </a>
 
           {/* روابط التنقل للشاشات الكبيرة */}
-          <nav className="hidden md:flex items-center gap-6 lg:gap-8 text-sm font-medium text-white/80">
+          <nav className="hidden md:flex items-center gap-6 lg:gap-8 text-sm font-medium text-black/80 dark:text-white/80">
             <a href="#about" className="hover:text-amber-400 transition-colors">عني</a>
             <a href="#services" className="hover:text-amber-400 transition-colors">الخدمات</a>
             <a href="#portfolio" className="hover:text-amber-400 transition-colors">الأعمال</a>
             <a href="#technologies" className="hover:text-amber-400 transition-colors">التقنيات</a>
           </nav>
 
-          {/* زر اتصل بي */}
-          <div className="hidden md:block">
+          {/* زر تبديل الثيم + زر اتصل بي */}
+          <div className="hidden md:flex items-center gap-3">
+            <button
+              onClick={() => setIsDark(!isDark)}
+              className="w-9 h-9 rounded-full bg-black/5 dark:bg-white/10 backdrop-blur-sm border border-black/20 dark:border-white/20 hover:bg-black/10 dark:hover:bg-white/20 transition-all flex items-center justify-center text-black/80 dark:text-white/80 hover:text-amber-400 dark:hover:text-amber-400"
+              aria-label="Toggle theme"
+            >
+              {isDark ? <FaSun className="w-4 h-4" /> : <FaMoon className="w-4 h-4" />}
+            </button>
             <a
               href="#contact"
               className="px-4 lg:px-5 py-1.5 lg:py-2 rounded-xl bg-amber-400 text-black font-semibold text-xs lg:text-sm hover:bg-amber-300 transition-colors shadow-lg shadow-amber-400/20"
@@ -626,7 +646,7 @@ useEffect(() => {
           {/* زر القائمة للجوال */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden text-white/80 hover:text-white focus:outline-none p-1"
+            className="md:hidden text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white focus:outline-none p-1"
             aria-label="Toggle Menu"
           >
             <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -645,36 +665,47 @@ useEffect(() => {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="max-w-6xl mx-auto mt-2 rounded-2xl bg-black/90 backdrop-blur-2xl border border-white/10 p-4 sm:p-6 flex flex-col gap-3 sm:gap-4 md:hidden shadow-2xl text-center"
+            className="max-w-6xl mx-auto mt-2 rounded-2xl bg-white/90 dark:bg-black/90 backdrop-blur-2xl border border-black/10 dark:border-white/10 p-4 sm:p-6 flex flex-col gap-3 sm:gap-4 md:hidden shadow-2xl text-center"
           >
             <a 
               href="#about" 
               onClick={() => setMobileMenuOpen(false)}
-              className="text-white/80 hover:text-amber-400 transition-colors py-2 border-b border-white/5 text-sm"
+              className="text-black/80 dark:text-white/80 hover:text-amber-400 transition-colors py-2 border-b border-black/10 dark:border-white/10 text-sm"
             >
               عني
             </a>
             <a 
               href="#services" 
               onClick={() => setMobileMenuOpen(false)}
-              className="text-white/80 hover:text-amber-400 transition-colors py-2 border-b border-white/5 text-sm"
+              className="text-black/80 dark:text-white/80 hover:text-amber-400 transition-colors py-2 border-b border-black/10 dark:border-white/10 text-sm"
             >
               الخدمات
             </a>
             <a 
               href="#portfolio" 
               onClick={() => setMobileMenuOpen(false)}
-              className="text-white/80 hover:text-amber-400 transition-colors py-2 border-b border-white/5 text-sm"
+              className="text-black/80 dark:text-white/80 hover:text-amber-400 transition-colors py-2 border-b border-black/10 dark:border-white/10 text-sm"
             >
               الأعمال
             </a>
             <a 
               href="#technologies" 
               onClick={() => setMobileMenuOpen(false)}
-              className="text-white/80 hover:text-amber-400 transition-colors py-2 border-b border-white/5 text-sm"
+              className="text-black/80 dark:text-white/80 hover:text-amber-400 transition-colors py-2 border-b border-black/10 dark:border-white/10 text-sm"
             >
               التقنيات
             </a>
+            {/* زر تبديل الثيم في القائمة */}
+            <button
+              onClick={() => {
+                setIsDark(!isDark);
+                setMobileMenuOpen(false);
+              }}
+              className="w-full py-3 rounded-xl bg-black/5 dark:bg-white/10 text-black/80 dark:text-white/80 hover:text-amber-400 transition-colors text-sm font-medium flex items-center justify-center gap-2"
+            >
+              {isDark ? <FaSun className="w-4 h-4" /> : <FaMoon className="w-4 h-4" />}
+              {isDark ? 'الوضع النهاري' : 'الوضع الليلي'}
+            </button>
             <a
               href="#contact"
               onClick={() => setMobileMenuOpen(false)}
@@ -687,18 +718,18 @@ useEffect(() => {
       </header>
 
       {/* ===== الخلفية الثابتة ===== */}
-      <div className="fixed inset-0 z-0 overflow-hidden bg-[#020202]">
+      <div className="fixed inset-0 z-0 overflow-hidden bg-white dark:bg-[#020202] transition-colors duration-300">
         <canvas ref={canvasRef} className="h-full w-full opacity-60" />
-        <div className="absolute inset-0 bg-black/45 pointer-events-none" />
+        <div className="absolute inset-0 bg-white/30 dark:bg-black/45 pointer-events-none transition-colors duration-300" />
 
         {/* Loading - يظهر فقط في البداية */}
         {!isLoaded && (
-          <div className="absolute inset-0 z-30 flex items-center justify-center bg-[#020202] backdrop-blur-md">
+          <div className="absolute inset-0 z-30 flex items-center justify-center bg-white dark:bg-[#020202] backdrop-blur-md transition-colors duration-300">
             <div className="flex flex-col items-center gap-4 text-center">
-              <div className="h-12 w-12 animate-spin rounded-full border-[3px] border-white/10 border-t-amber-400" />
+              <div className="h-12 w-12 animate-spin rounded-full border-[3px] border-black/10 dark:border-white/10 border-t-amber-400" />
               <div>
-                <p className="text-xs uppercase tracking-[0.4em] text-white/50">جاري تحميل المعرض</p>
-                <p className="mt-2 text-base font-medium text-white/90">استعد لاكتشاف أعمال Mohammed Al-Hanani</p>
+                <p className="text-xs uppercase tracking-[0.4em] text-black/50 dark:text-white/50">جاري تحميل المعرض</p>
+                <p className="mt-2 text-base font-medium text-black/90 dark:text-white/90">استعد لاكتشاف أعمال Mohammed Al-Hanani</p>
               </div>
             </div>
           </div>
@@ -721,7 +752,7 @@ useEffect(() => {
       >
         <div className="fixed inset-0 z-20 pointer-events-none flex items-center justify-center">
           <div className="absolute inset-x-0 top-16 sm:top-24 flex justify-center px-4 sm:px-6 text-center">
-            <p className="text-[9px] sm:text-[11px] uppercase tracking-[0.3em] sm:tracking-[0.5em] text-white/60 drop-shadow">
+            <p className="text-[9px] sm:text-[11px] uppercase tracking-[0.3em] sm:tracking-[0.5em] text-black/60 dark:text-white/60 drop-shadow transition-colors duration-300">
               {isHeroFinished ? "✨ مرحباً بك في موقعي الرسمي" : "اسحب للأسفل لاستكشاف الإبداع"}
             </p>
           </div>
@@ -780,7 +811,7 @@ useEffect(() => {
                     {block.title}
                   </motion.p>
                   <motion.h2 
-                    className="text-base sm:text-xl md:text-3xl font-bold leading-snug tracking-tight text-white drop-shadow-lg"
+                    className="text-base sm:text-xl md:text-3xl font-bold leading-snug tracking-tight text-black dark:text-white drop-shadow-lg transition-colors duration-300"
                     animate={{ scale: inRange ? 1 : 0.98 }}
                     transition={{ duration: 0.3 }}
                   >
@@ -796,16 +827,16 @@ useEffect(() => {
           <motion.div
             animate={{ y: [0, 10, 0], opacity: [0.5, 1, 0.5] }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            className="text-white/40 text-[9px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em]"
+            className="text-black/40 dark:text-white/40 text-[9px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] transition-colors duration-300"
           >
             {isHeroFinished ? "✓ تم" : "مرر للأسفل"}
           </motion.div>
           <motion.div
             animate={{ y: [0, 10, 0], opacity: [0.3, 0.8, 0.3] }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
-            className="w-5 h-8 sm:w-6 sm:h-10 rounded-full border-2 border-white/20 flex justify-center pt-2"
+            className="w-5 h-8 sm:w-6 sm:h-10 rounded-full border-2 border-black/20 dark:border-white/20 flex justify-center pt-2"
           >
-            <div className="w-1 h-2 rounded-full bg-white/40 animate-pulse" />
+            <div className="w-1 h-2 rounded-full bg-black/40 dark:bg-white/40 animate-pulse" />
           </motion.div>
         </div>
       </div>
@@ -826,7 +857,7 @@ useEffect(() => {
               <span className="text-amber-400 text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] font-medium">About Me</span>
             </div>
             
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mt-2 mb-4 sm:mb-6">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mt-2 mb-4 sm:mb-6 text-black dark:text-white transition-colors duration-300">
               مطور برمجيات <span className="text-amber-400">شغوف</span> بحل المشكلات
             </h2>
             
@@ -836,7 +867,7 @@ useEffect(() => {
                 <div className="relative group">
                   <div className="absolute -inset-1 bg-gradient-to-r from-amber-400/20 via-amber-400/10 to-amber-400/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   
-                  <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-black/40 backdrop-blur-sm p-2">
+                  <div className="relative rounded-2xl overflow-hidden border border-black/10 dark:border-white/10 bg-white/40 dark:bg-black/40 backdrop-blur-sm p-2 transition-colors duration-300">
                     <PixelTransition
                       firstContent={
                         <img
@@ -915,9 +946,9 @@ useEffect(() => {
                       }}
                     />
                     
-                    <div className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 bg-black/80 backdrop-blur-md border border-amber-400/30 rounded-xl px-3 py-1.5 sm:px-4 sm:py-2 shadow-xl z-10">
+                    <div className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 bg-white/80 dark:bg-black/80 backdrop-blur-md border border-amber-400/30 rounded-xl px-3 py-1.5 sm:px-4 sm:py-2 shadow-xl z-10 transition-colors duration-300">
                       <span className="block text-xl sm:text-2xl font-bold text-amber-400">4+</span>
-                      <span className="text-[8px] sm:text-[10px] text-white/60 uppercase tracking-wider">سنوات خبرة</span>
+                      <span className="text-[8px] sm:text-[10px] text-black/60 dark:text-white/60 uppercase tracking-wider">سنوات خبرة</span>
                     </div>
                   </div>
                 </div>
@@ -925,7 +956,7 @@ useEffect(() => {
               
               <div className="lg:col-span-3 space-y-4 sm:space-y-6">
                 <div>
-                  <h3 className="text-xl sm:text-2xl font-bold text-white mb-1 sm:mb-2">
+                  <h3 className="text-xl sm:text-2xl font-bold text-black dark:text-white mb-1 sm:mb-2 transition-colors duration-300">
                     Mohammed Al-Hanani
                   </h3>
                   <p className="text-amber-400 text-xs sm:text-sm font-medium">
@@ -933,7 +964,7 @@ useEffect(() => {
                   </p>
                 </div>
                 
-                <p className="text-white/70 sm:text-white/80 leading-relaxed text-sm sm:text-base">
+                <p className="text-black/70 dark:text-white/80 leading-relaxed text-sm sm:text-base transition-colors duration-300">
                   مطور برمجيات شغوف بتطوير حلول تقنية مبتكرة وفعالة. أمتلك خبرة في بناء 
                   تطبيقات الويب والموبايل باستخدام أحدث التقنيات، مع التركيز على جودة الكود 
                   وتجربة المستخدم. أسعى دائماً لتقديم قيمة مضافة لعملائي من خلال حلول برمجية 
@@ -941,26 +972,26 @@ useEffect(() => {
                 </p>
 
                 <div className="grid grid-cols-2 gap-2 sm:gap-3">
-                  <div className="p-2 sm:p-3 rounded-xl bg-black/40 backdrop-blur-md border border-white/10 shadow-lg hover:border-amber-400/30 transition-colors">
-                    <span className="text-[7px] sm:text-[8px] text-white/40 uppercase tracking-wider block mb-0.5">الاسم</span>
-                    <span className="font-medium text-white text-[10px] sm:text-xs">Mohammed Al-Hanani</span>
+                  <div className="p-2 sm:p-3 rounded-xl bg-white/40 dark:bg-black/40 backdrop-blur-md border border-black/10 dark:border-white/10 shadow-lg hover:border-amber-400/30 transition-all duration-300">
+                    <span className="text-[7px] sm:text-[8px] text-black/40 dark:text-white/40 uppercase tracking-wider block mb-0.5">الاسم</span>
+                    <span className="font-medium text-black dark:text-white text-[10px] sm:text-xs">Mohammed Al-Hanani</span>
                   </div>
-                  <div className="p-2 sm:p-3 rounded-xl bg-black/40 backdrop-blur-md border border-white/10 shadow-lg hover:border-amber-400/30 transition-colors">
-                    <span className="text-[7px] sm:text-[8px] text-white/40 uppercase tracking-wider block mb-0.5">البريد الإلكتروني</span>
-                    <span className="font-medium text-white text-[10px] sm:text-xs truncate block">Mohammadalhnani@gmail.com</span>
+                  <div className="p-2 sm:p-3 rounded-xl bg-white/40 dark:bg-black/40 backdrop-blur-md border border-black/10 dark:border-white/10 shadow-lg hover:border-amber-400/30 transition-all duration-300">
+                    <span className="text-[7px] sm:text-[8px] text-black/40 dark:text-white/40 uppercase tracking-wider block mb-0.5">البريد الإلكتروني</span>
+                    <span className="font-medium text-black dark:text-white text-[10px] sm:text-xs truncate block">Mohammadalhnani@gmail.com</span>
                   </div>
-                  <div className="p-2 sm:p-3 rounded-xl bg-black/40 backdrop-blur-md border border-white/10 shadow-lg hover:border-amber-400/30 transition-colors">
-                    <span className="text-[7px] sm:text-[8px] text-white/40 uppercase tracking-wider block mb-0.5">المكان</span>
-                    <span className="font-medium text-white text-[10px] sm:text-xs">Yemen, Sanaa</span>
+                  <div className="p-2 sm:p-3 rounded-xl bg-white/40 dark:bg-black/40 backdrop-blur-md border border-black/10 dark:border-white/10 shadow-lg hover:border-amber-400/30 transition-all duration-300">
+                    <span className="text-[7px] sm:text-[8px] text-black/40 dark:text-white/40 uppercase tracking-wider block mb-0.5">المكان</span>
+                    <span className="font-medium text-black dark:text-white text-[10px] sm:text-xs">Yemen, Sanaa</span>
                   </div>
-                  <div className="p-2 sm:p-3 rounded-xl bg-black/40 backdrop-blur-md border border-white/10 shadow-lg hover:border-amber-400/30 transition-colors">
-                    <span className="text-[7px] sm:text-[8px] text-white/40 uppercase tracking-wider block mb-0.5">الخبرة</span>
+                  <div className="p-2 sm:p-3 rounded-xl bg-white/40 dark:bg-black/40 backdrop-blur-md border border-black/10 dark:border-white/10 shadow-lg hover:border-amber-400/30 transition-all duration-300">
+                    <span className="text-[7px] sm:text-[8px] text-black/40 dark:text-white/40 uppercase tracking-wider block mb-0.5">الخبرة</span>
                     <span className="font-medium text-amber-400 text-[10px] sm:text-xs">4+ سنوات</span>
                   </div>
                 </div>
 
                 <div className="p-4 sm:p-5 rounded-xl bg-gradient-to-r from-amber-400/5 to-transparent border border-amber-400/10">
-                  <p className="text-white/60 sm:text-white/70 text-xs sm:text-sm leading-relaxed italic">
+                  <p className="text-black/60 dark:text-white/70 text-xs sm:text-sm leading-relaxed italic transition-colors duration-300">
                     "أؤمن بأن التكنولوجيا الجيدة يجب أن تكون بسيطة وسهلة الاستخدام، 
                     ولذلك أركز على تقديم حلول برمجية تجمع بين القوة والجمال."
                   </p>
@@ -983,8 +1014,8 @@ useEffect(() => {
               <span className="text-amber-400 text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] font-medium">My Expertise</span>
             </div>
             
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mt-2 mb-2 sm:mb-4">الخدمات التقنية المتكاملة</h2>
-            <p className="text-white/70 sm:text-white/80 mb-8 sm:mb-12 text-sm sm:text-base drop-shadow max-w-3xl">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mt-2 mb-2 sm:mb-4 text-black dark:text-white transition-colors duration-300">الخدمات التقنية المتكاملة</h2>
+            <p className="text-black/70 dark:text-white/80 mb-8 sm:mb-12 text-sm sm:text-base drop-shadow max-w-3xl transition-colors duration-300">
               أقدم حلولاً برمجية شاملة تغطي كامل دورة حياة التطوير، من الواجهات الأمامية إلى البنية التحتية السحابية
             </p>
 
@@ -997,7 +1028,7 @@ useEffect(() => {
                 borderRadius={16}
                 className="transition-all duration-300 hover:scale-[1.02]"
               >
-                <div className="p-4 sm:p-6 bg-black/60 backdrop-blur-xl rounded-[16px] min-h-[180px] sm:min-h-[220px]">
+                <div className="p-4 sm:p-6 bg-white/60 dark:bg-black/60 backdrop-blur-xl rounded-[16px] min-h-[180px] sm:min-h-[220px] transition-colors duration-300">
                   <div className="flex items-start gap-3 sm:gap-4">
                     <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-amber-400/10 flex items-center justify-center flex-shrink-0">
                       <svg className="w-5 h-5 sm:w-6 sm:h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1005,8 +1036,8 @@ useEffect(() => {
                       </svg>
                     </div>
                     <div className="flex-1">
-                      <h3 className="text-base sm:text-xl font-semibold mb-1 sm:mb-2 text-white">تطوير الواجهات الأمامية</h3>
-                      <p className="text-white/70 sm:text-white/80 text-xs sm:text-sm leading-relaxed">
+                      <h3 className="text-base sm:text-xl font-semibold mb-1 sm:mb-2 text-black dark:text-white transition-colors duration-300">تطوير الواجهات الأمامية</h3>
+                      <p className="text-black/70 dark:text-white/80 text-xs sm:text-sm leading-relaxed transition-colors duration-300">
                         بناء واجهات مستخدم تفاعلية وسريعة باستخدام <span className="text-amber-400/80">React.js</span>، 
                         <span className="text-amber-400/80"> Angular</span>، 
                         <span className="text-amber-400/80"> Bootstrap</span>، 
@@ -1030,7 +1061,7 @@ useEffect(() => {
                 borderRadius={16}
                 className="transition-all duration-300 hover:scale-[1.02]"
               >
-                <div className="p-4 sm:p-6 bg-black/60 backdrop-blur-xl rounded-[16px] min-h-[180px] sm:min-h-[220px]">
+                <div className="p-4 sm:p-6 bg-white/60 dark:bg-black/60 backdrop-blur-xl rounded-[16px] min-h-[180px] sm:min-h-[220px] transition-colors duration-300">
                   <div className="flex items-start gap-3 sm:gap-4">
                     <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-amber-400/10 flex items-center justify-center flex-shrink-0">
                       <svg className="w-5 h-5 sm:w-6 sm:h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1038,8 +1069,8 @@ useEffect(() => {
                       </svg>
                     </div>
                     <div className="flex-1">
-                      <h3 className="text-base sm:text-xl font-semibold mb-1 sm:mb-2 text-white">تطوير الخلفية والـ APIs</h3>
-                      <p className="text-white/70 sm:text-white/80 text-xs sm:text-sm leading-relaxed">
+                      <h3 className="text-base sm:text-xl font-semibold mb-1 sm:mb-2 text-black dark:text-white transition-colors duration-300">تطوير الخلفية والـ APIs</h3>
+                      <p className="text-black/70 dark:text-white/80 text-xs sm:text-sm leading-relaxed transition-colors duration-300">
                         تصميم وتطوير أنظمة خلفية قوية وآمنة باستخدام <span className="text-amber-400/80">.NET Core</span>، 
                         <span className="text-amber-400/80"> Node.js</span> و 
                         <span className="text-amber-400/80"> Laravel</span>.
@@ -1061,7 +1092,7 @@ useEffect(() => {
                 borderRadius={16}
                 className="transition-all duration-300 hover:scale-[1.02]"
               >
-                <div className="p-4 sm:p-6 bg-black/60 backdrop-blur-xl rounded-[16px] min-h-[180px] sm:min-h-[220px]">
+                <div className="p-4 sm:p-6 bg-white/60 dark:bg-black/60 backdrop-blur-xl rounded-[16px] min-h-[180px] sm:min-h-[220px] transition-colors duration-300">
                   <div className="flex items-start gap-3 sm:gap-4">
                     <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-amber-400/10 flex items-center justify-center flex-shrink-0">
                       <svg className="w-5 h-5 sm:w-6 sm:h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1069,8 +1100,8 @@ useEffect(() => {
                       </svg>
                     </div>
                     <div className="flex-1">
-                      <h3 className="text-base sm:text-xl font-semibold mb-1 sm:mb-2 text-white">تطبيقات الموبايل</h3>
-                      <p className="text-white/70 sm:text-white/80 text-xs sm:text-sm leading-relaxed">
+                      <h3 className="text-base sm:text-xl font-semibold mb-1 sm:mb-2 text-black dark:text-white transition-colors duration-300">تطبيقات الموبايل</h3>
+                      <p className="text-black/70 dark:text-white/80 text-xs sm:text-sm leading-relaxed transition-colors duration-300">
                         تطوير تطبيقات متعددة المنصات <span className="text-amber-400/80">(Cross-Platform)</span> باستخدام 
                         <span className="text-amber-400/80"> Flutter</span>.
                       </p>
@@ -1091,7 +1122,7 @@ useEffect(() => {
                 borderRadius={16}
                 className="transition-all duration-300 hover:scale-[1.02]"
               >
-                <div className="p-4 sm:p-6 bg-black/60 backdrop-blur-xl rounded-[16px] min-h-[180px] sm:min-h-[220px]">
+                <div className="p-4 sm:p-6 bg-white/60 dark:bg-black/60 backdrop-blur-xl rounded-[16px] min-h-[180px] sm:min-h-[220px] transition-colors duration-300">
                   <div className="flex items-start gap-3 sm:gap-4">
                     <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-amber-400/10 flex items-center justify-center flex-shrink-0">
                       <svg className="w-5 h-5 sm:w-6 sm:h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1099,8 +1130,8 @@ useEffect(() => {
                       </svg>
                     </div>
                     <div className="flex-1">
-                      <h3 className="text-base sm:text-xl font-semibold mb-1 sm:mb-2 text-white">قواعد البيانات والسحابة</h3>
-                      <p className="text-white/70 sm:text-white/80 text-xs sm:text-sm leading-relaxed">
+                      <h3 className="text-base sm:text-xl font-semibold mb-1 sm:mb-2 text-black dark:text-white transition-colors duration-300">قواعد البيانات والسحابة</h3>
+                      <p className="text-black/70 dark:text-white/80 text-xs sm:text-sm leading-relaxed transition-colors duration-300">
                         إدارة قواعد البيانات ونشر التطبيقات على منصات سحابية مثل <span className="text-amber-400/80">AWS</span> و 
                         <span className="text-amber-400/80"> Azure</span>.
                       </p>
@@ -1121,29 +1152,29 @@ useEffect(() => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="mt-8 sm:mt-12 grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 p-4 sm:p-8 rounded-2xl bg-black/30 backdrop-blur-md border border-white/5"
+              className="mt-8 sm:mt-12 grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 p-4 sm:p-8 rounded-2xl bg-white/30 dark:bg-black/30 backdrop-blur-md border border-black/5 dark:border-white/5 transition-colors duration-300"
             >
               <div className="text-center">
                 <span className="block text-2xl sm:text-3xl font-bold text-amber-400">
                   <CountUp from={0} to={4} duration={2} separator="" className="count-up-text" />+
                 </span>
-                <span className="text-[8px] sm:text-[10px] text-white/40 uppercase tracking-wider mt-1 block">سنوات خبرة</span>
+                <span className="text-[8px] sm:text-[10px] text-black/40 dark:text-white/40 uppercase tracking-wider mt-1 block">سنوات خبرة</span>
               </div>
               <div className="text-center">
                 <span className="block text-2xl sm:text-3xl font-bold text-amber-400">
                   <CountUp from={0} to={123} duration={2.5} separator="" className="count-up-text" />+
                 </span>
-                <span className="text-[8px] sm:text-[10px] text-white/40 uppercase tracking-wider mt-1 block">مشروع منجز</span>
+                <span className="text-[8px] sm:text-[10px] text-black/40 dark:text-white/40 uppercase tracking-wider mt-1 block">مشروع منجز</span>
               </div>
               <div className="text-center">
                 <span className="block text-2xl sm:text-3xl font-bold text-amber-400">
                   <CountUp from={0} to={200} duration={2.5} separator="" className="count-up-text" />+
                 </span>
-                <span className="text-[8px] sm:text-[10px] text-white/40 uppercase tracking-wider mt-1 block">عميل سعيد</span>
+                <span className="text-[8px] sm:text-[10px] text-black/40 dark:text-white/40 uppercase tracking-wider mt-1 block">عميل سعيد</span>
               </div>
               <div className="text-center">
                 <span className="block text-2xl sm:text-3xl font-bold text-amber-400">24/7</span>
-                <span className="text-[8px] sm:text-[10px] text-white/40 uppercase tracking-wider mt-1 block">دعم فني</span>
+                <span className="text-[8px] sm:text-[10px] text-black/40 dark:text-white/40 uppercase tracking-wider mt-1 block">دعم فني</span>
               </div>
             </motion.div>
 
@@ -1165,12 +1196,12 @@ useEffect(() => {
             
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 sm:gap-4 mb-6 sm:mb-8">
               <div>
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mt-2">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mt-2 text-black dark:text-white transition-colors duration-300">
                   <span className="block sm:inline">Portfolio</span>
                   <span className="block sm:inline text-amber-400"> — مشاريعي</span>
                 </h2>
               </div>
-              <p className="text-white/70 sm:text-white/80 text-sm sm:text-base drop-shadow max-w-2xl">
+              <p className="text-black/70 dark:text-white/80 text-sm sm:text-base drop-shadow max-w-2xl transition-colors duration-300">
                 {isMobile ? 'أحدث المشاريع' : 'استكشف مجموعة من مشاريعي المتميزة'}
               </p>
             </div>
@@ -1200,7 +1231,7 @@ useEffect(() => {
                     enableMobileTilt={true}
                     behindGlowEnabled={true}
                     behindGlowColor="rgba(255, 215, 0, 0.2)"
-                    innerGradient="linear-gradient(145deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)"
+                    innerGradient="linear-gradient(145deg, #f5f5f5 0%, #e8e8e8 50%, #d4d4d4 100%)"
                     onContactClick={() => handleProjectClick(project.link)}
                     className="w-full max-w-[320px] sm:max-w-sm md:max-w-md mx-auto"
                   />
@@ -1232,11 +1263,11 @@ useEffect(() => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="mt-12 sm:mt-16 p-6 sm:p-8 rounded-2xl bg-black/50 backdrop-blur-md border border-amber-400/30 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6 shadow-xl"
+              className="mt-12 sm:mt-16 p-6 sm:p-8 rounded-2xl bg-white/50 dark:bg-black/50 backdrop-blur-md border border-amber-400/30 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6 shadow-xl transition-colors duration-300"
             >
               <div>
-                <h3 className="text-base sm:text-xl font-bold mb-1 sm:mb-2">المزيد من المشاريع والإنجازات</h3>
-                <p className="text-white/70 sm:text-white/80 text-xs sm:text-sm max-w-xl">
+                <h3 className="text-base sm:text-xl font-bold mb-1 sm:mb-2 text-black dark:text-white transition-colors duration-300">المزيد من المشاريع والإنجازات</h3>
+                <p className="text-black/70 dark:text-white/80 text-xs sm:text-sm max-w-xl transition-colors duration-300">
                   لديّ المزيد من المشاريع الاحترافية. أدعوك لزيارة ملفي الشخصي على LinkedIn.
                 </p>
               </div>
@@ -1265,12 +1296,12 @@ useEffect(() => {
               <span className="text-amber-400 text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] font-medium">Technologies</span>
             </div>
             
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mt-2 mb-2 sm:mb-4">التقنيات التي أستخدمها</h2>
-            <p className="text-white/70 sm:text-white/80 mb-8 sm:mb-10 text-sm sm:text-base drop-shadow">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mt-2 mb-2 sm:mb-4 text-black dark:text-white transition-colors duration-300">التقنيات التي أستخدمها</h2>
+            <p className="text-black/70 dark:text-white/80 mb-8 sm:mb-10 text-sm sm:text-base drop-shadow transition-colors duration-300">
               مجموعة من أحدث التقنيات والأدوات التي أعمل بها لتطوير حلول برمجية متكاملة
             </p>
 
-            <div className="relative w-full bg-black/20 rounded-2xl p-4 sm:p-8 backdrop-blur-sm border border-white/5 overflow-hidden">
+            <div className="relative w-full bg-white/20 dark:bg-black/20 rounded-2xl p-4 sm:p-8 backdrop-blur-sm border border-black/5 dark:border-white/5 overflow-hidden transition-colors duration-300">
               <div style={{ height: '100px', position: 'relative', overflow: 'hidden' }}>
                 <LogoLoop
                   logos={techLogos}
@@ -1281,7 +1312,7 @@ useEffect(() => {
                   hoverSpeed={20}
                   scaleOnHover
                   fadeOut
-                  fadeOutColor="#020202"
+                  fadeOutColor={isDark ? "#020202" : "#ffffff"}
                   ariaLabel="التقنيات والمهارات"
                 />
               </div>
@@ -1302,25 +1333,25 @@ useEffect(() => {
               <span className="text-amber-400 text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] font-medium">Contact</span>
             </div>
             
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mt-2 mb-2 sm:mb-4">تواصل معي لبدء مشروعك القادم</h2>
-            <p className="text-white/70 sm:text-white/80 mb-8 sm:mb-12 drop-shadow text-sm sm:text-base">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mt-2 mb-2 sm:mb-4 text-black dark:text-white transition-colors duration-300">تواصل معي لبدء مشروعك القادم</h2>
+            <p className="text-black/70 dark:text-white/80 mb-8 sm:mb-12 drop-shadow text-sm sm:text-base transition-colors duration-300">
               سواء كنت بحاجة إلى تطبيق موبايل أو موقع إلكتروني، تواصل معي الآن وسنبدأ العمل مباشرة.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
               
-              <div className="space-y-4 sm:space-y-6 md:col-span-1 p-4 sm:p-6 rounded-2xl bg-black/40 backdrop-blur-md border border-white/10 shadow-lg h-fit">
+              <div className="space-y-4 sm:space-y-6 md:col-span-1 p-4 sm:p-6 rounded-2xl bg-white/40 dark:bg-black/40 backdrop-blur-md border border-black/10 dark:border-white/10 shadow-lg h-fit transition-colors duration-300">
                 <div>
-                  <span className="text-[10px] sm:text-xs text-white/50 block mb-1">العنوان</span>
-                  <p className="text-white/90 text-xs sm:text-sm">Yemen, Sanaa, Airport Road</p>
+                  <span className="text-[10px] sm:text-xs text-black/50 dark:text-white/50 block mb-1">العنوان</span>
+                  <p className="text-black/90 dark:text-white/90 text-xs sm:text-sm">Yemen, Sanaa, Airport Road</p>
                 </div>
                 <div>
-                  <span className="text-[10px] sm:text-xs text-white/50 block mb-1">الهاتف</span>
-                  <p className="text-white/90 text-xs sm:text-sm font-mono">+967 711 441 780</p>
+                  <span className="text-[10px] sm:text-xs text-black/50 dark:text-white/50 block mb-1">الهاتف</span>
+                  <p className="text-black/90 dark:text-white/90 text-xs sm:text-sm font-mono">+967 711 441 780</p>
                 </div>
                 <div>
-                  <span className="text-[10px] sm:text-xs text-white/50 block mb-1">البريد الإلكتروني</span>
-                  <p className="text-white/90 text-xs sm:text-sm font-mono break-all">mohammedalhnani2004@gmail.com</p>
+                  <span className="text-[10px] sm:text-xs text-black/50 dark:text-white/50 block mb-1">البريد الإلكتروني</span>
+                  <p className="text-black/90 dark:text-white/90 text-xs sm:text-sm font-mono break-all">mohammedalhnani2004@gmail.com</p>
                 </div>
               </div>
 
@@ -1330,46 +1361,46 @@ useEffect(() => {
                   setFormStatus(true);
                   setTimeout(() => setFormStatus(false), 4000);
                 }} 
-                className="md:col-span-2 space-y-3 sm:space-y-4 p-4 sm:p-6 rounded-2xl bg-black/40 backdrop-blur-md border border-white/10 shadow-lg"
+                className="md:col-span-2 space-y-3 sm:space-y-4 p-4 sm:p-6 rounded-2xl bg-white/40 dark:bg-black/40 backdrop-blur-md border border-black/10 dark:border-white/10 shadow-lg transition-colors duration-300"
               >
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   <div className="relative">
-                    <label className="block text-[10px] sm:text-xs text-white/40 mb-1.5">اسمك</label>
+                    <label className="block text-[10px] sm:text-xs text-black/40 dark:text-white/40 mb-1.5">اسمك</label>
                     <input
                       type="text"
                       placeholder="أدخل اسمك"
                       required
-                      className="w-full bg-black/50 border border-white/10 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3.5 text-white placeholder:text-white/30 text-xs sm:text-sm focus:outline-none focus:border-amber-400 transition-colors"
+                      className="w-full bg-white/50 dark:bg-black/50 border border-black/10 dark:border-white/10 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3.5 text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 text-xs sm:text-sm focus:outline-none focus:border-amber-400 transition-colors"
                     />
                   </div>
                   <div className="relative">
-                    <label className="block text-[10px] sm:text-xs text-white/40 mb-1.5">بريدك الإلكتروني</label>
+                    <label className="block text-[10px] sm:text-xs text-black/40 dark:text-white/40 mb-1.5">بريدك الإلكتروني</label>
                     <input
                       type="email"
                       placeholder="example@email.com"
                       required
-                      className="w-full bg-black/50 border border-white/10 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3.5 text-white placeholder:text-white/30 text-xs sm:text-sm focus:outline-none focus:border-amber-400 transition-colors"
+                      className="w-full bg-white/50 dark:bg-black/50 border border-black/10 dark:border-white/10 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3.5 text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 text-xs sm:text-sm focus:outline-none focus:border-amber-400 transition-colors"
                     />
                   </div>
                 </div>
 
                 <div className="relative">
-                  <label className="block text-[10px] sm:text-xs text-white/40 mb-1.5">الموضوع</label>
+                  <label className="block text-[10px] sm:text-xs text-black/40 dark:text-white/40 mb-1.5">الموضوع</label>
                   <input
                     type="text"
                     placeholder="ما هو موضوع رسالتك؟"
                     required
-                    className="w-full bg-black/50 border border-white/10 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3.5 text-white placeholder:text-white/30 text-xs sm:text-sm focus:outline-none focus:border-amber-400 transition-colors"
+                    className="w-full bg-white/50 dark:bg-black/50 border border-black/10 dark:border-white/10 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3.5 text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 text-xs sm:text-sm focus:outline-none focus:border-amber-400 transition-colors"
                   />
                 </div>
 
                 <div className="relative">
-                  <label className="block text-[10px] sm:text-xs text-white/40 mb-1.5">رسالتك</label>
+                  <label className="block text-[10px] sm:text-xs text-black/40 dark:text-white/40 mb-1.5">رسالتك</label>
                   <textarea
                     rows={4}
                     placeholder="اكتب رسالتك هنا..."
                     required
-                    className="w-full bg-black/50 border border-white/10 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3.5 text-white placeholder:text-white/30 text-xs sm:text-sm focus:outline-none focus:border-amber-400 transition-colors resize-none"
+                    className="w-full bg-white/50 dark:bg-black/50 border border-black/10 dark:border-white/10 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3.5 text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 text-xs sm:text-sm focus:outline-none focus:border-amber-400 transition-colors resize-none"
                   />
                 </div>
 
@@ -1398,10 +1429,10 @@ useEffect(() => {
         <footer className="max-w-5xl mx-auto px-4 sm:px-6 pt-12 sm:pt-16 pb-8 sm:pb-12 text-center bg-transparent">
           <div className="flex flex-col items-center space-y-4 sm:space-y-6">
             
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-white">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-black dark:text-white transition-colors duration-300">
               Mohammed Al-Hanani
             </h2>
-            <p className="text-white/70 sm:text-white/80 text-xs sm:text-sm italic">
+            <p className="text-black/70 dark:text-white/80 text-xs sm:text-sm italic transition-colors duration-300">
               Full-Stack Web Developer | Building digital solutions that matter
             </p>
 
@@ -1438,7 +1469,7 @@ useEffect(() => {
               </a>
             </div>
 
-            <p className="text-[10px] sm:text-xs text-white/40 pt-4 border-t border-white/10 w-full">
+            <p className="text-[10px] sm:text-xs text-black/40 dark:text-white/40 pt-4 border-t border-black/10 dark:border-white/10 w-full transition-colors duration-300">
               © {new Date().getFullYear()} Mohammed Al-Hanani. All rights reserved.
             </p>
 
@@ -1448,4 +1479,4 @@ useEffect(() => {
       </div>
     </main>
   );
-}
+  }
