@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://your-domain.com"), // غيّر إلى رابط موقعك الفعلي
+  metadataBase: new URL("https://proto-g2jc.onrender.com"), // غيّر إلى رابط موقعك الفعلي
   title: "Mohammed Al-Hanani | Full-Stack Web Developer",
   description:
     "Full-Stack Web Developer متخصص في تطوير تطبيقات الويب والموبايل باستخدام React, Next.js, Flutter, Laravel وغيرها. خبرة 4+ سنوات في بناء حلول برمجية مبتكرة.",
