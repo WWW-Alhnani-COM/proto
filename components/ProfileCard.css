@@ -243,10 +243,12 @@
 }
 
 .pc-avatar-content {
-  mix-blend-mode: luminosity;
+  mix-blend-mode: normal; /* ← غيّر من luminosity إلى normal */
+  isolation: isolate;
   overflow: visible;
   transform: translateZ(2);
   backface-visibility: hidden;
+  z-index: 5;
 }
 
 .pc-avatar-content .avatar {
@@ -361,7 +363,7 @@
     0.1px
   );
   z-index: 5;
-  mix-blend-mode: luminosity;
+  mix-blend-mode: normal;
 }
 
 .pc-details {
