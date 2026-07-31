@@ -34,7 +34,7 @@
   perspective: 500px;
   transform: translate3d(0, 0, 0.1px);
   position: relative;
-  touch-action: pan-y;
+  touch-action: pan-y; /* التغيير: السماح بالتمرير العمودي */
 }
 
 .pc-behind {
@@ -242,14 +242,11 @@
   z-index: 4;
 }
 
-/* ===== التعديل هنا: إزالة mix-blend-mode من الصورة ===== */
 .pc-avatar-content {
-  mix-blend-mode: normal; /* كان luminosity */
-  isolation: isolate; /* لعزل الصورة عن التأثيرات الأخرى */
+  mix-blend-mode: luminosity;
   overflow: visible;
   transform: translateZ(2);
   backface-visibility: hidden;
-  z-index: 5; /* رفع الصورة فوق الطبقات الضوئية */
 }
 
 .pc-avatar-content .avatar {
@@ -353,7 +350,6 @@
   transition: all 0.2s ease;
 }
 
-/* ===== التعديل هنا: إزالة mix-blend-mode من النصوص السفلية ===== */
 .pc-content:not(.pc-avatar-content) {
   max-height: 100%;
   overflow: hidden;
@@ -365,7 +361,7 @@
     0.1px
   );
   z-index: 5;
-  mix-blend-mode: normal; /* كان luminosity */
+  mix-blend-mode: luminosity;
 }
 
 .pc-details {
@@ -429,7 +425,7 @@
   }
 }
 
-/* ===== باقي الـ media queries تبقى كما هي ===== */
+/* ===== تعديلات الشاشات المتوسطة (تابلت) ===== */
 @media (max-width: 768px) {
   .pc-card {
     height: 70svh;
@@ -476,6 +472,7 @@
   }
 }
 
+/* ===== تعديلات شاشات الهواتف الكبيرة (480px - 768px) ===== */
 @media (max-width: 480px) {
   .pc-card {
     height: 60svh;
@@ -524,6 +521,7 @@
   }
 }
 
+/* ===== تعديلات شاشات الهواتف الصغيرة (حتى 480px) ===== */
 @media (max-width: 430px) {
   .pc-card-wrapper {
     padding-left: 8px;
@@ -580,6 +578,7 @@
   }
 }
 
+/* ===== تعديلات الشاشات الصغيرة جداً (حتى 380px) ===== */
 @media (max-width: 380px) {
   .pc-card-wrapper {
     padding-left: 6px;
@@ -631,6 +630,7 @@
   }
 }
 
+/* ===== تعديلات الشاشات الصغيرة جداً (حتى 320px) ===== */
 @media (max-width: 320px) {
   .pc-card {
     height: 50svh;
