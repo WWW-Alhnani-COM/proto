@@ -404,7 +404,7 @@ export default function PortfolioMain() {
     };
   }, []);
 
-  // ===== تحميل الصور بشكل متوازي مع أولوية للصور الأولى =====
+  // ===== تحميل الصور بشكل متوازي مع تحميل جميع الإطارات فوراً =====
   useEffect(() => {
     let cancelled = false;
     const loadedFrames: HTMLImageElement[] = new Array(framePaths.length);
@@ -412,8 +412,8 @@ export default function PortfolioMain() {
 
     const loadImage = (path: string, index: number) => {
       const image = new window.Image();
-      // تحميل أول 10 صور بشكل فوري، والباقي بشكل متأخر
-      image.loading = index < 10 ? "eager" : "lazy";
+      // 🔥 التغيير هنا: تحميل جميع الإطارات فوراً (eager) بدلاً من lazy
+      image.loading = "eager";
       image.onload = () => {
         if (cancelled) return;
         loadedFrames[index] = image;
@@ -1448,4 +1448,4 @@ useEffect(() => {
       </div>
     </main>
   );
-      }
+}
