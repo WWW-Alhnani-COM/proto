@@ -345,6 +345,12 @@ export default function PortfolioMain() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isFirstFrameReady, setIsFirstFrameReady] = useState(false);
 
+  // ===== حالة تأثير الكتابة =====
+  const [showTyping, setShowTyping] = useState(false);
+  const [typedName, setTypedName] = useState("");
+  const [typedTitle, setTypedTitle] = useState("");
+  const typingIntervalRef = useRef<NodeJS.Timeout | null>(null);
+
   // إحداثيات مؤشر الفأرة لتتبع البقعة الكاشفة
   const [mousePos, setMousePos] = useState({ x: -1000, y: -1000 });
   const [isInsideHero, setIsInsideHero] = useState(false);
@@ -478,6 +484,71 @@ export default function PortfolioMain() {
       clearTimeout(timer);
     };
   }, [framePaths, isLoaded]);
+
+  // ===== تأثير الكتابة =====
+  useEffect(() => {
+    // إذا انتهى التحميل و لم يبدأ التمرير
+    if (isLoaded && scrollProgress === 0) {
+      setShowTyping(true);
+    } else {
+      setShowTyping(false);
+      // إعادة تعيين النص إذا أخفينا
+      if (typingIntervalRef.current) {
+        clearInterval(typingIntervalRef.current);
+        typingIntervalRef.current = null;
+      }
+    }
+  }, [isLoaded, scrollProgress]);
+
+  useEffect(() => {
+    if (!showTyping) {
+      // إذا لم نعرض الكتابة، ننظف المؤقت ونعيد النصوص
+      if (typingIntervalRef.current) {
+        clearInterval(typingIntervalRef.current);
+        typingIntervalRef.current = null;
+      }
+      setTypedName("");
+      setTypedTitle("");
+      return;
+    }
+
+    const fullName = "محمد الحناني";
+    const fullTitle = "Full-Stack Web Developer | مهندس برمجيات";
+    let nameIndex = 0;
+    let titleIndex = 0;
+
+    // تنظيف أي مؤقت سابق
+    if (typingIntervalRef.current) {
+      clearInterval(typingIntervalRef.current);
+    }
+
+    typingIntervalRef.current = setInterval(() => {
+      // اكتب الاسم أولاً
+      if (nameIndex < fullName.length) {
+        setTypedName(prev => prev + fullName[nameIndex]);
+        nameIndex++;
+      } 
+      // ثم اكتب العنوان بعد الاسم
+      else if (titleIndex < fullTitle.length) {
+        setTypedTitle(prev => prev + fullTitle[titleIndex]);
+        titleIndex++;
+      } 
+      // انتهى الكتابة
+      else {
+        if (typingIntervalRef.current) {
+          clearInterval(typingIntervalRef.current);
+          typingIntervalRef.current = null;
+        }
+      }
+    }, 80); // سرعة الكتابة
+
+    return () => {
+      if (typingIntervalRef.current) {
+        clearInterval(typingIntervalRef.current);
+        typingIntervalRef.current = null;
+      }
+    };
+  }, [showTyping]);
 
   useEffect(() => {
     document.body.style.overflowX = "hidden";
@@ -731,6 +802,25 @@ useEffect(() => {
                 <p className="text-xs uppercase tracking-[0.4em] text-black/50 dark:text-white/50">جاري تحميل المعرض</p>
                 <p className="mt-2 text-base font-medium text-black/90 dark:text-white/90">استعد لاكتشاف أعمال Mohammed Al-Hanani</p>
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* ===== تأثير الكتابة (يظهر بعد التحميل وقبل التمرير) ===== */}
+        {showTyping && (
+          <div className="absolute inset-0 z-40 flex flex-col items-center justify-center bg-white/80 dark:bg-[#020202]/80 backdrop-blur-sm transition-colors duration-300 pointer-events-none">
+            <div className="text-center max-w-3xl px-4">
+              <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-amber-400 mb-4 min-h-[4rem]">
+                {typedName}
+                {typedName.length < 11 && <span className="animate-pulse text-amber-400">|</span>}
+              </h1>
+              <p className="text-base sm:text-xl md:text-2xl text-black dark:text-white/90 font-light min-h-[3rem]">
+                {typedTitle}
+                {typedTitle.length < 36 && typedName.length >= 11 && <span className="animate-pulse text-amber-400">|</span>}
+              </p>
+              <p className="text-xs text-black/40 dark:text-white/40 mt-6 animate-pulse">
+                {typedName.length >= 11 && typedTitle.length >= 36 ? '✓ جاهز' : '... يكتب'}
+              </p>
             </div>
           </div>
         )}
@@ -1479,4 +1569,4 @@ useEffect(() => {
       </div>
     </main>
   );
-  }
+                                }
