@@ -488,7 +488,7 @@ export default function PortfolioMain() {
     };
   }, [framePaths, isLoaded]);
 
-  // ===== تأثير الكتابة (نصوص ثابتة) =====
+  // ===== تأثير الكتابة =====
   useEffect(() => {
     if (isLoaded && scrollProgress === 0) {
       setShowTyping(true);
@@ -515,7 +515,6 @@ export default function PortfolioMain() {
     let nameIndex = 0;
     let titleIndex = 0;
 
-    // إعادة تعيين النصوص
     setTypedName("");
     setTypedTitle("");
 
@@ -524,17 +523,27 @@ export default function PortfolioMain() {
     }
 
     typingIntervalRef.current = setInterval(() => {
-      if (nameIndex < FULL_NAME.length) {
-        setTypedName(prev => prev + FULL_NAME[nameIndex]);
-        nameIndex++;
-      } else if (titleIndex < FULL_TITLE.length) {
-        setTypedTitle(prev => prev + FULL_TITLE[titleIndex]);
-        titleIndex++;
-      } else {
+      // الكتابة تتوقف عندما ينتهي النص
+      const nameDone = nameIndex >= FULL_NAME.length;
+      const titleDone = titleIndex >= FULL_TITLE.length;
+
+      if (nameDone && titleDone) {
         if (typingIntervalRef.current) {
           clearInterval(typingIntervalRef.current);
           typingIntervalRef.current = null;
         }
+        return;
+      }
+
+      // كتابة الاسم
+      if (!nameDone) {
+        setTypedName((prev) => prev + FULL_NAME[nameIndex]);
+        nameIndex++;
+      } 
+      // كتابة العنوان
+      else if (!titleDone) {
+        setTypedTitle((prev) => prev + FULL_TITLE[titleIndex]);
+        titleIndex++;
       }
     }, 80);
 
@@ -1564,4 +1573,4 @@ useEffect(() => {
       </div>
     </main>
   );
-        }
+}
