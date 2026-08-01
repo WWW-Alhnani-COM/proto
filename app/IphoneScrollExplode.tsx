@@ -485,7 +485,7 @@ export default function PortfolioMain() {
     };
   }, [framePaths, isLoaded]);
 
-  // ===== تأثير الكتابة =====
+  // ===== تأثير الكتابة (يستخدم textBlocks[0]) =====
   useEffect(() => {
     // إذا انتهى التحميل و لم يبدأ التمرير
     if (isLoaded && scrollProgress === 0) {
@@ -793,7 +793,6 @@ useEffect(() => {
       <div className="fixed inset-0 z-0 overflow-hidden bg-white dark:bg-[#020202] transition-colors duration-300">
         <canvas ref={canvasRef} className="h-full w-full opacity-60" />
         <div className="absolute inset-0 bg-white/5 dark:bg-black/5 backdrop-blur-md border border-white/10 dark:border-white/5 pointer-events-none transition-all duration-300" />
-        
         {/* Loading - يظهر فقط في البداية */}
         {!isLoaded && (
           <div className="absolute inset-0 z-30 flex items-center justify-center bg-white dark:bg-[#020202] backdrop-blur-md transition-colors duration-300">
@@ -809,22 +808,24 @@ useEffect(() => {
 
         {/* ===== تأثير الكتابة (يظهر بعد التحميل وقبل التمرير) ===== */}
         {showTyping && (
-          <div className="absolute inset-0 z-40 flex flex-col items-center justify-center bg-white/80 dark:bg-[#020202]/80 backdrop-blur-sm transition-colors duration-300 pointer-events-none">
-            <div className="text-center max-w-3xl px-4">
-              <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold text-amber-400 mb-4 min-h-[4rem]">
-                {typedName}
-                {typedName.length < textBlocks[0].title.length && <span className="animate-pulse text-amber-400">|</span>}
-              </h1>
-              <p className="text-base sm:text-xl md:text-2xl text-black dark:text-white/90 font-light min-h-[3rem]">
-                {typedTitle}
-                {typedTitle.length < textBlocks[0].subtitle.length && typedName.length >= textBlocks[0].title.length && <span className="animate-pulse text-amber-400">|</span>}
-              </p>
-              <p className="text-xs text-black/40 dark:text-white/40 mt-6 animate-pulse">
-                {typedName.length >= textBlocks[0].title.length && typedTitle.length >= textBlocks[0].subtitle.length ? '✓ جاهز' : '... يكتب'}
-              </p>
-            </div>
-          </div>
-        )}
+  <div className="absolute inset-0 z-40 flex flex-col items-center justify-center bg-white/80 dark:bg-[#020202]/80 backdrop-blur-sm transition-colors duration-300 pointer-events-none">
+    <div className="text-center max-w-3xl px-4">
+      {/* الاسم بحجم كبير وبنفس لون الـ title في الهيرو */}
+      <h1 className="text-5xl sm:text-7xl md:text-8xl font-bold leading-snug tracking-tight text-amber-400 drop-shadow-md mb-4 min-h-[6rem]">
+        {typedName}
+        {typedName.length < textBlocks[0].title.length && <span className="animate-pulse text-amber-400">|</span>}
+      </h1>
+      {/* الوصف بنفس تنسيق subtitle في الهيرو */}
+      <p className="text-base sm:text-xl md:text-3xl font-bold leading-snug tracking-tight text-black dark:text-white drop-shadow-lg min-h-[4rem]">
+        {typedTitle}
+        {typedTitle.length < textBlocks[0].subtitle.length && typedName.length >= textBlocks[0].title.length && <span className="animate-pulse text-amber-400">|</span>}
+      </p>
+      <p className="text-xs text-black/40 dark:text-white/40 mt-6 animate-pulse">
+        {typedName.length >= textBlocks[0].title.length && typedTitle.length >= textBlocks[0].subtitle.length ? '✓ جاهز' : '... يكتب'}
+      </p>
+    </div>
+  </div>
+)}
       </div>
 
       {/* ===== قسم الهيرو ===== */}
@@ -1570,4 +1571,4 @@ useEffect(() => {
       </div>
     </main>
   );
-            }
+  }
