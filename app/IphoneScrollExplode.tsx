@@ -345,7 +345,10 @@ export default function PortfolioMain() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isFirstFrameReady, setIsFirstFrameReady] = useState(false);
 
-  // ===== حالة تأثير الكتابة =====
+  // ===== نصوص ثابتة لتأثير الكتابة =====
+  const FULL_NAME = "Mohammed Al-Hanani";
+  const FULL_TITLE = "Full-Stack Web Developer | مهندس برمجيات";
+
   const [showTyping, setShowTyping] = useState(false);
   const [typedName, setTypedName] = useState("");
   const [typedTitle, setTypedTitle] = useState("");
@@ -485,14 +488,12 @@ export default function PortfolioMain() {
     };
   }, [framePaths, isLoaded]);
 
-  // ===== تأثير الكتابة (يستخدم textBlocks[0]) =====
+  // ===== تأثير الكتابة (نصوص ثابتة) =====
   useEffect(() => {
-    // إذا انتهى التحميل و لم يبدأ التمرير
     if (isLoaded && scrollProgress === 0) {
       setShowTyping(true);
     } else {
       setShowTyping(false);
-      // إعادة تعيين النص إذا أخفينا
       if (typingIntervalRef.current) {
         clearInterval(typingIntervalRef.current);
         typingIntervalRef.current = null;
@@ -502,7 +503,6 @@ export default function PortfolioMain() {
 
   useEffect(() => {
     if (!showTyping) {
-      // إذا لم نعرض الكتابة، ننظف المؤقت ونعيد النصوص
       if (typingIntervalRef.current) {
         clearInterval(typingIntervalRef.current);
         typingIntervalRef.current = null;
@@ -512,45 +512,31 @@ export default function PortfolioMain() {
       return;
     }
 
-    // استخدم نفس النص من textBlocks[0]
-    const fullName = textBlocks[0].title; // "Mohammed Al-Hanani"
-    const fullTitle = textBlocks[0].subtitle; // "Full-Stack Web Developer | مهندس برمجيات"
-    
-    // التأكد من وجود النصوص
-    if (!fullName || !fullTitle) return;
-
     let nameIndex = 0;
     let titleIndex = 0;
 
-    // إعادة تعيين النصوص والمؤشرات عند بدء الكتابة
+    // إعادة تعيين النصوص
     setTypedName("");
     setTypedTitle("");
 
-    // تنظيف أي مؤقت سابق
     if (typingIntervalRef.current) {
       clearInterval(typingIntervalRef.current);
-      typingIntervalRef.current = null;
     }
 
     typingIntervalRef.current = setInterval(() => {
-      // اكتب الاسم أولاً
-      if (nameIndex < fullName.length) {
-        setTypedName(prev => prev + fullName[nameIndex]);
+      if (nameIndex < FULL_NAME.length) {
+        setTypedName(prev => prev + FULL_NAME[nameIndex]);
         nameIndex++;
-      } 
-      // ثم اكتب العنوان بعد الاسم
-      else if (titleIndex < fullTitle.length) {
-        setTypedTitle(prev => prev + fullTitle[titleIndex]);
+      } else if (titleIndex < FULL_TITLE.length) {
+        setTypedTitle(prev => prev + FULL_TITLE[titleIndex]);
         titleIndex++;
-      } 
-      // انتهى الكتابة
-      else {
+      } else {
         if (typingIntervalRef.current) {
           clearInterval(typingIntervalRef.current);
           typingIntervalRef.current = null;
         }
       }
-    }, 80); // سرعة الكتابة
+    }, 80);
 
     return () => {
       if (typingIntervalRef.current) {
@@ -819,16 +805,16 @@ useEffect(() => {
         {showTyping && (
           <div className="absolute inset-0 z-40 flex flex-col items-center justify-center bg-white/80 dark:bg-[#020202]/80 backdrop-blur-sm transition-colors duration-300 pointer-events-none">
             <div className="text-center max-w-3xl px-4">
-              <h1 className="text-5xl sm:text-7xl md:text-8xl font-bold leading-snug tracking-tight text-amber-400 drop-shadow-md mb-4 min-h-[6rem]">
+              <h1 className="text-5xl sm:text-7xl md:text-8xl font-bold leading-snug tracking-tight text-amber-400 drop-shadow-md mb-4 min-h-[6rem] font-serif">
                 {typedName}
-                {typedName.length < textBlocks[0].title.length && <span className="animate-pulse text-amber-400">|</span>}
+                {typedName.length < FULL_NAME.length && <span className="animate-pulse text-amber-400">|</span>}
               </h1>
-              <p className="text-base sm:text-xl md:text-3xl font-bold leading-snug tracking-tight text-black dark:text-white drop-shadow-lg min-h-[4rem]">
+              <p className="text-base sm:text-xl md:text-3xl font-light leading-snug tracking-wide text-black dark:text-white drop-shadow-lg min-h-[4rem]">
                 {typedTitle}
-                {typedTitle.length < textBlocks[0].subtitle.length && typedName.length >= textBlocks[0].title.length && <span className="animate-pulse text-amber-400">|</span>}
+                {typedTitle.length < FULL_TITLE.length && typedName.length >= FULL_NAME.length && <span className="animate-pulse text-amber-400">|</span>}
               </p>
               <p className="text-xs text-black/40 dark:text-white/40 mt-6 animate-pulse">
-                {typedName.length >= textBlocks[0].title.length && typedTitle.length >= textBlocks[0].subtitle.length ? '✓ جاهز' : '... يكتب'}
+                {typedName.length >= FULL_NAME.length && typedTitle.length >= FULL_TITLE.length ? '✓ جاهز' : '... يكتب'}
               </p>
             </div>
           </div>
@@ -1578,4 +1564,4 @@ useEffect(() => {
       </div>
     </main>
   );
-    }
+        }
