@@ -442,28 +442,23 @@ export default function PortfolioMain() {
 
     const loadImage = (path: string, index: number) => {
       const image = new window.Image();
-      // 🔥 التغيير هنا: تحميل جميع الإطارات فوراً (eager) بدلاً من lazy
       image.loading = "eager";
       image.onload = () => {
         if (cancelled) return;
         loadedFrames[index] = image;
         completed += 1;
         
-        // تحديث الحالة تدريجياً
         setFrames([...loadedFrames]);
         
-        // إظهار المحتوى عند تحميل أول إطار
         if (index === 0) {
           setIsFirstFrameReady(true);
           setIsLoaded(true);
         }
         
-        // إظهار المحتوى عند تحميل 8 إطارات
         if (completed >= 8 && !isLoaded) {
           setIsLoaded(true);
         }
         
-        // اكتمال جميع الصور
         if (completed === framePaths.length) {
           setIsLoaded(true);
         }
@@ -478,12 +473,10 @@ export default function PortfolioMain() {
       image.src = path;
     };
 
-    // تحميل الصور بشكل متوازي
     framePaths.forEach((path, index) => {
       loadImage(path, index);
     });
 
-    // مهلة أمان: إظهار المحتوى بعد 1.5 ثانية حتى لو لم تكتمل الصور
     const timer = setTimeout(() => {
       if (!isLoaded) {
         setIsLoaded(true);
@@ -515,11 +508,9 @@ export default function PortfolioMain() {
         clearInterval(typingIntervalRef.current);
         typingIntervalRef.current = null;
       }
-      // لا نمسح النص، فقط نخفيه
       return;
     }
 
-    // إعادة تعيين المؤشرات والنصوص عند بدء الكتابة لأول مرة فقط
     if (nameIndexRef.current === 0 && titleIndexRef.current === 0) {
       setTypedName("");
       setTypedTitle("");
@@ -571,7 +562,7 @@ export default function PortfolioMain() {
     document.documentElement.style.overflowY = "auto";
   }, []);
 
-// ===== Canvas لرسم الإطارات =====
+// ===== Canvas لرسم الإطارات مع عرض الإطار الأول افتراضياً =====
 useEffect(() => {
   const canvas = canvasRef.current;
   if (!canvas) return;
@@ -580,12 +571,18 @@ useEffect(() => {
   if (!context) return;
 
   const draw = () => {
+    // التأكد من وجود إطارات
     if (!frames.length) {
       context.clearRect(0, 0, canvas.width, canvas.height);
       return;
     }
 
-    const frameIndex = Math.min(frames.length - 1, Math.max(0, Math.round(scrollProgress * (frames.length - 1))));
+    // اختيار الإطار بناءً على scrollProgress، لكن إذا كان 0 نستخدم الإطار الأول
+    let frameIndex = 0;
+    if (scrollProgress > 0) {
+      frameIndex = Math.min(frames.length - 1, Math.max(0, Math.round(scrollProgress * (frames.length - 1))));
+    }
+    
     const image = frames[frameIndex];
     
     let finalImage = image;
@@ -1437,11 +1434,11 @@ useEffect(() => {
                 </div>
                 <div>
                   <span className="text-[10px] sm:text-xs text-black/50 dark:text-white/50 block mb-1">الهاتف</span>
-                  <p className="text-black/90 dark:text-white/90 text-xs sm:text-sm font-mono">+967 711 441 780</p>
+                  <p className="text-black/90 dark:text-white/90 text-xs sm:text-sm font-mono">+967 774218060</p>
                 </div>
                 <div>
                   <span className="text-[10px] sm:text-xs text-black/50 dark:text-white/50 block mb-1">البريد الإلكتروني</span>
-                  <p className="text-black/90 dark:text-white/90 text-xs sm:text-sm font-mono break-all">mohammedalhnani2004@gmail.com</p>
+                  <p className="text-black/90 dark:text-white/90 text-xs sm:text-sm font-mono break-all">mohammadalhnani2004@gmail.com</p>
                 </div>
               </div>
 
@@ -1528,7 +1525,7 @@ useEffect(() => {
 
             <div className="flex items-center justify-center gap-3 sm:gap-4 py-2">
               <a 
-                href="https://wa.me/967711441780" 
+                href="https://wa.me/967774218060" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#00f0ff] text-black flex items-center justify-center hover:scale-110 transition-transform shadow-lg shadow-[#00f0ff]/20"
