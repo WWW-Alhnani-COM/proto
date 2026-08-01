@@ -358,6 +358,10 @@ export default function PortfolioMain() {
   const nameIndexRef = useRef(0);
   const titleIndexRef = useRef(0);
 
+  // مرجع لتخزين النصوص النهائية لمنع undefined
+  const finalNameRef = useRef("");
+  const finalTitleRef = useRef("");
+
   // إحداثيات مؤشر الفأرة لتتبع البقعة الكاشفة
   const [mousePos, setMousePos] = useState({ x: -1000, y: -1000 });
   const [isInsideHero, setIsInsideHero] = useState(false);
@@ -502,11 +506,6 @@ export default function PortfolioMain() {
         clearInterval(typingIntervalRef.current);
         typingIntervalRef.current = null;
       }
-      // إعادة تعيين المؤشرات عند الإخفاء
-      nameIndexRef.current = 0;
-      titleIndexRef.current = 0;
-      setTypedName("");
-      setTypedTitle("");
     }
   }, [isLoaded, scrollProgress]);
 
@@ -516,18 +515,17 @@ export default function PortfolioMain() {
         clearInterval(typingIntervalRef.current);
         typingIntervalRef.current = null;
       }
-      nameIndexRef.current = 0;
-      titleIndexRef.current = 0;
-      setTypedName("");
-      setTypedTitle("");
+      // لا نمسح النص، فقط نخفيه
       return;
     }
 
-    // إعادة تعيين المؤشرات والنصوص عند بدء الكتابة
-    nameIndexRef.current = 0;
-    titleIndexRef.current = 0;
-    setTypedName("");
-    setTypedTitle("");
+    // إعادة تعيين المؤشرات والنصوص عند بدء الكتابة لأول مرة فقط
+    if (nameIndexRef.current === 0 && titleIndexRef.current === 0) {
+      setTypedName("");
+      setTypedTitle("");
+      finalNameRef.current = "";
+      finalTitleRef.current = "";
+    }
 
     if (typingIntervalRef.current) {
       clearInterval(typingIntervalRef.current);
@@ -537,7 +535,6 @@ export default function PortfolioMain() {
       const nameDone = nameIndexRef.current >= FULL_NAME.length;
       const titleDone = titleIndexRef.current >= FULL_TITLE.length;
 
-      // إذا انتهى كلاهما، أوقف المؤقت فورًا
       if (nameDone && titleDone) {
         if (typingIntervalRef.current) {
           clearInterval(typingIntervalRef.current);
@@ -546,14 +543,15 @@ export default function PortfolioMain() {
         return;
       }
 
-      // كتابة الاسم
       if (!nameDone) {
-        setTypedName((prev) => prev + FULL_NAME[nameIndexRef.current]);
+        const char = FULL_NAME[nameIndexRef.current] || "";
+        setTypedName((prev) => prev + char);
+        finalNameRef.current += char;
         nameIndexRef.current += 1;
-      } 
-      // كتابة العنوان
-      else if (!titleDone) {
-        setTypedTitle((prev) => prev + FULL_TITLE[titleIndexRef.current]);
+      } else if (!titleDone) {
+        const char = FULL_TITLE[titleIndexRef.current] || "";
+        setTypedTitle((prev) => prev + char);
+        finalTitleRef.current += char;
         titleIndexRef.current += 1;
       }
     }, 80);
@@ -582,17 +580,14 @@ useEffect(() => {
   if (!context) return;
 
   const draw = () => {
-    // إذا لم توجد إطارات، امسح الشاشة
     if (!frames.length) {
       context.clearRect(0, 0, canvas.width, canvas.height);
       return;
     }
 
-    // حساب الإطار المطلوب بناءً على التمرير
     const frameIndex = Math.min(frames.length - 1, Math.max(0, Math.round(scrollProgress * (frames.length - 1))));
     const image = frames[frameIndex];
     
-    // إذا لم تكن الصورة محملة، ابحث عن أقرب صورة
     let finalImage = image;
     let finalIndex = frameIndex;
     let attempts = 0;
@@ -641,15 +636,11 @@ useEffect(() => {
     context.drawImage(finalImage, offsetX, offsetY, drawWidth, drawHeight);
   };
 
-  // رسم فوري
   draw();
 
-  // إعادة الرسم عند تغيير حجم الشاشة
   const handleResize = () => draw();
   window.addEventListener('resize', handleResize);
 
-  // إعادة الرسم عند تغيير الإطارات أو التمرير
-  // استخدام requestAnimationFrame لتجنب الرسم المتكرر
   let rafId: number | null = null;
   const drawSmooth = () => {
     if (rafId) {
@@ -658,7 +649,6 @@ useEffect(() => {
     rafId = requestAnimationFrame(draw);
   };
 
-  // مراقبة تغييرات scrollProgress و frames
   const timeoutId = setTimeout(drawSmooth, 0);
 
   return () => {
@@ -673,7 +663,6 @@ useEffect(() => {
 
   const isHeroFinished = scrollProgress >= 1;
 
-  // دالة للتعامل مع النقر على زر المشروع
   const handleProjectClick = (link: string) => {
     if (link.startsWith('http')) {
       window.open(link, '_blank');
@@ -682,19 +671,21 @@ useEffect(() => {
     }
   };
 
-  // تحديد عدد المشاريع المعروضة
   const displayedProjects = isMobile && !showAllProjects 
     ? projects.slice(0, 6) 
     : projects;
 
+  // عرض النصوص النهائية أو النص المكتوب، مع منع undefined
+  const displayName = typedName || finalNameRef.current || FULL_NAME;
+  const displayTitle = typedTitle || finalTitleRef.current || FULL_TITLE;
+
   return (
     <main className="relative bg-white dark:bg-[#020202] text-black dark:text-white selection:bg-amber-400/20 selection:text-white font-sans transition-colors duration-300">
       
-      {/* ===== الهيدر الاحترافي (Navbar) ===== */}
+      {/* ===== الهيدر ===== */}
       <header className="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 py-3 sm:py-4">
         <div className="max-w-6xl mx-auto flex items-center justify-between rounded-2xl bg-white/70 dark:bg-black/40 backdrop-blur-xl border border-black/10 dark:border-white/10 px-4 sm:px-6 py-2 sm:py-3 shadow-2xl transition-colors duration-300">
           
-          {/* الشعار / الاسم */}
           <a href="#" className="flex items-center gap-2 group">
             <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-amber-400 text-black flex items-center justify-center font-bold text-base sm:text-lg shadow-lg shadow-amber-400/20 group-hover:scale-105 transition-transform">
               M
@@ -705,7 +696,6 @@ useEffect(() => {
             </span>
           </a>
 
-          {/* روابط التنقل للشاشات الكبيرة */}
           <nav className="hidden md:flex items-center gap-6 lg:gap-8 text-sm font-medium text-black/80 dark:text-white/80">
             <a href="#about" className="hover:text-amber-400 transition-colors">عني</a>
             <a href="#services" className="hover:text-amber-400 transition-colors">الخدمات</a>
@@ -713,7 +703,6 @@ useEffect(() => {
             <a href="#technologies" className="hover:text-amber-400 transition-colors">التقنيات</a>
           </nav>
 
-          {/* زر تبديل الثيم + زر اتصل بي */}
           <div className="hidden md:flex items-center gap-3">
             <button
               onClick={() => setIsDark(!isDark)}
@@ -730,7 +719,6 @@ useEffect(() => {
             </a>
           </div>
 
-          {/* زر القائمة للجوال */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="md:hidden text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white focus:outline-none p-1"
@@ -746,7 +734,6 @@ useEffect(() => {
           </button>
         </div>
 
-        {/* القائمة المنسدلة للجوال */}
         {mobileMenuOpen && (
           <motion.div
             initial={{ opacity: 0, y: -10 }}
@@ -782,7 +769,6 @@ useEffect(() => {
             >
               التقنيات
             </a>
-            {/* زر تبديل الثيم في القائمة */}
             <button
               onClick={() => {
                 setIsDark(!isDark);
@@ -808,7 +794,6 @@ useEffect(() => {
       <div className="fixed inset-0 z-0 overflow-hidden bg-white dark:bg-[#020202] transition-colors duration-300">
         <canvas ref={canvasRef} className="h-full w-full opacity-60" />
         <div className="absolute inset-0 bg-white/5 dark:bg-black/5 backdrop-blur-md border border-white/10 dark:border-white/5 pointer-events-none transition-all duration-300" />
-        {/* Loading - يظهر فقط في البداية */}
         {!isLoaded && (
           <div className="absolute inset-0 z-30 flex items-center justify-center bg-white dark:bg-[#020202] backdrop-blur-md transition-colors duration-300">
             <div className="flex flex-col items-center gap-4 text-center">
@@ -826,15 +811,15 @@ useEffect(() => {
           <div className="absolute inset-0 z-40 flex flex-col items-center justify-center bg-white/80 dark:bg-[#020202]/80 backdrop-blur-sm transition-colors duration-300 pointer-events-none">
             <div className="text-center max-w-3xl px-4">
               <h1 className="text-5xl sm:text-7xl md:text-8xl font-bold leading-snug tracking-tight text-amber-400 drop-shadow-md mb-4 min-h-[6rem] font-serif">
-                {typedName}
-                {typedName.length < FULL_NAME.length && <span className="animate-pulse text-amber-400">|</span>}
+                {displayName}
+                {displayName.length < FULL_NAME.length && <span className="animate-pulse text-amber-400">|</span>}
               </h1>
               <p className="text-base sm:text-xl md:text-3xl font-light leading-snug tracking-wide text-black dark:text-white drop-shadow-lg min-h-[4rem]">
-                {typedTitle}
-                {typedTitle.length < FULL_TITLE.length && typedName.length >= FULL_NAME.length && <span className="animate-pulse text-amber-400">|</span>}
+                {displayTitle}
+                {displayTitle.length < FULL_TITLE.length && displayName.length >= FULL_NAME.length && <span className="animate-pulse text-amber-400">|</span>}
               </p>
               <p className="text-xs text-black/40 dark:text-white/40 mt-6 animate-pulse">
-                {typedName.length >= FULL_NAME.length && typedTitle.length >= FULL_TITLE.length ? '✓ جاهز' : '... يكتب'}
+                {displayName.length >= FULL_NAME.length && displayTitle.length >= FULL_TITLE.length ? '✓ جاهز' : '... يكتب'}
               </p>
             </div>
           </div>
@@ -1584,4 +1569,4 @@ useEffect(() => {
       </div>
     </main>
   );
-  }
+    }
