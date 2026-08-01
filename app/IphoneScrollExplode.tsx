@@ -512,8 +512,9 @@ export default function PortfolioMain() {
       return;
     }
 
-    const fullName = "محمد الحناني";
-    const fullTitle = "Full-Stack Web Developer | مهندس برمجيات";
+    // استخدم نفس النص من textBlocks[0]
+    const fullName = textBlocks[0].title; // "Mohammed Al-Hanani"
+    const fullTitle = textBlocks[0].subtitle; // "Full-Stack Web Developer | مهندس برمجيات"
     let nameIndex = 0;
     let titleIndex = 0;
 
@@ -791,8 +792,8 @@ useEffect(() => {
       {/* ===== الخلفية الثابتة ===== */}
       <div className="fixed inset-0 z-0 overflow-hidden bg-white dark:bg-[#020202] transition-colors duration-300">
         <canvas ref={canvasRef} className="h-full w-full opacity-60" />
-        <div className="absolute inset-0 bg-white/30 dark:bg-black/45 pointer-events-none transition-colors duration-300" />
-
+        <div className="absolute inset-0 bg-white/5 dark:bg-black/5 backdrop-blur-md border border-white/10 dark:border-white/5 pointer-events-none transition-all duration-300" />
+        
         {/* Loading - يظهر فقط في البداية */}
         {!isLoaded && (
           <div className="absolute inset-0 z-30 flex items-center justify-center bg-white dark:bg-[#020202] backdrop-blur-md transition-colors duration-300">
@@ -810,16 +811,16 @@ useEffect(() => {
         {showTyping && (
           <div className="absolute inset-0 z-40 flex flex-col items-center justify-center bg-white/80 dark:bg-[#020202]/80 backdrop-blur-sm transition-colors duration-300 pointer-events-none">
             <div className="text-center max-w-3xl px-4">
-              <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-amber-400 mb-4 min-h-[4rem]">
+              <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold text-amber-400 mb-4 min-h-[4rem]">
                 {typedName}
-                {typedName.length < 11 && <span className="animate-pulse text-amber-400">|</span>}
+                {typedName.length < textBlocks[0].title.length && <span className="animate-pulse text-amber-400">|</span>}
               </h1>
               <p className="text-base sm:text-xl md:text-2xl text-black dark:text-white/90 font-light min-h-[3rem]">
                 {typedTitle}
-                {typedTitle.length < 36 && typedName.length >= 11 && <span className="animate-pulse text-amber-400">|</span>}
+                {typedTitle.length < textBlocks[0].subtitle.length && typedName.length >= textBlocks[0].title.length && <span className="animate-pulse text-amber-400">|</span>}
               </p>
               <p className="text-xs text-black/40 dark:text-white/40 mt-6 animate-pulse">
-                {typedName.length >= 11 && typedTitle.length >= 36 ? '✓ جاهز' : '... يكتب'}
+                {typedName.length >= textBlocks[0].title.length && typedTitle.length >= textBlocks[0].subtitle.length ? '✓ جاهز' : '... يكتب'}
               </p>
             </div>
           </div>
@@ -1569,4 +1570,4 @@ useEffect(() => {
       </div>
     </main>
   );
-                                }
+            }
