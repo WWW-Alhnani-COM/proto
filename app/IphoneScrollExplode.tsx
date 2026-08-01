@@ -515,12 +515,21 @@ export default function PortfolioMain() {
     // استخدم نفس النص من textBlocks[0]
     const fullName = textBlocks[0].title; // "Mohammed Al-Hanani"
     const fullTitle = textBlocks[0].subtitle; // "Full-Stack Web Developer | مهندس برمجيات"
+    
+    // التأكد من وجود النصوص
+    if (!fullName || !fullTitle) return;
+
     let nameIndex = 0;
     let titleIndex = 0;
+
+    // إعادة تعيين النصوص والمؤشرات عند بدء الكتابة
+    setTypedName("");
+    setTypedTitle("");
 
     // تنظيف أي مؤقت سابق
     if (typingIntervalRef.current) {
       clearInterval(typingIntervalRef.current);
+      typingIntervalRef.current = null;
     }
 
     typingIntervalRef.current = setInterval(() => {
@@ -808,24 +817,22 @@ useEffect(() => {
 
         {/* ===== تأثير الكتابة (يظهر بعد التحميل وقبل التمرير) ===== */}
         {showTyping && (
-  <div className="absolute inset-0 z-40 flex flex-col items-center justify-center bg-white/80 dark:bg-[#020202]/80 backdrop-blur-sm transition-colors duration-300 pointer-events-none">
-    <div className="text-center max-w-3xl px-4">
-      {/* الاسم بحجم كبير وبنفس لون الـ title في الهيرو */}
-      <h1 className="text-5xl sm:text-7xl md:text-8xl font-bold leading-snug tracking-tight text-amber-400 drop-shadow-md mb-4 min-h-[6rem]">
-        {typedName}
-        {typedName.length < textBlocks[0].title.length && <span className="animate-pulse text-amber-400">|</span>}
-      </h1>
-      {/* الوصف بنفس تنسيق subtitle في الهيرو */}
-      <p className="text-base sm:text-xl md:text-3xl font-bold leading-snug tracking-tight text-black dark:text-white drop-shadow-lg min-h-[4rem]">
-        {typedTitle}
-        {typedTitle.length < textBlocks[0].subtitle.length && typedName.length >= textBlocks[0].title.length && <span className="animate-pulse text-amber-400">|</span>}
-      </p>
-      <p className="text-xs text-black/40 dark:text-white/40 mt-6 animate-pulse">
-        {typedName.length >= textBlocks[0].title.length && typedTitle.length >= textBlocks[0].subtitle.length ? '✓ جاهز' : '... يكتب'}
-      </p>
-    </div>
-  </div>
-)}
+          <div className="absolute inset-0 z-40 flex flex-col items-center justify-center bg-white/80 dark:bg-[#020202]/80 backdrop-blur-sm transition-colors duration-300 pointer-events-none">
+            <div className="text-center max-w-3xl px-4">
+              <h1 className="text-5xl sm:text-7xl md:text-8xl font-bold leading-snug tracking-tight text-amber-400 drop-shadow-md mb-4 min-h-[6rem]">
+                {typedName}
+                {typedName.length < textBlocks[0].title.length && <span className="animate-pulse text-amber-400">|</span>}
+              </h1>
+              <p className="text-base sm:text-xl md:text-3xl font-bold leading-snug tracking-tight text-black dark:text-white drop-shadow-lg min-h-[4rem]">
+                {typedTitle}
+                {typedTitle.length < textBlocks[0].subtitle.length && typedName.length >= textBlocks[0].title.length && <span className="animate-pulse text-amber-400">|</span>}
+              </p>
+              <p className="text-xs text-black/40 dark:text-white/40 mt-6 animate-pulse">
+                {typedName.length >= textBlocks[0].title.length && typedTitle.length >= textBlocks[0].subtitle.length ? '✓ جاهز' : '... يكتب'}
+              </p>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* ===== قسم الهيرو ===== */}
@@ -1571,4 +1578,4 @@ useEffect(() => {
       </div>
     </main>
   );
-  }
+    }
