@@ -354,6 +354,10 @@ export default function PortfolioMain() {
   const [typedTitle, setTypedTitle] = useState("");
   const typingIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
+  // مؤشرات الكتابة باستخدام useRef لتجنب مشاكل الإغلاق
+  const nameIndexRef = useRef(0);
+  const titleIndexRef = useRef(0);
+
   // إحداثيات مؤشر الفأرة لتتبع البقعة الكاشفة
   const [mousePos, setMousePos] = useState({ x: -1000, y: -1000 });
   const [isInsideHero, setIsInsideHero] = useState(false);
@@ -498,6 +502,11 @@ export default function PortfolioMain() {
         clearInterval(typingIntervalRef.current);
         typingIntervalRef.current = null;
       }
+      // إعادة تعيين المؤشرات عند الإخفاء
+      nameIndexRef.current = 0;
+      titleIndexRef.current = 0;
+      setTypedName("");
+      setTypedTitle("");
     }
   }, [isLoaded, scrollProgress]);
 
@@ -507,14 +516,16 @@ export default function PortfolioMain() {
         clearInterval(typingIntervalRef.current);
         typingIntervalRef.current = null;
       }
+      nameIndexRef.current = 0;
+      titleIndexRef.current = 0;
       setTypedName("");
       setTypedTitle("");
       return;
     }
 
-    let nameIndex = 0;
-    let titleIndex = 0;
-
+    // إعادة تعيين المؤشرات والنصوص عند بدء الكتابة
+    nameIndexRef.current = 0;
+    titleIndexRef.current = 0;
     setTypedName("");
     setTypedTitle("");
 
@@ -523,10 +534,10 @@ export default function PortfolioMain() {
     }
 
     typingIntervalRef.current = setInterval(() => {
-      // الكتابة تتوقف عندما ينتهي النص
-      const nameDone = nameIndex >= FULL_NAME.length;
-      const titleDone = titleIndex >= FULL_TITLE.length;
+      const nameDone = nameIndexRef.current >= FULL_NAME.length;
+      const titleDone = titleIndexRef.current >= FULL_TITLE.length;
 
+      // إذا انتهى كلاهما، أوقف المؤقت فورًا
       if (nameDone && titleDone) {
         if (typingIntervalRef.current) {
           clearInterval(typingIntervalRef.current);
@@ -537,13 +548,13 @@ export default function PortfolioMain() {
 
       // كتابة الاسم
       if (!nameDone) {
-        setTypedName((prev) => prev + FULL_NAME[nameIndex]);
-        nameIndex++;
+        setTypedName((prev) => prev + FULL_NAME[nameIndexRef.current]);
+        nameIndexRef.current += 1;
       } 
       // كتابة العنوان
       else if (!titleDone) {
-        setTypedTitle((prev) => prev + FULL_TITLE[titleIndex]);
-        titleIndex++;
+        setTypedTitle((prev) => prev + FULL_TITLE[titleIndexRef.current]);
+        titleIndexRef.current += 1;
       }
     }, 80);
 
@@ -1573,4 +1584,4 @@ useEffect(() => {
       </div>
     </main>
   );
-}
+  }
