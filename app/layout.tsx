@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://proto-g2jc.onrender.com"), // غيّر إلى رابط موقعك الفعلي
+  metadataBase: new URL("https://proto-g2jc.onrender.com"),
   title: "Mohammed Al-Hanani | Full-Stack Web Developer",
   description:
     "Full-Stack Web Developer متخصص في تطوير تطبيقات الويب والموبايل باستخدام React, Next.js, Flutter, Laravel وغيرها. خبرة 4+ سنوات في بناء حلول برمجية مبتكرة.",
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     title: "Mohammed Al-Hanani | Full-Stack Web Developer",
     description:
       "Full-Stack Web Developer متخصص في تطوير تطبيقات الويب والموبايل باستخدام React, Next.js, Flutter, Laravel وغيرها.",
-    url: "https://your-domain.com", // غيّر إلى رابط موقعك
+    url: "https://proto-g2jc.onrender.com",
     siteName: "Mohammed Al-Hanani Portfolio",
     images: [
       {
@@ -66,7 +66,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="ar" // غيّر إلى اللغة العربية
+      lang="ar"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
