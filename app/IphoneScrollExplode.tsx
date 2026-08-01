@@ -377,7 +377,7 @@ export default function PortfolioMain() {
   const [isMobile, setIsMobile] = useState(false);
 
   // ===== حالة الثيم (داكن/نهاري) =====
-  const [isDark, setIsDark] = useState(false);
+  const [isDark, setIsDark] = useState(true); // ← التغيير: true بدلاً من false لجعل الثيم الليلي افتراضياً
 
   // تأثير تبديل الثيم
   useEffect(() => {
@@ -1392,13 +1392,14 @@ useEffect(() => {
               <div style={{ height: '100px', position: 'relative', overflow: 'hidden' }}>
                 <LogoLoop
                   logos={techLogos}
-                  speed={80}
+                  speed={40}
                   direction="left"
                   logoHeight={isMobile ? 35 : 50}
                   gap={isMobile ? 30 : 50}
                   hoverSpeed={20}
                   scaleOnHover
-                  fadeOut
+                  fadeOut={false}
+                  pauseOnHover={false}
                   fadeOutColor={isDark ? "#020202" : "#ffffff"}
                   ariaLabel="التقنيات والمهارات"
                 />
@@ -1566,4 +1567,4 @@ useEffect(() => {
       </div>
     </main>
   );
-    }
+      }
