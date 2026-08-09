@@ -1,4 +1,4 @@
-٨ف"use client";
+"use client";
 
 import { motion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
