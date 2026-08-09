@@ -1,4 +1,4 @@
-"use client";
+٨ف"use client";
 
 import { motion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -807,10 +807,10 @@ useEffect(() => {
         {showTyping && (
           <div className="absolute inset-0 z-40 flex flex-col items-center justify-center bg-white/80 dark:bg-[#020202]/80 backdrop-blur-sm transition-colors duration-300 pointer-events-none">
             <div className="text-center max-w-3xl px-4">
-              <h1 className="text-5xl sm:text-7xl md:text-8xl font-bold leading-snug tracking-tight text-amber-400 drop-shadow-md mb-4 min-h-[6rem] font-serif">
-                {displayName}
-                {displayName.length < FULL_NAME.length && <span className="animate-pulse text-amber-400">|</span>}
-              </h1>
+              <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold leading-snug tracking-tight text-amber-400 drop-shadow-md mb-4 min-h-[6rem] font-serif">
+  {displayName}
+  {displayName.length < FULL_NAME.length && <span className="animate-pulse text-amber-400">|</span>}
+</h1>
               <p className="text-base sm:text-xl md:text-3xl font-light leading-snug tracking-wide text-black dark:text-white drop-shadow-lg min-h-[4rem]">
                 {displayTitle}
                 {displayTitle.length < FULL_TITLE.length && displayName.length >= FULL_NAME.length && <span className="animate-pulse text-amber-400">|</span>}
