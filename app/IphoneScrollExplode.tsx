@@ -815,9 +815,7 @@ useEffect(() => {
                 {displayTitle}
                 {displayTitle.length < FULL_TITLE.length && displayName.length >= FULL_NAME.length && <span className="animate-pulse text-amber-400">|</span>}
               </p>
-              <p className="text-xs text-black/40 dark:text-white/40 mt-6 animate-pulse">
-                {displayName.length >= FULL_NAME.length && displayTitle.length >= FULL_TITLE.length ? '✓ جاهز' : '... يكتب'}
-              </p>
+              
             </div>
           </div>
         )}
