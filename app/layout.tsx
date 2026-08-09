@@ -14,25 +14,38 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://alhanani.onrender.com/"),
-  title: "Mohammed Al-Hanani | Full-Stack Web Developer",
+  title: "محمد الحناني | مبرمج فل استاك - Full-Stack Web Developer",
   description:
-    "Full-Stack Web Developer متخصص في تطوير تطبيقات الويب والموبايل باستخدام React, Next.js, Flutter, Laravel وغيرها. خبرة 4+ سنوات في بناء حلول برمجية مبتكرة.",
+    "محمد الحناني، مبرمج فل استاك (Full-Stack) ومطور تطبيقات ويب وموبايل. خبرة 4+ سنوات في React، Next.js، Flutter، Laravel. أفضل مبرمج يمني متخصص في بناء حلول برمجية مبتكرة. الحناني للبرمجيات تقدم خدمات تطوير متكاملة.",
   keywords: [
-    "Full-Stack",
-    "Web Developer",
+    // الأسماء والعبارات المطلوبة
+    "محمد الحناني",
+    "الحناني",
+    "مبرمجين يمنين",
+    "مبرمجين فل استاك",
+    "الحناني للبرمجيات",
+    "افضل مبرمج يمني",
+    // الكلمات الأساسية السابقة مع توسيعها
+    "Full-Stack Web Developer",
     "React",
     "Next.js",
     "Flutter",
     "Laravel",
+    "تطوير ويب",
+    "برمجة",
     "Yemen",
     "Mohammed Al-Hanani",
-    "برمجة",
-    "تطوير ويب",
+    "مطور ويب",
+    "مطور تطبيقات",
+    "خدمات برمجية",
+    "برمجة تطبيقات",
+    "موقع شخصي",
+    "بورتوليو",
   ],
   openGraph: {
-    title: "Mohammed Al-Hanani | Full-Stack Web Developer",
+    title: "محمد الحناني | مبرمج فل استاك - Full-Stack Web Developer",
     description:
-      "Full-Stack Web Developer متخصص في تطوير تطبيقات الويب والموبايل باستخدام React, Next.js, Flutter, Laravel وغيرها.",
+      "محمد الحناني، مبرمج فل استاك ومطور ويب وموبايل. خبرة 4+ سنوات في React، Next.js، Flutter، Laravel. أفضل مبرمج يمني - الحناني للبرمجيات.",
     url: "https://alhanani.onrender.com/",
     siteName: "Mohammed Al-Hanani Portfolio",
     images: [
@@ -48,14 +61,20 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Mohammed Al-Hanani | Full-Stack Web Developer",
+    title: "محمد الحناني | مبرمج فل استاك - Full-Stack Web Developer",
     description:
-      "Full-Stack Web Developer متخصص في تطوير تطبيقات الويب والموبايل.",
+      "محمد الحناني، مبرمج فل استاك ومطور ويب وموبايل. خبرة 4+ سنوات.",
     images: ["/img/og-image.jpg"],
   },
   icons: {
     icon: "/favicon.ico",
     apple: "/apple-touch-icon.png",
+  },
+  // إضافات SEO مفيدة
+  authors: [{ name: "Mohammed Al-Hanani" }],
+  robots: "index, follow",
+  alternates: {
+    canonical: "https://alhanani.onrender.com/",
   },
 };
 
