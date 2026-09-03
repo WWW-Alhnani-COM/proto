@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: '*',
       allow: '/',
     },
-    sitemap: 'https://alhanani.onrender.com/sitemap.xml',
+    sitemap: 'https://alhanani.vercel.app/sitemap.xml',
   }
 }
