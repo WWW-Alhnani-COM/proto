@@ -367,8 +367,9 @@ export default function PortfolioMain() {
   const [isInsideHero, setIsInsideHero] = useState(false);
 
   // حالة نموذج الاتصال
-  const [formStatus, setFormStatus] = useState(false);
-  
+const [formStatus, setFormStatus] = useState(false);
+const [formSending, setFormSending] = useState(false);
+const [formError, setFormError] = useState("");  
   // حالة القائمة المنبثقة للجوال (Mobile Menu)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -1406,110 +1407,231 @@ useEffect(() => {
           </motion.div>
         </section>
 
-        {/* ===== قسم اتصل بي ===== */}
-        <section id="contact" className="max-w-6xl mx-auto px-4 sm:px-6 scroll-mt-28">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+      
+{/* ===== قسم اتصل بي ===== */}
+<section id="contact" className="max-w-6xl mx-auto px-4 sm:px-6 scroll-mt-28">
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.6 }}
+  >
+    <div className="flex items-center gap-2 sm:gap-3 mb-2">
+      <span className="w-8 sm:w-10 h-0.5 bg-amber-400"></span>
+      <span className="text-amber-400 text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] font-medium">
+        Contact
+      </span>
+    </div>
+
+    <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mt-2 mb-2 sm:mb-4 text-black dark:text-white transition-colors duration-300">
+      تواصل معي لبدء مشروعك القادم
+    </h2>
+
+    <p className="text-black/70 dark:text-white/80 mb-8 sm:mb-12 drop-shadow text-sm sm:text-base transition-colors duration-300">
+      سواء كنت بحاجة إلى تطبيق موبايل أو موقع إلكتروني، تواصل معي الآن وسنبدأ العمل مباشرة.
+    </p>
+
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+
+      {/* معلومات التواصل */}
+      <div className="space-y-4 sm:space-y-6 md:col-span-1 p-4 sm:p-6 rounded-2xl bg-white/40 dark:bg-black/40 backdrop-blur-md border border-black/10 dark:border-white/10 shadow-lg h-fit transition-colors duration-300">
+        <div>
+          <span className="text-[10px] sm:text-xs text-black/50 dark:text-white/50 block mb-1">
+            العنوان
+          </span>
+          <p className="text-black/90 dark:text-white/90 text-xs sm:text-sm">
+            Yemen, Sanaa, Airport Road
+          </p>
+        </div>
+
+        <div>
+          <span className="text-[10px] sm:text-xs text-black/50 dark:text-white/50 block mb-1">
+            الهاتف
+          </span>
+          <a
+            href="tel:+967774218060"
+            className="text-black/90 dark:text-white/90 text-xs sm:text-sm font-mono hover:text-amber-500 transition-colors"
           >
-            <div className="flex items-center gap-2 sm:gap-3 mb-2">
-              <span className="w-8 sm:w-10 h-0.5 bg-amber-400"></span>
-              <span className="text-amber-400 text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] font-medium">Contact</span>
-            </div>
-            
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mt-2 mb-2 sm:mb-4 text-black dark:text-white transition-colors duration-300">تواصل معي لبدء مشروعك القادم</h2>
-            <p className="text-black/70 dark:text-white/80 mb-8 sm:mb-12 drop-shadow text-sm sm:text-base transition-colors duration-300">
-              سواء كنت بحاجة إلى تطبيق موبايل أو موقع إلكتروني، تواصل معي الآن وسنبدأ العمل مباشرة.
-            </p>
+            +967 774218060
+          </a>
+        </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-              
-              <div className="space-y-4 sm:space-y-6 md:col-span-1 p-4 sm:p-6 rounded-2xl bg-white/40 dark:bg-black/40 backdrop-blur-md border border-black/10 dark:border-white/10 shadow-lg h-fit transition-colors duration-300">
-                <div>
-                  <span className="text-[10px] sm:text-xs text-black/50 dark:text-white/50 block mb-1">العنوان</span>
-                  <p className="text-black/90 dark:text-white/90 text-xs sm:text-sm">Yemen, Sanaa, Airport Road</p>
-                </div>
-                <div>
-                  <span className="text-[10px] sm:text-xs text-black/50 dark:text-white/50 block mb-1">الهاتف</span>
-                  <p className="text-black/90 dark:text-white/90 text-xs sm:text-sm font-mono">+967 774218060</p>
-                </div>
-                <div>
-                  <span className="text-[10px] sm:text-xs text-black/50 dark:text-white/50 block mb-1">البريد الإلكتروني</span>
-                  <p className="text-black/90 dark:text-white/90 text-xs sm:text-sm font-mono break-all">mohammadalhnani2004@gmail.com</p>
-                </div>
-              </div>
+        <div>
+          <span className="text-[10px] sm:text-xs text-black/50 dark:text-white/50 block mb-1">
+            البريد الإلكتروني
+          </span>
+          <a
+            href="mailto:mohammadalhnani2004@gmail.com"
+            className="text-black/90 dark:text-white/90 text-xs sm:text-sm font-mono break-all hover:text-amber-500 transition-colors"
+          >
+            mohammadalhnani2004@gmail.com
+          </a>
+        </div>
+      </div>
 
-              <form 
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  setFormStatus(true);
-                  setTimeout(() => setFormStatus(false), 4000);
-                }} 
-                className="md:col-span-2 space-y-3 sm:space-y-4 p-4 sm:p-6 rounded-2xl bg-white/40 dark:bg-black/40 backdrop-blur-md border border-black/10 dark:border-white/10 shadow-lg transition-colors duration-300"
-              >
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                  <div className="relative">
-                    <label className="block text-[10px] sm:text-xs text-black/40 dark:text-white/40 mb-1.5">اسمك</label>
-                    <input
-                      type="text"
-                      placeholder="أدخل اسمك"
-                      required
-                      className="w-full bg-white/50 dark:bg-black/50 border border-black/10 dark:border-white/10 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3.5 text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 text-xs sm:text-sm focus:outline-none focus:border-amber-400 transition-colors"
-                    />
-                  </div>
-                  <div className="relative">
-                    <label className="block text-[10px] sm:text-xs text-black/40 dark:text-white/40 mb-1.5">بريدك الإلكتروني</label>
-                    <input
-                      type="email"
-                      placeholder="example@email.com"
-                      required
-                      className="w-full bg-white/50 dark:bg-black/50 border border-black/10 dark:border-white/10 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3.5 text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 text-xs sm:text-sm focus:outline-none focus:border-amber-400 transition-colors"
-                    />
-                  </div>
-                </div>
+      {/* نموذج إرسال الرسائل */}
+      <form
+        onSubmit={async (e) => {
+          e.preventDefault();
 
-                <div className="relative">
-                  <label className="block text-[10px] sm:text-xs text-black/40 dark:text-white/40 mb-1.5">الموضوع</label>
-                  <input
-                    type="text"
-                    placeholder="ما هو موضوع رسالتك؟"
-                    required
-                    className="w-full bg-white/50 dark:bg-black/50 border border-black/10 dark:border-white/10 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3.5 text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 text-xs sm:text-sm focus:outline-none focus:border-amber-400 transition-colors"
-                  />
-                </div>
+          if (formSending) return;
 
-                <div className="relative">
-                  <label className="block text-[10px] sm:text-xs text-black/40 dark:text-white/40 mb-1.5">رسالتك</label>
-                  <textarea
-                    rows={4}
-                    placeholder="اكتب رسالتك هنا..."
-                    required
-                    className="w-full bg-white/50 dark:bg-black/50 border border-black/10 dark:border-white/10 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3.5 text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 text-xs sm:text-sm focus:outline-none focus:border-amber-400 transition-colors resize-none"
-                  />
-                </div>
+          const form = e.currentTarget;
+          const formData = new FormData(form);
 
-                <button
-                  type="submit"
-                  className="w-full py-3 sm:py-4 rounded-xl bg-amber-400 text-black font-semibold hover:bg-amber-300 transition-colors shadow-lg shadow-amber-400/20 text-sm sm:text-base"
-                >
-                  إرسال الرسالة
-                </button>
+          setFormSending(true);
+          setFormError("");
+          setFormStatus(false);
 
-                {formStatus && (
-                  <motion.p 
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="text-emerald-400 text-xs sm:text-sm text-center mt-2"
-                  >
-                    ✓ تم إرسال رسالتك بنجاح، شكراً لتواصلك!
-                  </motion.p>
-                )}
-              </form>
-            </div>
-          </motion.div>
-        </section>
+          try {
+            const response = await fetch("/api/contact", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                name: formData.get("name"),
+                email: formData.get("email"),
+                subject: formData.get("subject"),
+                message: formData.get("message"),
+              }),
+            });
+
+            const result = await response.json();
+
+            if (!response.ok || !result.ok) {
+              throw new Error(
+                result.error || "تعذر إرسال الرسالة. حاول مرة أخرى."
+              );
+            }
+
+            form.reset();
+            setFormStatus(true);
+          } catch (error) {
+            setFormError(
+              error instanceof Error
+                ? error.message
+                : "حدث خطأ أثناء إرسال الرسالة. حاول مرة أخرى."
+            );
+          } finally {
+            setFormSending(false);
+          }
+        }}
+        className="md:col-span-2 space-y-3 sm:space-y-4 p-4 sm:p-6 rounded-2xl bg-white/40 dark:bg-black/40 backdrop-blur-md border border-black/10 dark:border-white/10 shadow-lg transition-colors duration-300"
+      >
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+
+          <div className="relative">
+            <label
+              htmlFor="contact-name"
+              className="block text-[10px] sm:text-xs text-black/40 dark:text-white/40 mb-1.5"
+            >
+              اسمك
+            </label>
+            <input
+              id="contact-name"
+              name="name"
+              type="text"
+              placeholder="أدخل اسمك"
+              autoComplete="name"
+              minLength={2}
+              maxLength={100}
+              required
+              className="w-full bg-white/50 dark:bg-black/50 border border-black/10 dark:border-white/10 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3.5 text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 text-xs sm:text-sm focus:outline-none focus:border-amber-400 transition-colors"
+            />
+          </div>
+
+          <div className="relative">
+            <label
+              htmlFor="contact-email"
+              className="block text-[10px] sm:text-xs text-black/40 dark:text-white/40 mb-1.5"
+            >
+              بريدك الإلكتروني
+            </label>
+            <input
+              id="contact-email"
+              name="email"
+              type="email"
+              placeholder="example@email.com"
+              autoComplete="email"
+              maxLength={254}
+              required
+              className="w-full bg-white/50 dark:bg-black/50 border border-black/10 dark:border-white/10 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3.5 text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 text-xs sm:text-sm focus:outline-none focus:border-amber-400 transition-colors"
+            />
+          </div>
+
+        </div>
+
+        <div className="relative">
+          <label
+            htmlFor="contact-subject"
+            className="block text-[10px] sm:text-xs text-black/40 dark:text-white/40 mb-1.5"
+          >
+            الموضوع
+          </label>
+          <input
+            id="contact-subject"
+            name="subject"
+            type="text"
+            placeholder="ما هو موضوع رسالتك؟"
+            minLength={3}
+            maxLength={150}
+            required
+            className="w-full bg-white/50 dark:bg-black/50 border border-black/10 dark:border-white/10 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3.5 text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 text-xs sm:text-sm focus:outline-none focus:border-amber-400 transition-colors"
+          />
+        </div>
+
+        <div className="relative">
+          <label
+            htmlFor="contact-message"
+            className="block text-[10px] sm:text-xs text-black/40 dark:text-white/40 mb-1.5"
+          >
+            رسالتك
+          </label>
+          <textarea
+            id="contact-message"
+            name="message"
+            rows={4}
+            placeholder="اكتب رسالتك هنا..."
+            minLength={10}
+            maxLength={5000}
+            required
+            className="w-full bg-white/50 dark:bg-black/50 border border-black/10 dark:border-white/10 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3.5 text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 text-xs sm:text-sm focus:outline-none focus:border-amber-400 transition-colors resize-none"
+          />
+        </div>
+
+        <button
+          type="submit"
+          disabled={formSending}
+          className="w-full py-3 sm:py-4 rounded-xl bg-amber-400 text-black font-semibold hover:bg-amber-300 disabled:opacity-60 disabled:cursor-not-allowed transition-colors shadow-lg shadow-amber-400/20 text-sm sm:text-base"
+        >
+          {formSending ? "جارٍ إرسال الرسالة..." : "إرسال الرسالة"}
+        </button>
+
+        {formStatus && (
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            role="status"
+            className="text-emerald-500 text-xs sm:text-sm text-center mt-2"
+          >
+            تم إرسال رسالتك بنجاح، شكرًا لتواصلك!
+          </motion.p>
+        )}
+
+        {formError && (
+          <p
+            role="alert"
+            className="text-red-500 text-xs sm:text-sm text-center mt-2"
+          >
+            {formError}
+          </p>
+        )}
+      </form>
+    </div>
+  </motion.div>
+</section>
+
 
         {/* ===== التذييل ===== */}
         <footer className="max-w-5xl mx-auto px-4 sm:px-6 pt-12 sm:pt-16 pb-8 sm:pb-12 text-center bg-transparent">
