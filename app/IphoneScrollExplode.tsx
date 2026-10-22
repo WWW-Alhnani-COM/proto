@@ -788,11 +788,12 @@ useEffect(() => {
         )}
       </header>
 {/* ===== الخلفية الثابتة ===== */}
-<canvas
-  ref={canvasRef}
-  className="h-full w-full opacity-90"
-/>
-
+<div className="fixed inset-0 z-0 overflow-hidden bg-white dark:bg-[#fbbf24] transition-colors duration-300">
+  <canvas
+    ref={canvasRef}
+    className="h-full w-full opacity-90"
+  />
+      
 <div className="absolute inset-0 bg-white/5 dark:bg-amber-400/20 backdrop-blur-[2px] border border-white/5 pointer-events-none transition-all duration-300" />
 
 {!isLoaded && (
@@ -833,6 +834,7 @@ useEffect(() => {
   </div>
 )}
 </div>
+    
       {/* ===== قسم الهيرو ===== */}
       <div 
         className="h-[300vh] relative z-10"
