@@ -153,7 +153,7 @@ canvas {
   }
 }
 /* طبقة زجاجية موحدة خلف أقسام الموقع */
-.glass-section {
+/* .glass-section {
   position: relative;
   isolation: isolate;
 }
@@ -179,4 +179,4 @@ canvas {
 .glass-section > * {
   position: relative;
   z-index: 1;
-}
+} */
