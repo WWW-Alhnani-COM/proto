@@ -294,7 +294,7 @@ const techLogos = [
 ];
 
 // ===== عدد الإطارات للصور =====
-const FRAME_COUNT = 61;
+const FRAME_COUNT = 64;
 
 // ===== بيانات النصوص في الهيرو =====
 const textBlocks = [
