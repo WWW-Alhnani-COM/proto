@@ -931,7 +931,7 @@ useEffect(() => {
       <div className="relative z-10 bg-transparent pt-16 sm:pt-20 pb-12 sm:pb-16 space-y-24 sm:space-y-32">
         
         {/* ===== قسم عني ===== */}
-        <section id="about" className="max-w-6xl mx-auto px-4 sm:px-6 scroll-mt-28">
+        <section id="about" className="glass-section max-w-6xl mx-auto px-4 sm:px-6 scroll-mt-28">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -1088,7 +1088,7 @@ useEffect(() => {
         </section>
 
         {/* ===== قسم الخدمات ===== */}
-        <section id="services" className="max-w-6xl mx-auto px-4 sm:px-6 scroll-mt-28">
+        <section id="services" className="glass-section max-w-6xl mx-auto px-4 sm:px-6 scroll-mt-28">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -1268,7 +1268,7 @@ useEffect(() => {
         </section>
 
         {/* ===== قسم المشاريع (Portfolio) ===== */}
-        <section id="portfolio" className="max-w-7xl mx-auto px-4 sm:px-6 scroll-mt-28">
+        <section id="portfolio" className="glass-section max-w-7xl mx-auto px-4 sm:px-6 scroll-mt-28">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -1370,7 +1370,7 @@ useEffect(() => {
         </section>
 
         {/* ===== قسم التقنيات ===== */}
-        <section id="technologies" className="max-w-6xl mx-auto px-4 sm:px-6 scroll-mt-28">
+        <section id="technologies" className="glass-section max-w-6xl mx-auto px-4 sm:px-6 scroll-mt-28">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -1409,7 +1409,7 @@ useEffect(() => {
 
       
 {/* ===== قسم اتصل بي ===== */}
-<section id="contact" className="max-w-6xl mx-auto px-4 sm:px-6 scroll-mt-28">
+<section id="contact" className="glass-section max-w-6xl mx-auto px-4 sm:px-6 scroll-mt-28">
   <motion.div
     initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
