@@ -789,9 +789,9 @@ useEffect(() => {
       </header>
 
       {/* ===== الخلفية الثابتة ===== */}
-      <div className="fixed inset-0 z-0 overflow-hidden bg-white dark:bg-[#020202] transition-colors duration-300">
+      <div className="fixed inset-0 z-0 overflow-hidden bg-white dark:bg-[#030817] transition-colors duration-300">
         <canvas ref={canvasRef} className="h-full w-full opacity-90" />
-        <div className="absolute inset-0 bg-white/5 dark:bg-black/5 backdrop-blur-[2px] border border-white/10 dark:border-white/5 pointer-events-none transition-all duration-300" />
+        <div className="absolute inset-0 bg-white/5 dark:bg-[#030817]/35 backdrop-blur-[2px] border border-white/5 pointer-events-none transition-all duration-300" />
         {!isLoaded && (
           <div className="absolute inset-0 z-30 flex items-center justify-center bg-white dark:bg-[#020202] backdrop-blur-md transition-colors duration-300">
             <div className="flex flex-col items-center gap-4 text-center">
