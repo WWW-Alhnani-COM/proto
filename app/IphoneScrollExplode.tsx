@@ -938,12 +938,13 @@ useEffect(() => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <div className="flex items-center gap-2 sm:gap-3 mb-2">
+            <div className="flex items-center justify-center gap-2 sm:gap-3 mb-2">
+              
               <span className="w-8 sm:w-10 h-0.5 bg-amber-400"></span>
               <span className="text-amber-400 text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] font-medium">About Me</span>
             </div>
             
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mt-2 mb-4 sm:mb-6 text-black dark:text-white transition-colors duration-300">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mt-2 mb-4 sm:mb-6 text-center text-black dark:text-white transition-colors duration-300">
               مطور برمجيات <span className="text-amber-400">شغوف</span> بحل المشكلات
             </h2>
             
@@ -1095,13 +1096,13 @@ useEffect(() => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <div className="flex items-center gap-2 sm:gap-3 mb-2">
-              <span className="w-8 sm:w-10 h-0.5 bg-amber-400"></span>
+<div className="flex items-center justify-center gap-2 sm:gap-3 mb-2">
+  <span className="w-8 sm:w-10 h-0.5 bg-amber-400"></span>
               <span className="text-amber-400 text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] font-medium">My Expertise</span>
             </div>
             
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mt-2 mb-2 sm:mb-4 text-black dark:text-white transition-colors duration-300">الخدمات التقنية المتكاملة</h2>
-            <p className="text-black/70 dark:text-white/80 mb-8 sm:mb-12 text-sm sm:text-base drop-shadow max-w-3xl transition-colors duration-300">
+<h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mt-2 mb-2 sm:mb-4 text-center text-black dark:text-white transition-colors duration-300">الخدمات التقنية المتكاملة</h2>
+            <p className="text-black/70 dark:text-white/80 mb-8 sm:mb-12 text-sm sm:text-base drop-shadow max-w-3xl mx-auto text-center transition-colors duration-300">
               أقدم حلولاً برمجية شاملة تغطي كامل دورة حياة التطوير، من الواجهات الأمامية إلى البنية التحتية السحابية
             </p>
 
@@ -1275,19 +1276,19 @@ useEffect(() => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <div className="flex items-center gap-2 sm:gap-3 mb-2">
-              <span className="w-8 sm:w-10 h-0.5 bg-amber-400"></span>
+<div className="flex items-center justify-center gap-2 sm:gap-3 mb-2">
+  <span className="w-8 sm:w-10 h-0.5 bg-amber-400"></span>
               <span className="text-amber-400 text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] font-medium">My Work</span>
             </div>
             
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 sm:gap-4 mb-6 sm:mb-8">
-              <div>
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mt-2 text-black dark:text-white transition-colors duration-300">
+            <div className="flex flex-col items-center text-center gap-2 sm:gap-4 mb-6 sm:mb-8">
+<div className="w-full text-center">
+  <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mt-2 text-black dark:text-white transition-colors duration-300">
                   <span className="block sm:inline">Portfolio</span>
                   <span className="block sm:inline text-amber-400"> — مشاريعي</span>
                 </h2>
               </div>
-              <p className="text-black/70 dark:text-white/80 text-sm sm:text-base drop-shadow max-w-2xl transition-colors duration-300">
+              <p className="text-black/70 dark:text-white/80 text-sm sm:text-base drop-shadow max-w-2xl mx-auto text-center transition-colors duration-300">
                 {isMobile ? 'أحدث المشاريع' : 'استكشف مجموعة من مشاريعي المتميزة'}
               </p>
             </div>
@@ -1377,13 +1378,13 @@ useEffect(() => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <div className="flex items-center gap-2 sm:gap-3 mb-2">
-              <span className="w-8 sm:w-10 h-0.5 bg-amber-400"></span>
+<div className="flex items-center justify-center gap-2 sm:gap-3 mb-2">
+  <span className="w-8 sm:w-10 h-0.5 bg-amber-400"></span>
               <span className="text-amber-400 text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] font-medium">Technologies</span>
             </div>
             
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mt-2 mb-2 sm:mb-4 text-black dark:text-white transition-colors duration-300">التقنيات التي أستخدمها</h2>
-            <p className="text-black/70 dark:text-white/80 mb-8 sm:mb-10 text-sm sm:text-base drop-shadow transition-colors duration-300">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mt-2 mb-2 sm:mb-4 text-center text-black dark:text-white transition-colors duration-300">التقنيات التي أستخدمها</h2>
+            <p className="text-black/70 dark:text-white/80 mb-8 sm:mb-10 text-sm sm:text-base drop-shadow text-center transition-colors duration-300">
               مجموعة من أحدث التقنيات والأدوات التي أعمل بها لتطوير حلول برمجية متكاملة
             </p>
 
@@ -1416,18 +1417,18 @@ useEffect(() => {
     viewport={{ once: true }}
     transition={{ duration: 0.6 }}
   >
-    <div className="flex items-center gap-2 sm:gap-3 mb-2">
+    <div className="flex items-center justify-center gap-2 sm:gap-3 mb-2">
       <span className="w-8 sm:w-10 h-0.5 bg-amber-400"></span>
       <span className="text-amber-400 text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] font-medium">
         Contact
       </span>
     </div>
 
-    <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mt-2 mb-2 sm:mb-4 text-black dark:text-white transition-colors duration-300">
+    <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mt-2 mb-2 sm:mb-4 text-center text-black dark:text-white transition-colors duration-300">
       تواصل معي لبدء مشروعك القادم
     </h2>
 
-    <p className="text-black/70 dark:text-white/80 mb-8 sm:mb-12 drop-shadow text-sm sm:text-base transition-colors duration-300">
+    <p className="text-black/70 dark:text-white/80 mb-8 sm:mb-12 drop-shadow text-sm sm:text-base text-center transition-colors duration-300">
       سواء كنت بحاجة إلى تطبيق موبايل أو موقع إلكتروني، تواصل معي الآن وسنبدأ العمل مباشرة.
     </p>
 
