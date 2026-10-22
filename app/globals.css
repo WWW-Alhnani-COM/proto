@@ -154,7 +154,7 @@ canvas {
 }
 
 /* طبقة زجاجية أخف للأقسام أسفل الهيرو */
-.glass-section {
+/* .glass-section {
   position: relative;
   isolation: isolate;
 }
@@ -181,4 +181,4 @@ canvas {
   position: relative;
   z-index: 1;
 }
-
+ */
