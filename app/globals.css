@@ -152,8 +152,9 @@ canvas {
     @apply font-sans;
   }
 }
-/* طبقة زجاجية موحدة خلف أقسام الموقع */
-/* .glass-section {
+
+/* طبقة زجاجية أخف للأقسام أسفل الهيرو */
+.glass-section {
   position: relative;
   isolation: isolate;
 }
@@ -164,19 +165,20 @@ canvas {
   inset: -12px 0;
   z-index: 0;
   pointer-events: none;
-  border: 1px solid rgb(255 255 255 / 10%);
+  border: 1px solid rgb(255 255 255 / 4%);
   border-radius: 24px;
-  background: rgb(255 255 255 / 5%);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgb(255 255 255 / 1.5%);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 
 .dark .glass-section::before {
-  background: rgb(0 0 0 / 5%);
-  border-color: rgb(255 255 255 / 5%);
+  background: rgb(0 0 0 / 2%);
+  border-color: rgb(255 255 255 / 3%);
 }
 
 .glass-section > * {
   position: relative;
   z-index: 1;
-} */
+}
+
