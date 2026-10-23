@@ -1129,12 +1129,12 @@ useEffect(() => {
                   </div>
                 </div>
 
-                <div className="p-4 sm:p-5 rounded-xl bg-gradient-to-r from-amber-400/5 to-transparent border border-amber-400/10">
+                {/* <div className="p-4 sm:p-5 rounded-xl bg-gradient-to-r from-amber-400/5 to-transparent border border-amber-400/10">
                   <p className="text-black/60 dark:text-white/70 text-xs sm:text-sm leading-relaxed italic transition-colors duration-300">
                     "أؤمن بأن التكنولوجيا الجيدة يجب أن تكون بسيطة وسهلة الاستخدام، 
                     ولذلك أركز على تقديم حلول برمجية تجمع بين القوة والجمال."
                   </p>
-                </div>
+                </div> */}
               </div>
             </div>
           </motion.div>
