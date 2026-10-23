@@ -833,8 +833,9 @@ useEffect(() => {
       {/* ===== الخلفية الثابتة ===== */}
       <div className="fixed inset-0 z-0 overflow-hidden bg-black transition-colors duration-300">
         <canvas ref={canvasRef} className="h-full w-full opacity-90" />
-<div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_45%,rgba(253,230,138,0.18)_0%,rgba(245,158,11,0.12)_28%,rgba(180,83,9,0.06)_52%,transparent_76%)] backdrop-blur-[1px] transition-all duration-700" />
-<div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(253,230,138,0.035)_0%,transparent_35%,rgba(180,83,9,0.045)_100%)] transition-opacity duration-700" />
+<div className="pointer-events-none absolute inset-0 overflow-hidden rounded-[inherit] bg-white/[0.025] backdrop-blur-[3px] transition-all duration-700" />
+<div className="pointer-events-none absolute inset-0 rounded-[inherit] bg-[linear-gradient(135deg,rgba(255,255,255,0.14)_0%,rgba(253,230,138,0.07)_22%,transparent_45%,rgba(255,255,255,0.025)_70%,rgba(180,83,9,0.06)_100%)] transition-opacity duration-700" />
+<div className="pointer-events-none absolute inset-0 rounded-[inherit] border border-white/[0.12] shadow-[inset_0_1px_0_rgba(255,255,255,0.16),inset_0_-1px_0_rgba(255,255,255,0.03)]" />
         {!isLoaded && (
           <div className="absolute inset-0 z-30 flex items-center justify-center bg-white dark:bg-[#020202] backdrop-blur-md transition-colors duration-300">
             <div className="flex flex-col items-center gap-4 text-center">
