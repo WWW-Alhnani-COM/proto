@@ -435,51 +435,89 @@ const [formError, setFormError] = useState("");
     };
   }, []);
 
-  // ===== تحميل الصور بشكل متوازي مع تحميل جميع الإطارات فوراً =====
+  
+  // ===== تحميل الإطارات تدريجياً بعدد طلبات محدود =====
   useEffect(() => {
     let cancelled = false;
-    const loadedFrames: HTMLImageElement[] = new Array(framePaths.length);
+    let nextIndex = 0;
     let completed = 0;
+    let updateScheduled = false;
+    let updateRaf = 0;
 
-    const loadImage = (path: string, index: number) => {
-      const image = new window.Image();
-      image.loading = "eager";
-      image.onload = () => {
-        if (cancelled) return;
-        loadedFrames[index] = image;
-        completed += 1;
-        
-        setFrames([...loadedFrames]);
-        
-        if (index === 0) {
-          setIsFirstFrameReady(true);
-          setIsLoaded(true);
+    const loadedFrames: HTMLImageElement[] =
+      new Array(framePaths.length);
+
+    // جمع تحديثات الصور لتقليل إعادة التصيير
+    const scheduleFramesUpdate = () => {
+      if (updateScheduled || cancelled) return;
+
+      updateScheduled = true;
+
+      updateRaf = window.requestAnimationFrame(() => {
+        updateScheduled = false;
+
+        if (!cancelled) {
+          setFrames([...loadedFrames]);
         }
-        
-        if (completed >= 8 && !isLoaded) {
-          setIsLoaded(true);
-        }
-        
-        if (completed === framePaths.length) {
-          setIsLoaded(true);
-        }
-      };
-      image.onerror = () => {
-        if (cancelled) return;
-        completed += 1;
-        if (completed >= 8 && !isLoaded) {
-          setIsLoaded(true);
-        }
-      };
-      image.src = path;
+      });
     };
 
-    framePaths.forEach((path, index) => {
-      loadImage(path, index);
-    });
+    const loadImage = (path: string, index: number) =>
+      new Promise<void>((resolve) => {
+        const image = new window.Image();
+        image.decoding = "async";
 
-    const timer = setTimeout(() => {
-      if (!isLoaded) {
+        image.onload = () => {
+          if (!cancelled) {
+            loadedFrames[index] = image;
+            completed += 1;
+
+            scheduleFramesUpdate();
+
+            if (index === 0) {
+              setIsFirstFrameReady(true);
+              setIsLoaded(true);
+            }
+
+            if (completed === framePaths.length) {
+              setIsLoaded(true);
+            }
+          }
+
+          resolve();
+        };
+
+        image.onerror = () => {
+          if (!cancelled) {
+            completed += 1;
+
+            if (completed === framePaths.length) {
+              setIsLoaded(true);
+            }
+          }
+
+          resolve();
+        };
+
+        image.src = path;
+      });
+
+    // ستة طلبات متزامنة بدلاً من تحميل جميع الصور دفعة واحدة
+    const worker = async () => {
+      while (!cancelled && nextIndex < framePaths.length) {
+        const index = nextIndex++;
+        await loadImage(framePaths[index], index);
+      }
+    };
+
+    const workerCount = Math.min(6, framePaths.length);
+
+    void Promise.all(
+      Array.from({ length: workerCount }, () => worker())
+    );
+
+    const timer = window.setTimeout(() => {
+      if (!cancelled) {
         setIsLoaded(true);
       }
     }, 1500);
@@ -487,8 +525,12 @@ const [formError, setFormError] = useState("");
     return () => {
       cancelled = true;
       clearTimeout(timer);
+
+      if (updateRaf) {
+        window.cancelAnimationFrame(updateRaf);
+      }
     };
-  }, [framePaths, isLoaded]);
+  }, [framePaths]);
 
   // ===== تأثير الكتابة =====
   useEffect(() => {
