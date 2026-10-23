@@ -833,10 +833,9 @@ useEffect(() => {
       {/* ===== الخلفية الثابتة ===== */}
       <div className="fixed inset-0 z-0 overflow-hidden bg-black transition-colors duration-300">
         <canvas ref={canvasRef} className="h-full w-full opacity-90" />
-<div className="pointer-events-none absolute inset-0 overflow-hidden rounded-[inherit] bg-white/[0.025] backdrop-blur-[3px] transition-all duration-700" />
-<div className="pointer-events-none absolute inset-0 rounded-[inherit] bg-[linear-gradient(135deg,rgba(255,255,255,0.14)_0%,rgba(253,230,138,0.07)_22%,transparent_45%,rgba(255,255,255,0.025)_70%,rgba(180,83,9,0.06)_100%)] transition-opacity duration-700" />
-<div className="pointer-events-none absolute inset-0 rounded-[inherit] border border-white/[0.12] shadow-[inset_0_1px_0_rgba(255,255,255,0.16),inset_0_-1px_0_rgba(255,255,255,0.03)]" />
-        {!isLoaded && (
+<div className="pointer-events-none absolute inset-0 overflow-hidden rounded-[inherit] bg-black/[0.12] backdrop-blur-[3px] transition-all duration-700" />
+<div className="pointer-events-none absolute inset-0 rounded-[inherit] bg-[linear-gradient(135deg,rgba(255,255,255,0.10)_0%,rgba(0,0,0,0.08)_22%,transparent_45%,rgba(255,255,255,0.02)_70%,rgba(0,0,0,0.22)_100%)] transition-opacity duration-700" />
+<div className="pointer-events-none absolute inset-0 rounded-[inherit] border border-white/[0.12] shadow-[inset_0_1px_0_rgba(255,255,255,0.14),inset_0_-1px_0_rgba(0,0,0,0.18)]" />
           <div className="absolute inset-0 z-30 flex items-center justify-center bg-white dark:bg-[#020202] backdrop-blur-md transition-colors duration-300">
             <div className="flex flex-col items-center gap-4 text-center">
               <div className="h-12 w-12 animate-spin rounded-full border-[3px] border-black/10 dark:border-white/10 border-t-amber-400" />
