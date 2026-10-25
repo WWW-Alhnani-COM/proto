@@ -939,7 +939,7 @@ useEffect(() => {
             return (
               <motion.div
                 key={block.id}
-                className={`absolute max-w-[18rem] sm:max-w-[22rem] md:max-w-[28rem] px-4 sm:px-6 ${
+                className={`absolute max-w-[22rem] sm:max-w-[30rem] md:max-w-[38rem] px-3 sm:px-5 ${
                   block.align === "left"
                     ? "left-4 sm:left-6 md:left-16 top-1/2 -translate-y-1/2 text-left"
                     : block.align === "right"
@@ -959,16 +959,16 @@ useEffect(() => {
                   opacity: { duration: 0.3 }
                 }}
               >
-                <div>
+                <div className="rounded-2xl border border-amber-400/20 bg-black/35 px-5 py-5 sm:px-7 sm:py-7 md:px-9 md:py-8 backdrop-blur-md shadow-[0_20px_70px_rgba(0,0,0,0.4)]">
                   <motion.p 
-                    className="mb-1 sm:mb-2 text-[9px] sm:text-[11px] uppercase tracking-[0.3em] sm:tracking-[0.45em] text-amber-400 drop-shadow-md font-medium"
+                    className={`mb-3 sm:mb-4 text-sm sm:text-base md:text-lg uppercase tracking-[0.16em] sm:tracking-[0.22em] text-amber-300 drop-shadow-[0_2px_12px_rgba(251,191,36,0.35)] font-semibold ${block.id === 0 || block.id === 2 ? "hero-display-font" : "hero-arabic-font"}`}
                     animate={{ letterSpacing: inRange ? "0.45em" : "0.2em" }}
                     transition={{ duration: 0.3 }}
                   >
                     {block.title}
                   </motion.p>
                   <motion.h2 
-                    className="text-base sm:text-xl md:text-3xl font-bold leading-snug tracking-tight text-black dark:text-white drop-shadow-lg transition-colors duration-300"
+                    className={`text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold leading-[1.35] tracking-tight text-white drop-shadow-[0_4px_24px_rgba(0,0,0,0.85)] transition-colors duration-300 ${block.id === 2 ? "hero-display-font" : "hero-arabic-font"}`}
                     animate={{ scale: inRange ? 1 : 0.98 }}
                     transition={{ duration: 0.3 }}
                   >
