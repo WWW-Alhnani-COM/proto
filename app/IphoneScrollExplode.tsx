@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
 import NotchedProjectCard from "@/components/ui/notched-project-card";
+import AnimatedJobCard from "@/components/ui/animated-card";
 import LogoLoop from '../components/LogoLoop';
 import { 
   SiReact, 
@@ -1140,7 +1141,7 @@ useEffect(() => {
           </motion.div>
         </section>
 
-        {/* ===== قسم الخدمات ===== */}
+        {/* ===== قسم الخبرات والخدمات ===== */}
         <section id="services" className="max-w-6xl mx-auto px-4 sm:px-6 scroll-mt-28">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -1148,175 +1149,81 @@ useEffect(() => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-<div className="flex items-center justify-center gap-2 sm:gap-3 mb-2">
-  <span className="w-8 sm:w-10 h-0.5 bg-amber-400"></span>
-              <span className="text-amber-400 text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] font-medium">My Expertise</span>
+            <div className="mb-2 flex items-center justify-center gap-2 sm:gap-3">
+              <span className="h-0.5 w-8 bg-amber-400 sm:w-10" />
+              <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-amber-400 sm:text-xs sm:tracking-[0.3em]">My Expertise</span>
             </div>
-            
-<h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mt-2 mb-2 sm:mb-4 text-center text-black dark:text-white transition-colors duration-300">الخدمات التقنية المتكاملة</h2>
-            <p className="text-black/70 dark:text-white/80 mb-8 sm:mb-12 text-sm sm:text-base drop-shadow max-w-3xl mx-auto text-center transition-colors duration-300">
-              أقدم حلولاً برمجية شاملة تغطي كامل دورة حياة التطوير، من الواجهات الأمامية إلى البنية التحتية السحابية
+
+            <h2 className="mt-2 mb-2 text-center text-2xl font-bold text-black transition-colors duration-300 dark:text-white sm:mb-4 sm:text-3xl md:text-4xl">
+              الخدمات التقنية المتكاملة
+            </h2>
+            <p className="mx-auto mb-8 max-w-3xl text-center text-sm text-black/70 transition-colors duration-300 dark:text-white/80 sm:mb-12 sm:text-base">
+              حلول برمجية متكاملة تجمع بين التصميم الحديث، قوة الأنظمة الخلفية، وتطبيقات الموبايل والبنية السحابية.
             </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-              
-              <ElectricBorder
-                color="#F59E0B"
-                speed={1.2}
-                chaos={0.13}
-                borderRadius={16}
-                className="transition-all duration-300 hover:scale-[1.02]"
-              >
-                <div className="p-4 sm:p-6 bg-white/60 dark:bg-black/60 backdrop-blur-xl rounded-[16px] min-h-[180px] sm:min-h-[220px] transition-colors duration-300">
-                  <div className="flex items-start gap-3 sm:gap-4">
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-amber-400/10 flex items-center justify-center flex-shrink-0">
-                      <svg className="w-5 h-5 sm:w-6 sm:h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                      </svg>
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="text-base sm:text-xl font-semibold mb-1 sm:mb-2 text-black dark:text-white transition-colors duration-300">تطوير الواجهات الأمامية</h3>
-                      <p className="text-black/70 dark:text-white/80 text-xs sm:text-sm leading-relaxed transition-colors duration-300">
-                        بناء واجهات مستخدم تفاعلية وسريعة باستخدام <span className="text-amber-400/80">React.js</span>، 
-                        <span className="text-amber-400/80"> Angular</span>، 
-                        <span className="text-amber-400/80"> Bootstrap</span>، 
-                        <span className="text-amber-400/80"> JavaScript</span> و 
-                        <span className="text-amber-400/80"> TypeScript</span>.
-                      </p>
-                      <div className="flex flex-wrap gap-1.5 sm:gap-2 mt-2 sm:mt-3">
-                        <span className="text-[8px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">React</span>
-                        <span className="text-[8px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">Angular</span>
-                        <span className="text-[8px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">TypeScript</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </ElectricBorder>
-
-              <ElectricBorder
-                color="#F59E0B"
-                speed={1.2}
-                chaos={0.13}
-                borderRadius={16}
-                className="transition-all duration-300 hover:scale-[1.02]"
-              >
-                <div className="p-4 sm:p-6 bg-white/60 dark:bg-black/60 backdrop-blur-xl rounded-[16px] min-h-[180px] sm:min-h-[220px] transition-colors duration-300">
-                  <div className="flex items-start gap-3 sm:gap-4">
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-amber-400/10 flex items-center justify-center flex-shrink-0">
-                      <svg className="w-5 h-5 sm:w-6 sm:h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
-                      </svg>
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="text-base sm:text-xl font-semibold mb-1 sm:mb-2 text-black dark:text-white transition-colors duration-300">تطوير الخلفية والـ APIs</h3>
-                      <p className="text-black/70 dark:text-white/80 text-xs sm:text-sm leading-relaxed transition-colors duration-300">
-                        تصميم وتطوير أنظمة خلفية قوية وآمنة باستخدام <span className="text-amber-400/80">.NET Core</span>، 
-                        <span className="text-amber-400/80"> Node.js</span> و 
-                        <span className="text-amber-400/80"> Laravel</span>.
-                      </p>
-                      <div className="flex flex-wrap gap-1.5 sm:gap-2 mt-2 sm:mt-3">
-                        <span className="text-[8px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">.NET Core</span>
-                        <span className="text-[8px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">Node.js</span>
-                        <span className="text-[8px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">Laravel</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </ElectricBorder>
-
-              <ElectricBorder
-                color="#F59E0B"
-                speed={1.2}
-                chaos={0.13}
-                borderRadius={16}
-                className="transition-all duration-300 hover:scale-[1.02]"
-              >
-                <div className="p-4 sm:p-6 bg-white/60 dark:bg-black/60 backdrop-blur-xl rounded-[16px] min-h-[180px] sm:min-h-[220px] transition-colors duration-300">
-                  <div className="flex items-start gap-3 sm:gap-4">
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-amber-400/10 flex items-center justify-center flex-shrink-0">
-                      <svg className="w-5 h-5 sm:w-6 sm:h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                      </svg>
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="text-base sm:text-xl font-semibold mb-1 sm:mb-2 text-black dark:text-white transition-colors duration-300">تطبيقات الموبايل</h3>
-                      <p className="text-black/70 dark:text-white/80 text-xs sm:text-sm leading-relaxed transition-colors duration-300">
-                        تطوير تطبيقات متعددة المنصات <span className="text-amber-400/80">(Cross-Platform)</span> باستخدام 
-                        <span className="text-amber-400/80"> Flutter</span>.
-                      </p>
-                      <div className="flex flex-wrap gap-1.5 sm:gap-2 mt-2 sm:mt-3">
-                        <span className="text-[8px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">Flutter</span>
-                        <span className="text-[8px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">Java</span>
-                        <span className="text-[8px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">Python</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </ElectricBorder>
-
-              <ElectricBorder
-                color="#F59E0B"
-                speed={1.2}
-                chaos={0.13}
-                borderRadius={16}
-                className="transition-all duration-300 hover:scale-[1.02]"
-              >
-                <div className="p-4 sm:p-6 bg-white/60 dark:bg-black/60 backdrop-blur-xl rounded-[16px] min-h-[180px] sm:min-h-[220px] transition-colors duration-300">
-                  <div className="flex items-start gap-3 sm:gap-4">
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-amber-400/10 flex items-center justify-center flex-shrink-0">
-                      <svg className="w-5 h-5 sm:w-6 sm:h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
-                      </svg>
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="text-base sm:text-xl font-semibold mb-1 sm:mb-2 text-black dark:text-white transition-colors duration-300">قواعد البيانات والسحابة</h3>
-                      <p className="text-black/70 dark:text-white/80 text-xs sm:text-sm leading-relaxed transition-colors duration-300">
-                        إدارة قواعد البيانات ونشر التطبيقات على منصات سحابية مثل <span className="text-amber-400/80">AWS</span> و 
-                        <span className="text-amber-400/80"> Azure</span>.
-                      </p>
-                      <div className="flex flex-wrap gap-1.5 sm:gap-2 mt-2 sm:mt-3">
-                        <span className="text-[8px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">Docker</span>
-                        <span className="text-[8px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">AWS</span>
-                        <span className="text-[8px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full bg-amber-400/10 text-amber-400/70 border border-amber-400/20">Azure</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </ElectricBorder>
-
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4" style={{ perspective: "1000px" }}>
+              <AnimatedJobCard
+                companyLogo={<SiReact className="h-6 w-6" />}
+                companyName="WEB DEVELOPMENT"
+                jobTitle="تطوير واجهات الويب"
+                salary="واجهات سريعة ومتجاوبة وتجارب استخدام عصرية تناسب مختلف الأجهزة."
+                tags={["React", "Next.js", "Angular", "TypeScript"]}
+                postedDate="تصميم وتجربة مستخدم"
+                variant="pink"
+              />
+              <AnimatedJobCard
+                companyLogo={<SiLaravel className="h-6 w-6" />}
+                companyName="BACKEND & API"
+                jobTitle="الأنظمة الخلفية وواجهات API"
+                salary="بناء أنظمة آمنة وقابلة للتوسع، وربط الخدمات وقواعد البيانات."
+                tags={[".NET Core", "Laravel", "Node.js", "REST API"]}
+                postedDate="هندسة الأنظمة"
+                variant="yellow"
+              />
+              <AnimatedJobCard
+                companyLogo={<SiFlutter className="h-6 w-6" />}
+                companyName="MOBILE APPLICATIONS"
+                jobTitle="تطبيقات الموبايل"
+                salary="تطوير تطبيقات متعددة المنصات مع تجربة استخدام سلسة وعملية."
+                tags={["Flutter", "Android", "Firebase"]}
+                postedDate="تطبيقات متعددة المنصات"
+                variant="blue"
+              />
+              <AnimatedJobCard
+                companyLogo={<FaAws className="h-6 w-6" />}
+                companyName="CLOUD & DATABASES"
+                jobTitle="قواعد البيانات والنشر السحابي"
+                salary="تصميم قواعد البيانات ونشر التطبيقات وتحسين الاستقرار والأداء."
+                tags={["SQL", "MySQL", "Docker", "AWS", "Azure"]}
+                postedDate="النشر والتشغيل"
+                variant="purple"
+              />
             </div>
 
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="mt-8 sm:mt-12 grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 p-4 sm:p-8 rounded-2xl bg-white/30 dark:bg-black/30 backdrop-blur-md border border-black/5 dark:border-white/5 transition-colors duration-300"
+              className="mt-8 grid grid-cols-2 gap-3 rounded-2xl border border-black/5 bg-white/30 p-4 backdrop-blur-md transition-colors duration-300 dark:border-white/5 dark:bg-black/30 sm:mt-12 sm:grid-cols-4 sm:gap-4 sm:p-8"
             >
               <div className="text-center">
-                <span className="block text-2xl sm:text-3xl font-bold text-amber-400">
-                  <CountUp from={0} to={4} duration={2} separator="" className="count-up-text" />+
-                </span>
-                <span className="text-[8px] sm:text-[10px] text-black/40 dark:text-white/40 uppercase tracking-wider mt-1 block">سنوات خبرة</span>
+                <span className="block text-2xl font-bold text-amber-400 sm:text-3xl"><CountUp from={0} to={4} duration={2} separator="" className="count-up-text" />+</span>
+                <span className="mt-1 block text-[8px] text-black/40 dark:text-white/40 sm:text-[10px]">سنوات خبرة</span>
               </div>
               <div className="text-center">
-                <span className="block text-2xl sm:text-3xl font-bold text-amber-400">
-                  <CountUp from={0} to={123} duration={2.5} separator="" className="count-up-text" />+
-                </span>
-                <span className="text-[8px] sm:text-[10px] text-black/40 dark:text-white/40 uppercase tracking-wider mt-1 block">مشروع منجز</span>
+                <span className="block text-2xl font-bold text-amber-400 sm:text-3xl"><CountUp from={0} to={95} duration={2.5} separator="" className="count-up-text" />+</span>
+                <span className="mt-1 block text-[8px] text-black/40 dark:text-white/40 sm:text-[10px]">مشروع برمجي</span>
               </div>
               <div className="text-center">
-                <span className="block text-2xl sm:text-3xl font-bold text-amber-400">
-                  <CountUp from={0} to={200} duration={2.5} separator="" className="count-up-text" />+
-                </span>
-                <span className="text-[8px] sm:text-[10px] text-black/40 dark:text-white/40 uppercase tracking-wider mt-1 block">عميل سعيد</span>
+                <span className="block text-2xl font-bold text-amber-400 sm:text-3xl"><CountUp from={0} to={13} duration={2.5} separator="" className="count-up-text" />+</span>
+                <span className="mt-1 block text-[8px] text-black/40 dark:text-white/40 sm:text-[10px]">نظام مؤسسي</span>
               </div>
               <div className="text-center">
-                <span className="block text-2xl sm:text-3xl font-bold text-amber-400">24/7</span>
-                <span className="text-[8px] sm:text-[10px] text-black/40 dark:text-white/40 uppercase tracking-wider mt-1 block">دعم فني</span>
+                <span className="block text-2xl font-bold text-amber-400 sm:text-3xl">24/7</span>
+                <span className="mt-1 block text-[8px] text-black/40 dark:text-white/40 sm:text-[10px]">دعم للمشاريع</span>
               </div>
             </motion.div>
-
           </motion.div>
         </section>
 
