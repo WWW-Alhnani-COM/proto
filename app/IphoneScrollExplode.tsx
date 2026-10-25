@@ -845,13 +845,15 @@ useEffect(() => {
         <div
           className={`pointer-events-none absolute inset-x-0 bottom-0 z-[9] h-[48vh] transition-opacity duration-1000 ${isHeroFinished ? "opacity-100" : "opacity-0"}`}
           style={{
-            background: "#000",
-            backdropFilter: "blur(16px)",
-            WebkitBackdropFilter: "blur(16px)",
+            background:
+              "linear-gradient(to bottom, rgba(255,255,255,0.06) 0%, rgba(0,0,0,0.08) 38%, rgba(0,0,0,0.42) 72%, rgba(0,0,0,0.72) 100%)",
+            backdropFilter: "blur(16px) saturate(115%)",
+            WebkitBackdropFilter: "blur(16px) saturate(115%)",
             WebkitMaskImage:
-              "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.25) 30%, rgba(0,0,0,0.85) 52%, #000 68%, #000 100%)",
+              "linear-gradient(to bottom, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.82) 24%, #000 48%, #000 100%)",
             maskImage:
-              "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.25) 30%, rgba(0,0,0,0.85) 52%, #000 68%, #000 100%)",
+              "linear-gradient(to bottom, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.82) 24%, #000 48%, #000 100%)",
+            borderTop: "1px solid rgba(255,255,255,0.08)",
           }}
           aria-hidden="true"
         />
