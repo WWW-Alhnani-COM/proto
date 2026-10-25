@@ -847,8 +847,8 @@ useEffect(() => {
           style={{
             background:
               "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.18) 25%, rgba(0,0,0,0.7) 72%, #000 100%)",
-            backdropFilter: "blur(2px)",
-            WebkitBackdropFilter: "blur(2px)",
+            backdropFilter: "blur(10px)",
+            WebkitBackdropFilter: "blur(10px)",
           }}
           aria-hidden="true"
         />
