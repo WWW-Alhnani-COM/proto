@@ -841,6 +841,18 @@ useEffect(() => {
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.10)_0%,rgba(0,0,0,0.08)_22%,transparent_45%,rgba(255,255,255,0.02)_70%,rgba(0,0,0,0.22)_100%)] transition-opacity duration-700" />
         <div className="pointer-events-none absolute inset-0 border border-white/[0.12] shadow-[inset_0_1px_0_rgba(255,255,255,0.14),inset_0_-1px_0_rgba(0,0,0,0.18)]" />
 
+        {/* تدرّج أسود ضبابي يظهر بعد اكتمال حركة الصور، ويبقى المحتوى فوقه */}
+        <div
+          className={`pointer-events-none absolute inset-x-0 bottom-0 z-10 h-[38vh] transition-opacity duration-700 ${isHeroFinished ? "opacity-100" : "opacity-0"}`}
+          style={{
+            background:
+              "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.18) 25%, rgba(0,0,0,0.7) 72%, #000 100%)",
+            backdropFilter: "blur(2px)",
+            WebkitBackdropFilter: "blur(2px)",
+          }}
+          aria-hidden="true"
+        />
+
         {/* أبقِ شرط عرض شاشة التحميل الأصلي هنا */}
                {!isLoaded && (
           <div className="absolute inset-0 z-30 flex items-center justify-center bg-white dark:bg-[#020202] backdrop-blur-md transition-colors duration-300">
