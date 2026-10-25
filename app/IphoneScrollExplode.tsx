@@ -1410,44 +1410,7 @@ useEffect(() => {
       سواء كنت بحاجة إلى تطبيق موبايل أو موقع إلكتروني، تواصل معي الآن وسنبدأ العمل مباشرة.
     </p>
 
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-
-      {/* معلومات التواصل */}
-      <div className="space-y-4 sm:space-y-6 md:col-span-1 p-4 sm:p-6 rounded-2xl bg-white/40 dark:bg-black/40 backdrop-blur-md border border-black/10 dark:border-white/10 shadow-lg h-fit transition-colors duration-300">
-        <div>
-          <span className="text-[10px] sm:text-xs text-black/50 dark:text-white/50 block mb-1">
-            العنوان
-          </span>
-          <p className="text-black/90 dark:text-white/90 text-xs sm:text-sm">
-            Yemen, Sanaa, Airport Road
-          </p>
-        </div>
-
-        <div>
-          <span className="text-[10px] sm:text-xs text-black/50 dark:text-white/50 block mb-1">
-            الهاتف
-          </span>
-          <a
-            href="tel:+967774218060"
-            className="text-black/90 dark:text-white/90 text-xs sm:text-sm font-mono hover:text-amber-500 transition-colors"
-          >
-            +967 774218060
-          </a>
-        </div>
-
-        <div>
-          <span className="text-[10px] sm:text-xs text-black/50 dark:text-white/50 block mb-1">
-            البريد الإلكتروني
-          </span>
-          <a
-            href="mailto:mohammadalhnani2004@gmail.com"
-            className="text-black/90 dark:text-white/90 text-xs sm:text-sm font-mono break-all hover:text-amber-500 transition-colors"
-          >
-            mohammadalhnani2004@gmail.com
-          </a>
-        </div>
-      </div>
-
+    <div className="max-w-2xl mx-auto">
       {/* نموذج إرسال الرسائل */}
       <form
         onSubmit={async (e) => {
@@ -1496,7 +1459,7 @@ useEffect(() => {
             setFormSending(false);
           }
         }}
-        className="md:col-span-2 space-y-3 sm:space-y-4 p-4 sm:p-6 rounded-2xl bg-white/40 dark:bg-black/40 backdrop-blur-md border border-black/10 dark:border-white/10 shadow-lg transition-colors duration-300"
+        className="space-y-4 sm:space-y-5 p-5 sm:p-7 rounded-2xl bg-white/40 dark:bg-black/40 backdrop-blur-md border border-black/10 dark:border-white/10 shadow-lg transition-colors duration-300"
       >
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
 
