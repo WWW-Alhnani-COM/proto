@@ -1112,7 +1112,7 @@ useEffect(() => {
                 </div>
               </div>
               
-              <div className="lg:col-span-3 flex flex-col items-center gap-5 sm:gap-6 text-center">
+              <div className="lg:col-span-3 flex h-full flex-col items-center text-center">
                 <div className="w-full">
                   <div className="flex items-center justify-center gap-2 mb-3">
                     <span className="h-px w-7 bg-amber-400/70" />
@@ -1132,37 +1132,14 @@ useEffect(() => {
                   </div>
                 </div>
 
-                <div className="relative w-full max-w-2xl rounded-2xl border border-black/[0.07] dark:border-white/[0.09] bg-gradient-to-br from-white/70 to-white/30 dark:from-white/[0.055] dark:to-white/[0.015] px-4 py-4 sm:px-6 sm:py-5 shadow-sm">
-                  <span className="absolute right-0 top-4 bottom-4 w-[3px] rounded-full bg-amber-400/80" />
+                <div className="relative mt-6 lg:mt-auto w-full rounded-2xl border border-black/[0.07] dark:border-white/[0.09] bg-gradient-to-br from-white/70 to-white/30 dark:from-white/[0.055] dark:to-white/[0.015] px-4 py-4 sm:px-6 sm:py-5 shadow-sm text-center">
+                  <span className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-amber-400/70 to-transparent" />
                   <p className="text-sm sm:text-base md:text-[17px] leading-7 sm:leading-8 text-black/70 dark:text-white/75 transition-colors duration-300">
                     مطور برمجيات شغوف بتطوير حلول تقنية مبتكرة وفعالة. أمتلك خبرة في بناء
                     تطبيقات الويب والموبايل باستخدام أحدث التقنيات، مع التركيز على جودة الكود
                     وتجربة المستخدم. أسعى دائماً لتقديم قيمة مضافة لعملائي من خلال حلول برمجية
                     احترافية تلبي احتياجاتهم وتتجاوز توقعاتهم.
                   </p>
-                </div>
-
-                <div className="grid w-full grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div className="group relative min-h-[88px] overflow-hidden rounded-2xl border border-black/[0.08] dark:border-white/[0.09] bg-white/55 dark:bg-white/[0.025] px-4 py-3.5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-amber-400/45 hover:shadow-[0_10px_30px_rgba(245,158,11,0.08)]">
-                    <span className="absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-amber-400/70 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                    <span className="mb-2 block text-[10px] sm:text-[11px] font-semibold tracking-wider text-black/45 dark:text-white/45">الاسم</span>
-                    <span className="block break-words text-xs sm:text-sm font-semibold text-black dark:text-white">Mohammed Al-Hanani</span>
-                  </div>
-                  <div className="group relative min-h-[88px] overflow-hidden rounded-2xl border border-black/[0.08] dark:border-white/[0.09] bg-white/55 dark:bg-white/[0.025] px-4 py-3.5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-amber-400/45 hover:shadow-[0_10px_30px_rgba(245,158,11,0.08)]">
-                    <span className="absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-amber-400/70 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                    <span className="mb-2 block text-[10px] sm:text-[11px] font-semibold tracking-wider text-black/45 dark:text-white/45">البريد الإلكتروني</span>
-                    <span className="block break-all text-xs sm:text-sm font-semibold text-black dark:text-white">Mohammadalhnani@gmail.com</span>
-                  </div>
-                  <div className="group relative min-h-[88px] overflow-hidden rounded-2xl border border-black/[0.08] dark:border-white/[0.09] bg-white/55 dark:bg-white/[0.025] px-4 py-3.5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-amber-400/45 hover:shadow-[0_10px_30px_rgba(245,158,11,0.08)]">
-                    <span className="absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-amber-400/70 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                    <span className="mb-2 block text-[10px] sm:text-[11px] font-semibold tracking-wider text-black/45 dark:text-white/45">المكان</span>
-                    <span className="block text-xs sm:text-sm font-semibold text-black dark:text-white">Yemen, Sanaa</span>
-                  </div>
-                  <div className="group relative min-h-[88px] overflow-hidden rounded-2xl border border-amber-400/20 bg-gradient-to-br from-amber-400/[0.11] to-white/30 dark:to-white/[0.02] px-4 py-3.5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-amber-400/50 hover:shadow-[0_10px_30px_rgba(245,158,11,0.1)]">
-                    <span className="absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent" />
-                    <span className="mb-2 block text-[10px] sm:text-[11px] font-semibold tracking-wider text-black/45 dark:text-white/45">الخبرة</span>
-                    <span className="block text-sm sm:text-base font-extrabold text-amber-500 dark:text-amber-300">4+ سنوات</span>
-                  </div>
                 </div>
 
                 {/* <div className="p-4 sm:p-5 rounded-xl bg-gradient-to-r from-amber-400/5 to-transparent border border-amber-400/10">
