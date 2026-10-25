@@ -959,16 +959,16 @@ useEffect(() => {
                   opacity: { duration: 0.3 }
                 }}
               >
-                <div className="rounded-2xl border border-amber-400/20 bg-black/35 px-5 py-5 sm:px-7 sm:py-7 md:px-9 md:py-8 backdrop-blur-md shadow-[0_20px_70px_rgba(0,0,0,0.4)]">
+                <div className="w-full">
                   <motion.p 
-                    className={`mb-3 sm:mb-4 text-sm sm:text-base md:text-lg uppercase tracking-[0.16em] sm:tracking-[0.22em] text-amber-300 drop-shadow-[0_2px_12px_rgba(251,191,36,0.35)] font-semibold ${block.id === 0 || block.id === 2 ? "hero-display-font" : "hero-arabic-font"}`}
-                    animate={{ letterSpacing: inRange ? "0.45em" : "0.2em" }}
+                    className={`mb-2 sm:mb-3 whitespace-nowrap text-xl sm:text-3xl md:text-5xl lg:text-6xl tracking-tight text-amber-300 drop-shadow-[0_3px_16px_rgba(0,0,0,0.9)] font-bold ${block.id === 0 || block.id === 2 ? "hero-display-font" : "hero-arabic-font"}`}
+                    animate={{ letterSpacing: inRange ? "-0.02em" : "0em" }}
                     transition={{ duration: 0.3 }}
                   >
                     {block.title}
                   </motion.p>
                   <motion.h2 
-                    className={`text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold leading-[1.35] tracking-tight text-white drop-shadow-[0_4px_24px_rgba(0,0,0,0.85)] transition-colors duration-300 ${block.id === 2 ? "hero-display-font" : "hero-arabic-font"}`}
+                    className={`text-base sm:text-lg md:text-2xl lg:text-3xl font-medium leading-relaxed tracking-normal text-white drop-shadow-[0_3px_12px_rgba(0,0,0,0.95)] transition-colors duration-300 ${block.id === 2 ? "hero-display-font" : "hero-arabic-font"}`}
                     animate={{ scale: inRange ? 1 : 0.98 }}
                     transition={{ duration: 0.3 }}
                   >
