@@ -335,3 +335,15 @@ canvas {
     font-size: 16px;
   }
 }
+
+/* ===== Hero scroll typography ===== */
+.hero-arabic-font {
+  font-family: var(--font-arabic), Tahoma, Arial, sans-serif;
+  text-wrap: balance;
+}
+
+.hero-display-font {
+  font-family: var(--font-display), var(--font-geist-sans), Arial, sans-serif;
+  text-wrap: balance;
+}
+
