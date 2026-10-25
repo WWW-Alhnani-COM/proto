@@ -841,14 +841,26 @@ useEffect(() => {
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.10)_0%,rgba(0,0,0,0.08)_22%,transparent_45%,rgba(255,255,255,0.02)_70%,rgba(0,0,0,0.22)_100%)] transition-opacity duration-700" />
         <div className="pointer-events-none absolute inset-0 border border-white/[0.12] shadow-[inset_0_1px_0_rgba(255,255,255,0.14),inset_0_-1px_0_rgba(0,0,0,0.18)]" />
 
-        {/* تدرّج أسود ضبابي يظهر بعد اكتمال حركة الصور، ويبقى المحتوى فوقه */}
+        {/* ضبابية مستقلة أسفل التدرّج الأسود لزيادة العمق البصري */}
         <div
-          className={`pointer-events-none absolute inset-x-0 bottom-0 z-10 h-[38vh] transition-opacity duration-700 ${isHeroFinished ? "opacity-100" : "opacity-0"}`}
+          className={`pointer-events-none absolute inset-x-0 bottom-0 z-[9] h-[48vh] transition-opacity duration-1000 ${isHeroFinished ? "opacity-100" : "opacity-0"}`}
+          style={{
+            backdropFilter: "blur(14px)",
+            WebkitBackdropFilter: "blur(14px)",
+            WebkitMaskImage:
+              "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.75) 32%, #000 58%, #000 100%)",
+            maskImage:
+              "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.75) 32%, #000 58%, #000 100%)",
+          }}
+          aria-hidden="true"
+        />
+
+        {/* تدرّج أسود أقوى من الأعلى إلى الأسفل، مع إبقاء المحتوى في المقدمة */}
+        <div
+          className={`pointer-events-none absolute inset-x-0 bottom-0 z-10 h-[48vh] transition-opacity duration-1000 ${isHeroFinished ? "opacity-100" : "opacity-0"}`}
           style={{
             background:
-              "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.18) 25%, rgba(0,0,0,0.7) 72%, #000 100%)",
-            backdropFilter: "blur(10px)",
-            WebkitBackdropFilter: "blur(10px)",
+              "linear-gradient(to bottom, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.28) 22%, rgba(0,0,0,0.62) 52%, rgba(0,0,0,0.88) 78%, #000 100%)",
           }}
           aria-hidden="true"
         />
