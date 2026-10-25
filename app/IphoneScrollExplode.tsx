@@ -627,12 +627,9 @@ useEffect(() => {
       return;
     }
 
-    // اختيار الإطار بناءً على scrollProgress، لكن إذا كان 0 نستخدم الإطار الأول
-    // عند اكتمال التمرير، ثبّت الخلفية على الإطار 030 (الفهرس 29).
+    // اختيار الإطار وفق حركة التمرير؛ يستمر التسلسل حتى آخر إطار.
     let frameIndex = 0;
-    if (scrollProgress >= 1) {
-      frameIndex = Math.min(29, frames.length - 1);
-    } else if (scrollProgress > 0) {
+    if (scrollProgress > 0) {
       frameIndex = Math.min(frames.length - 1, Math.max(0, Math.round(scrollProgress * (frames.length - 1))));
     }
     
@@ -1190,7 +1187,7 @@ useEffect(() => {
                 salary="واجهات سريعة ومتجاوبة وتجارب استخدام عصرية تناسب مختلف الأجهزة."
                 tags={["React", "Next.js", "Angular", "TypeScript"]}
                 postedDate="تصميم وتجربة مستخدم"
-                variant="pink"
+                variant="yellow"
               />
               <AnimatedJobCard
                 companyLogo={<SiLaravel className="h-6 w-6" />}
@@ -1208,7 +1205,7 @@ useEffect(() => {
                 salary="تطوير تطبيقات متعددة المنصات مع تجربة استخدام سلسة وعملية."
                 tags={["Flutter", "Android", "Firebase"]}
                 postedDate="تطبيقات متعددة المنصات"
-                variant="blue"
+                variant="yellow"
               />
               <AnimatedJobCard
                 companyLogo={<FaAws className="h-6 w-6" />}
@@ -1217,7 +1214,7 @@ useEffect(() => {
                 salary="تصميم قواعد البيانات ونشر التطبيقات وتحسين الاستقرار والأداء."
                 tags={["SQL", "MySQL", "Docker", "AWS", "Azure"]}
                 postedDate="النشر والتشغيل"
-                variant="purple"
+                variant="yellow"
               />
             </div>
 
