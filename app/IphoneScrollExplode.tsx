@@ -20,7 +20,6 @@ import {
   SiDocker
 } from 'react-icons/si';
 import { FaAws } from 'react-icons/fa';
-import { FaSun, FaMoon } from 'react-icons/fa';
 import CountUp from "@/components/CountUp";
 import PixelTransition from "@/components/PixelTransition";
 import ElectricBorder from '@/components/ElectricBorder';
@@ -379,17 +378,12 @@ const [formError, setFormError] = useState("");
   const [showAllProjects, setShowAllProjects] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
-  // ===== حالة الثيم (داكن/نهاري) =====
-  const [isDark, setIsDark] = useState(true); // ← التغيير: true بدلاً من false لجعل الثيم الليلي افتراضياً
+  // ===== الثيم الداكن ثابت بعد إزالة زر تبديل الثيم =====
+  const isDark = true;
 
-  // تأثير تبديل الثيم
   useEffect(() => {
-    if (isDark) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }, [isDark]);
+    document.documentElement.classList.add('dark');
+  }, []);
 
   const framePaths = useMemo(
     () => Array.from({ length: FRAME_COUNT }, (_, index) => getFramePath(index)),
@@ -634,8 +628,11 @@ useEffect(() => {
     }
 
     // اختيار الإطار بناءً على scrollProgress، لكن إذا كان 0 نستخدم الإطار الأول
+    // عند اكتمال التمرير، ثبّت الخلفية على الإطار 030 (الفهرس 29).
     let frameIndex = 0;
-    if (scrollProgress > 0) {
+    if (scrollProgress >= 1) {
+      frameIndex = Math.min(29, frames.length - 1);
+    } else if (scrollProgress > 0) {
       frameIndex = Math.min(frames.length - 1, Math.max(0, Math.round(scrollProgress * (frames.length - 1))));
     }
     
@@ -757,13 +754,6 @@ useEffect(() => {
           </nav>
 
           <div className="hidden md:flex items-center gap-3">
-            <button
-              onClick={() => setIsDark(!isDark)}
-              className="w-9 h-9 rounded-full bg-black/5 dark:bg-white/10 backdrop-blur-sm border border-black/20 dark:border-white/20 hover:bg-black/10 dark:hover:bg-white/20 transition-all flex items-center justify-center text-black/80 dark:text-white/80 hover:text-amber-400 dark:hover:text-amber-400"
-              aria-label="Toggle theme"
-            >
-              {isDark ? <FaSun className="w-4 h-4" /> : <FaMoon className="w-4 h-4" />}
-            </button>
             <a
               href="#contact"
               className="px-4 lg:px-5 py-1.5 lg:py-2 rounded-xl bg-amber-400 text-black font-semibold text-xs lg:text-sm hover:bg-amber-300 transition-colors shadow-lg shadow-amber-400/20"
@@ -822,16 +812,6 @@ useEffect(() => {
             >
               التقنيات
             </a>
-            <button
-              onClick={() => {
-                setIsDark(!isDark);
-                setMobileMenuOpen(false);
-              }}
-              className="w-full py-3 rounded-xl bg-black/5 dark:bg-white/10 text-black/80 dark:text-white/80 hover:text-amber-400 transition-colors text-sm font-medium flex items-center justify-center gap-2"
-            >
-              {isDark ? <FaSun className="w-4 h-4" /> : <FaMoon className="w-4 h-4" />}
-              {isDark ? 'الوضع النهاري' : 'الوضع الليلي'}
-            </button>
             <a
               href="#contact"
               onClick={() => setMobileMenuOpen(false)}
