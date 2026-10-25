@@ -18,6 +18,8 @@ const cairo = Cairo({
   display: "swap",
 });
 
+const SITE_URL = "https://alhanani.onrender.com";
+
 const manrope = Manrope({
   variable: "--font-display",
   subsets: ["latin"],
@@ -25,7 +27,7 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://alhanani.onrender.com/"),
+  metadataBase: new URL(SITE_URL),
   title: "محمد الحناني | مبرمج فل استاك - Full-Stack Web Developer",
   description:
     "محمد الحناني، مبرمج فل استاك (Full-Stack) ومطور تطبيقات ويب وموبايل. خبرة 4+ سنوات في React، Next.js، Flutter، Laravel. أفضل مبرمج يمني متخصص في بناء حلول برمجية مبتكرة. الحناني للبرمجيات تقدم خدمات تطوير متكاملة.",
@@ -58,7 +60,7 @@ export const metadata: Metadata = {
     title: "محمد الحناني | مبرمج فل استاك - Full-Stack Web Developer",
     description:
       "محمد الحناني، مبرمج فل استاك ومطور ويب وموبايل. خبرة 4+ سنوات في React، Next.js، Flutter، Laravel. أفضل مبرمج يمني - الحناني للبرمجيات.",
-    url: "https://alhanani.onrender.com/",
+    url: SITE_URL,
     siteName: "Mohammed Al-Hanani Portfolio",
     images: [
       {
@@ -84,9 +86,12 @@ export const metadata: Metadata = {
   },
   // إضافات SEO مفيدة
   authors: [{ name: "Mohammed Al-Hanani" }],
-  robots: "index, follow",
+  robots: {
+    index: true,
+    follow: true,
+  },
   alternates: {
-    canonical: "https://alhanani.onrender.com/",
+    canonical: SITE_URL,
   },
 };
 
