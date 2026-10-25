@@ -344,6 +344,7 @@ export default function PortfolioMain() {
   const [frames, setFrames] = useState<HTMLImageElement[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [aboutGradientProgress, setAboutGradientProgress] = useState(0);
   const [isFirstFrameReady, setIsFirstFrameReady] = useState(false);
 
   // ===== نصوص ثابتة لتأثير الكتابة =====
@@ -412,6 +413,17 @@ const [formError, setFormError] = useState("");
       const nextProgress = Math.min(1, Math.max(0, window.scrollY / heroScrollDistance));
       progressRef.current = nextProgress;
       setScrollProgress(nextProgress);
+
+      // يبدأ التدرّج عند الوصول إلى موضع قسم About Me، ثم يكتمل تدريجيًا خلال ارتفاع شاشة.
+      const aboutSection = document.getElementById("about");
+      if (aboutSection) {
+        const aboutStart = aboutSection.getBoundingClientRect().top + window.scrollY;
+        const gradientProgress = Math.min(
+          1,
+          Math.max(0, (window.scrollY - aboutStart) / Math.max(1, window.innerHeight))
+        );
+        setAboutGradientProgress(gradientProgress);
+      }
     };
 
     // تحديث فوري
@@ -843,12 +855,13 @@ useEffect(() => {
 
         {/* طبقة زجاجية ضبابية واضحة تمتد من منتصف الشاشة إلى الأسفل */}
         <div
-          className={`pointer-events-none absolute inset-x-0 bottom-0 z-[9] h-[68vh] transition-opacity duration-1000 ${isHeroFinished ? "opacity-100" : "opacity-0"}`}
+          className="pointer-events-none absolute inset-x-0 bottom-0 z-[9] h-[68vh]"
           style={{
+            opacity: aboutGradientProgress,
             background:
               "linear-gradient(to bottom, rgba(8,8,8,0.02) 0%, rgba(8,8,8,0.16) 24%, rgba(5,5,5,0.48) 58%, rgba(0,0,0,0.88) 100%)",
-            backdropFilter: "blur(20px) saturate(125%)",
-            WebkitBackdropFilter: "blur(20px) saturate(125%)",
+            backdropFilter: `blur(${20 * aboutGradientProgress}px) saturate(125%)`,
+            WebkitBackdropFilter: `blur(${20 * aboutGradientProgress}px) saturate(125%)`,
             WebkitMaskImage:
               "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.35) 12%, #000 38%, #000 100%)",
             maskImage:
@@ -860,8 +873,9 @@ useEffect(() => {
 
         {/* تدرّج أسود مستقل وأوضح لضمان ظهور الانتقال حتى الأسود الكامل */}
         <div
-          className={`pointer-events-none absolute inset-x-0 bottom-0 z-10 h-[68vh] transition-opacity duration-1000 ${isHeroFinished ? "opacity-100" : "opacity-0"}`}
+          className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-[68vh]"
           style={{
+            opacity: aboutGradientProgress,
             background:
               "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.10) 12%, rgba(0,0,0,0.30) 34%, rgba(0,0,0,0.68) 58%, rgba(0,0,0,0.92) 78%, #000 100%)",
           }}
