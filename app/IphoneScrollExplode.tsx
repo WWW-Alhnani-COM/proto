@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
-import ProfileCard from '../components/ProfileCard';
+import NotchedProjectCard from "@/components/ui/notched-project-card";
 import LogoLoop from '../components/LogoLoop';
 import { 
   SiReact, 
@@ -1354,25 +1354,21 @@ useEffect(() => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.05 }}
-                  className="flex justify-center w-full"
+                  className="flex w-full"
                 >
-                  <ProfileCard
-                    name={project.name}
-                    title={project.title}
-                    handle={project.handle}
-                    status={project.status}
-                    contactText={project.contactText}
-                    avatarUrl={project.avatarUrl}
-                    iconUrl={project.iconUrl}
-                    miniAvatarUrl={project.miniAvatarUrl}
-                    showUserInfo={true}
-                    enableTilt={!isMobile}
-                    enableMobileTilt={true}
-                    behindGlowEnabled={true}
-                    behindGlowColor="rgba(255, 215, 0, 0.2)"
-                    innerGradient="linear-gradient(145deg, #f5f5f5 0%, #e8e8e8 50%, #d4d4d4 100%)"
-                    onContactClick={() => handleProjectClick(project.link)}
-                    className="w-full max-w-[320px] sm:max-w-sm md:max-w-md mx-auto"
+                  <NotchedProjectCard
+                    href={project.link}
+                    title={project.name}
+                    description={project.description}
+                    image={project.avatarUrl}
+                    imageAlt={project.name}
+                    badge={project.status}
+                    tags={[project.title]}
+                    monochrome
+                    surface={isDark ? "#020202" : "#ffffff"}
+                    accent="#FBBF24"
+                    accentForeground="#111111"
+                    className="w-full"
                   />
                 </motion.div>
               ))}
