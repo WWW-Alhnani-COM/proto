@@ -841,29 +841,29 @@ useEffect(() => {
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.10)_0%,rgba(0,0,0,0.08)_22%,transparent_45%,rgba(255,255,255,0.02)_70%,rgba(0,0,0,0.22)_100%)] transition-opacity duration-700" />
         <div className="pointer-events-none absolute inset-0 border border-white/[0.12] shadow-[inset_0_1px_0_rgba(255,255,255,0.14),inset_0_-1px_0_rgba(0,0,0,0.18)]" />
 
-        {/* ضبابية سوداء ناعمة تتركز أسفل التدرّج */}
+        {/* طبقة زجاجية ضبابية واضحة تمتد من منتصف الشاشة إلى الأسفل */}
         <div
-          className={`pointer-events-none absolute inset-x-0 bottom-0 z-[9] h-[48vh] transition-opacity duration-1000 ${isHeroFinished ? "opacity-100" : "opacity-0"}`}
+          className={`pointer-events-none absolute inset-x-0 bottom-0 z-[9] h-[68vh] transition-opacity duration-1000 ${isHeroFinished ? "opacity-100" : "opacity-0"}`}
           style={{
             background:
-              "linear-gradient(to bottom, rgba(255,255,255,0.06) 0%, rgba(0,0,0,0.08) 38%, rgba(0,0,0,0.42) 72%, rgba(0,0,0,0.72) 100%)",
-            backdropFilter: "blur(16px) saturate(115%)",
-            WebkitBackdropFilter: "blur(16px) saturate(115%)",
+              "linear-gradient(to bottom, rgba(8,8,8,0.02) 0%, rgba(8,8,8,0.16) 24%, rgba(5,5,5,0.48) 58%, rgba(0,0,0,0.88) 100%)",
+            backdropFilter: "blur(20px) saturate(125%)",
+            WebkitBackdropFilter: "blur(20px) saturate(125%)",
             WebkitMaskImage:
-              "linear-gradient(to bottom, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.82) 24%, #000 48%, #000 100%)",
+              "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.35) 12%, #000 38%, #000 100%)",
             maskImage:
-              "linear-gradient(to bottom, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.82) 24%, #000 48%, #000 100%)",
-            borderTop: "1px solid rgba(255,255,255,0.08)",
+              "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.35) 12%, #000 38%, #000 100%)",
+            borderTop: "1px solid rgba(255,255,255,0.12)",
           }}
           aria-hidden="true"
         />
 
-        {/* تدرّج أسود خفيف من الأعلى إلى المنتصف، ثم أسود كامل في الأسفل */}
+        {/* تدرّج أسود مستقل وأوضح لضمان ظهور الانتقال حتى الأسود الكامل */}
         <div
-          className={`pointer-events-none absolute inset-x-0 bottom-0 z-10 h-[48vh] transition-opacity duration-1000 ${isHeroFinished ? "opacity-100" : "opacity-0"}`}
+          className={`pointer-events-none absolute inset-x-0 bottom-0 z-10 h-[68vh] transition-opacity duration-1000 ${isHeroFinished ? "opacity-100" : "opacity-0"}`}
           style={{
             background:
-              "linear-gradient(to bottom, rgba(0,0,0,0.04) 0%, rgba(0,0,0,0.10) 24%, rgba(0,0,0,0.30) 48%, rgba(0,0,0,0.78) 68%, #000 84%, #000 100%)",
+              "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.10) 12%, rgba(0,0,0,0.30) 34%, rgba(0,0,0,0.68) 58%, rgba(0,0,0,0.92) 78%, #000 100%)",
           }}
           aria-hidden="true"
         />
