@@ -1,4 +1,8 @@
 User-agent: *
 Allow: /
 
+# Allow ChatGPT search to discover and cite public pages.
+User-agent: OAI-SearchBot
+Allow: /
+
 Sitemap: https://alhanani.vercel.app/sitemap.xml
