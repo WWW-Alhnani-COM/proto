@@ -18,7 +18,7 @@ const cairo = Cairo({
   display: "swap",
 });
 
-const SITE_URL = "https://alhanani.onrender.com";
+const SITE_URL = "https://alhanani.vercel.app";
 
 const manrope = Manrope({
   variable: "--font-display",
@@ -32,14 +32,12 @@ export const metadata: Metadata = {
   description:
     "محمد الحناني، مبرمج فل استاك (Full-Stack) ومطور تطبيقات ويب وموبايل. خبرة 4+ سنوات في React، Next.js، Flutter، Laravel. أفضل مبرمج يمني متخصص في بناء حلول برمجية مبتكرة. الحناني للبرمجيات تقدم خدمات تطوير متكاملة.",
   keywords: [
-    // الأسماء والعبارات المطلوبة
     "محمد الحناني",
     "الحناني",
     "مبرمجين يمنين",
     "مبرمجين فل استاك",
     "الحناني للبرمجيات",
     "افضل مبرمج يمني",
-    // الكلمات الأساسية السابقة مع توسيعها
     "Full-Stack Web Developer",
     "React",
     "Next.js",
@@ -84,7 +82,6 @@ export const metadata: Metadata = {
     icon: "/favicon.ico",
     apple: "/apple-touch-icon.png",
   },
-  // إضافات SEO مفيدة
   authors: [{ name: "Mohammed Al-Hanani" }],
   robots: {
     index: true,
