@@ -403,63 +403,37 @@ const [formError, setFormError] = useState("");
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // ===== تمرير الهيرو خطوة واحدة لكل حركة عجلة =====
+  // ===== تمرير الهيرو بسلاسة وبشكل متناسب مع سرعة التمرير =====
   useEffect(() => {
-    // آخر إطار في كل مرحلة نصية: 7، 14، 25، 30.
-    const frameSteps = [1, 7, 14, 25, 30];
-    let unlockTimer: number | undefined;
-
     const handleWheel = (event: WheelEvent) => {
       const hero = heroSectionRef.current;
-      if (!hero || Math.abs(event.deltaY) < 2) return;
+      if (!hero || Math.abs(event.deltaY) < 0.1) return;
 
       const aboutSection = document.getElementById("about");
       const aboutStart = aboutSection
         ? aboutSection.getBoundingClientRect().top + window.scrollY
         : hero.offsetTop + hero.offsetHeight;
       const heroScrollDistance = Math.max(1, aboutStart - window.innerHeight);
+      const currentY = window.scrollY;
 
-      // تحكم خاص بالهيرو فقط؛ بعد آخر خطوة يعود التمرير الطبيعي للموقع.
-      if (window.scrollY > heroScrollDistance + 4) return;
+      // اترك التمرير الطبيعي لبقية الموقع خارج نطاق الهيرو.
+      if (currentY > heroScrollDistance + 2) return;
+      if (event.deltaY < 0 && currentY <= 0) return;
+      if (event.deltaY > 0 && currentY >= heroScrollDistance) return;
 
-      const direction = event.deltaY > 0 ? 1 : -1;
-      const currentStep = scrollStepRef.current;
-
-      if (wheelLockedRef.current) {
-        event.preventDefault();
-        return;
-      }
-
-      const nextStep = Math.max(0, Math.min(frameSteps.length - 1, currentStep + direction));
-      if (nextStep === currentStep) {
-        if (direction < 0 && window.scrollY <= 2) return;
-        if (direction > 0 && currentStep === frameSteps.length - 1) return;
-      }
-
+      // كلما كانت حركة عجلة الفأرة أبطأ، تحركت الصور بمقدار أصغر.
+      // التمرير الفوري يمنع تأخر الحركة عن المستخدم بسبب smooth scrolling.
       event.preventDefault();
-      if (nextStep === currentStep) return;
-
-      scrollStepRef.current = nextStep;
-      wheelLockedRef.current = true;
-
-      const targetProgress = frameSteps[nextStep] === 0
-        ? 0
-        : (frameSteps[nextStep] - 1) / (FRAME_COUNT - 1);
-      const targetY = Math.round(targetProgress * heroScrollDistance);
-
-      window.scrollTo({ top: targetY, behavior: "smooth" });
-
-      window.clearTimeout(unlockTimer);
-      unlockTimer = window.setTimeout(() => {
-        wheelLockedRef.current = false;
-      }, 750);
+      const sensitivity = 0.72;
+      const nextY = Math.min(
+        heroScrollDistance,
+        Math.max(0, currentY + event.deltaY * sensitivity)
+      );
+      window.scrollTo({ top: nextY, behavior: "auto" });
     };
 
     window.addEventListener("wheel", handleWheel, { passive: false });
-    return () => {
-      window.removeEventListener("wheel", handleWheel);
-      window.clearTimeout(unlockTimer);
-    };
+    return () => window.removeEventListener("wheel", handleWheel);
   }, []);
 
   // ===== تحسين معالجة السكرول =====
