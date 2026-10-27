@@ -925,12 +925,6 @@ useEffect(() => {
         onMouseEnter={() => setIsInsideHero(true)}
         onMouseLeave={() => setIsInsideHero(false)}
       >
-        <div className="fixed inset-0 z-20 pointer-events-none flex items-center justify-center">
-          <div className="absolute inset-x-0 top-16 sm:top-24 flex justify-center px-4 sm:px-6 text-center">
-            <p className="text-[9px] sm:text-[11px] uppercase tracking-[0.3em] sm:tracking-[0.5em] text-black/60 dark:text-white/60 drop-shadow transition-colors duration-300">
-              {isHeroFinished ? "✨ مرحباً بك في موقعي الرسمي" : "اسحب للأسفل لاستكشاف الإبداع"}
-            </p>
-          </div>
 
           {textBlocks.map((block) => {
             // مزامنة النصوص مع الإطار المعروض مع الحفاظ على سلوك الهيرو.
