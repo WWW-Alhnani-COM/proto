@@ -414,11 +414,13 @@ const [formError, setFormError] = useState("");
       progressRef.current = nextProgress;
       setScrollProgress(nextProgress);
 
-      // يبدأ التدرّج عند الوصول إلى موضع قسم About Me، ثم يكتمل تدريجيًا خلال ارتفاع شاشة.
+      // أظهر تدرّج الخلفية تدريجيًا مع دخول قسم About Me إلى الشاشة،
+      // ليكون مكتملًا عند وصول القسم إلى أعلى الشاشة، مع الحفاظ على نفس الطبقات والتنسيقات.
       if (aboutSection) {
+        const aboutTop = aboutSection.getBoundingClientRect().top;
         const gradientProgress = Math.min(
           1,
-          Math.max(0, (window.scrollY - aboutStart) / Math.max(1, window.innerHeight))
+          Math.max(0, (window.innerHeight - aboutTop) / Math.max(1, window.innerHeight))
         );
         setAboutGradientProgress(gradientProgress);
       }
