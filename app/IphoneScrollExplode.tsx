@@ -403,12 +403,13 @@ const [formError, setFormError] = useState("");
   // ===== تحسين معالجة السكرول =====
   useEffect(() => {
     const updateScrollProgress = () => {
-      // اربط نهاية تسلسل الإطارات ببداية قسم About Me بدل إنهائه بعد ثلاث شاشات.
+      // أنهِ تسلسل الهيرو عند بداية دخول قسم About Me إلى الشاشة،
+      // حتى لا يظهر نص "تواصل معي" خلف عنوان القسم.
       const aboutSection = document.getElementById("about");
       const aboutStart = aboutSection
         ? aboutSection.getBoundingClientRect().top + window.scrollY
         : window.innerHeight * 3;
-      const heroScrollDistance = Math.max(1, aboutStart);
+      const heroScrollDistance = Math.max(1, aboutStart - window.innerHeight);
       const nextProgress = Math.min(1, Math.max(0, window.scrollY / heroScrollDistance));
       progressRef.current = nextProgress;
       setScrollProgress(nextProgress);
