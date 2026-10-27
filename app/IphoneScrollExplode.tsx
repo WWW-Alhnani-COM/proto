@@ -294,7 +294,7 @@ const techLogos = [
 ];
 
 // ===== عدد الإطارات للصور =====
-const FRAME_COUNT = 64;
+const FRAME_COUNT = 30;
 
 // ===== بيانات النصوص في الهيرو =====
 const textBlocks = [
@@ -303,32 +303,32 @@ const textBlocks = [
     title: "Mohammed Al-Hanani",
     subtitle: "Full-Stack Web Developer | مهندس برمجيات",
     align: "center" as const,
-    start: 0,
-    end: 0.20,
+    startFrame: 1,
+    endFrame: 8,
   },
   {
     id: 1,
     title: "التميز والخبرة",
     subtitle: "تطوير تطبيقات وتصميم حلول برمجية بمعايير عالمية",
     align: "left" as const,
-    start: 0.18,
-    end: 0.5,
+    startFrame: 8,
+    endFrame: 15,
   },
   {
     id: 2,
     title: "الخدمات والمهارات",
     subtitle: "Flutter, Laravel, Firebase & Modern Web Tech",
     align: "right" as const,
-    start: 0.48,
-    end: 0.75,
+    startFrame: 15,
+    endFrame: 26,
   },
   {
     id: 3,
     title: "تواصل معي",
     subtitle: "جاهز لتحويل أفكارك إلى حلول برمجية احترافية",
     align: "center" as const,
-    start: 0.73,
-    end: 0.82,
+    startFrame: 26,
+    endFrame: 31,
   },
 ];
 
@@ -630,11 +630,12 @@ useEffect(() => {
       return;
     }
 
-    // اختيار الإطار وفق حركة التمرير؛ يستمر التسلسل حتى آخر إطار.
-    let frameIndex = 0;
-    if (scrollProgress > 0) {
-      frameIndex = Math.min(frames.length - 1, Math.max(0, Math.round(scrollProgress * (frames.length - 1))));
-    }
+    // عرض الإطارات من ffout001.gif إلى ffout030.gif فقط.
+    // يصل الإطار الأخير إلى 030 قبل الانتقال إلى قسم About Me.
+    const frameIndex = Math.min(
+      FRAME_COUNT - 1,
+      Math.max(0, Math.round(scrollProgress * (FRAME_COUNT - 1)))
+    );
     
     const image = frames[frameIndex];
     
@@ -921,22 +922,15 @@ useEffect(() => {
           </div>
 
           {textBlocks.map((block) => {
-            const start = block.start;
-            const end = block.end;
-            const inRange = scrollProgress >= start && scrollProgress <= end;
-            const progress = inRange
-              ? (scrollProgress - start) / (end - start)
-              : scrollProgress < start
-                ? 0
-                : 1;
-            
-            const opacity = inRange
-              ? progress < 0.15
-                ? progress / 0.15
-                : progress > 0.85
-                  ? (1 - progress) / 0.15
-                  : 1
-              : 0;
+            // مزامنة النصوص مع رقم الصورة الفعلي، لا مع نسب تمرير مستقلة.
+            const currentFrameNumber = Math.min(
+              FRAME_COUNT,
+              Math.max(1, Math.round(scrollProgress * (FRAME_COUNT - 1)) + 1)
+            );
+            const inRange =
+              currentFrameNumber >= block.startFrame &&
+              currentFrameNumber < block.endFrame;
+            const opacity = inRange ? 1 : 0;
             
             const offsetY = inRange ? 0 : 30;
             const translateX = block.align === "left" ? -30 : block.align === "right" ? 30 : 0;
