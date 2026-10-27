@@ -922,7 +922,7 @@ useEffect(() => {
           </div>
 
           {textBlocks.map((block) => {
-            // مزامنة النصوص مع رقم الصورة الفعلي، لا مع نسب تمرير مستقلة.
+            // مزامنة النصوص مع الإطار المعروض مع الحفاظ على سلوك الهيرو.
             const currentFrameNumber = Math.min(
               FRAME_COUNT,
               Math.max(1, Math.round(scrollProgress * (FRAME_COUNT - 1)) + 1)
@@ -930,8 +930,9 @@ useEffect(() => {
             const inRange =
               currentFrameNumber >= block.startFrame &&
               currentFrameNumber < block.endFrame;
+            // تبديل مباشر عند حدود الإطارات حتى لا يتداخل نصّان.
             const opacity = inRange ? 1 : 0;
-            
+
             const offsetY = inRange ? 0 : 30;
             const translateX = block.align === "left" ? -30 : block.align === "right" ? 30 : 0;
             const scale = inRange ? 1 : 0.95;
@@ -953,10 +954,10 @@ useEffect(() => {
                   x: inRange ? 0 : translateX,
                   scale: isHeroFinished ? 0.9 : scale,
                 }}
-                transition={{ 
-                  duration: 0.4, 
+                transition={{
+                  duration: 0.4,
                   ease: [0.22, 1, 0.36, 1],
-                  opacity: { duration: 0.3 }
+                  opacity: { duration: 0 }
                 }}
               >
                 <div className="w-full">
