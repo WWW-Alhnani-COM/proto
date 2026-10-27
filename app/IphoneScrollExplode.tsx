@@ -445,7 +445,9 @@ const [formError, setFormError] = useState("");
       scrollStepRef.current = nextStep;
       wheelLockedRef.current = true;
 
-      const targetProgress = (frameSteps[nextStep] - 1) / (FRAME_COUNT - 1);
+      // اترك هامشًا صغيرًا قبل نهاية الهيرو: الإطار 030 يظهر كاملًا
+      // مع بقاء نص «تواصل معي» ظاهرًا حتى تمريرة المستخدم التالية.
+      const targetProgress = (frameSteps[nextStep] - 1) / (FRAME_COUNT - 0.5);
       const targetY = Math.round(targetProgress * heroScrollDistance);
 
       // حركة سلسة بين نقاط التوقف؛ الصور والنصوص تظل مرتبطة بتقدم التمرير.
