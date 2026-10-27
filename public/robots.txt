@@ -1,8 +1,94 @@
+# Public portfolio: allow compliant search engines and AI crawlers.
+# Note: robots.txt is a request, not an access-control mechanism.
+
 User-agent: *
 Allow: /
 
-# Allow ChatGPT search to discover and cite public pages.
+# OpenAI / ChatGPT search and retrieval
 User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+# Anthropic / Claude
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+# Perplexity
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+# Google Search, Google AI features, Gemini and Vertex AI controls
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: GoogleOther
+Allow: /
+
+User-agent: Google-CloudVertexBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+# Microsoft / Bing / Copilot
+User-agent: Bingbot
+Allow: /
+
+# Apple search and AI-use control
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# Other AI, answer engines, and public web datasets
+User-agent: CCBot
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: meta-externalagent
+Allow: /
+
+User-agent: meta-externalfetcher
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+User-agent: DuckAssistBot
+Allow: /
+
+User-agent: Diffbot
+Allow: /
+
+# Unverified token sometimes attributed to DeepSeek; DeepSeek has not
+# published a crawler token that can be independently confirmed.
+User-agent: DeepSeekBot
 Allow: /
 
 Sitemap: https://alhanani.vercel.app/sitemap.xml
