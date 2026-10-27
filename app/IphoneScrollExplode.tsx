@@ -826,11 +826,19 @@ useEffect(() => {
       </header>
 
       
-      {/* ===== الخلفية الثابتة ===== */}
+      {/* ===== الخلفية الثابتة: تسلسل الهيرو ثم خلفية About Me ===== */}
       <div className="fixed inset-0 z-0 overflow-hidden bg-black transition-colors duration-300">
+        <img
+          src="/me/Glowing_digital_HUD_interface.gif"
+          alt=""
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 h-full w-full object-cover transition-opacity duration-1000"
+          style={{ opacity: isHeroFinished ? 1 : 0 }}
+        />
         <canvas
           ref={canvasRef}
-          className="relative h-full w-full opacity-90"
+          className="relative h-full w-full transition-opacity duration-1000"
+          style={{ opacity: isHeroFinished ? 0 : 0.9 }}
         />
 
         {/* تأثير الزجاج الأسود */}
