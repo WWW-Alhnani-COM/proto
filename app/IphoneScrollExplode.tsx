@@ -925,7 +925,8 @@ useEffect(() => {
         onMouseEnter={() => setIsInsideHero(true)}
         onMouseLeave={() => setIsInsideHero(false)}
       >
-
+        {/* طبقة نصوص مراحل الهيرو؛ أُبقيت منفصلة عن رسالة الترحيب المحذوفة */}
+        <div className="fixed inset-0 z-20 pointer-events-none flex items-center justify-center">
           {textBlocks.map((block) => {
             // مزامنة النصوص مع الإطار المعروض مع الحفاظ على سلوك الهيرو.
             const currentFrameNumber = Math.min(
@@ -987,7 +988,8 @@ useEffect(() => {
               </motion.div>
             );
           })}
-        
+        </div>
+
         <div className="absolute bottom-8 sm:bottom-10 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-2">
           <motion.div
             animate={{ y: [0, 10, 0], opacity: [0.5, 1, 0.5] }}
