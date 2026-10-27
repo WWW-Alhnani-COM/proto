@@ -987,7 +987,6 @@ useEffect(() => {
               </motion.div>
             );
           })}
-        </div>
         
         <div className="absolute bottom-8 sm:bottom-10 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-2">
           <motion.div
