@@ -405,7 +405,8 @@ const [formError, setFormError] = useState("");
 
   // ===== تمرير الهيرو خطوة واحدة لكل حركة عجلة =====
   useEffect(() => {
-    const frameSteps = [0, 4, 11, 20, 28, FRAME_COUNT];
+    // آخر إطار في كل مرحلة نصية: 7، 14، 25، 30.
+    const frameSteps = [1, 7, 14, 25, 30];
     let unlockTimer: number | undefined;
 
     const handleWheel = (event: WheelEvent) => {
