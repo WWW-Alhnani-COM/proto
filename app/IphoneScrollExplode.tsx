@@ -927,7 +927,10 @@ useEffect(() => {
               FRAME_COUNT,
               Math.max(1, Math.round(scrollProgress * (FRAME_COUNT - 1)) + 1)
             );
+            // لا تعرض نصوص مراحل التمرير فوق أنيميشن الكتابة الافتتاحي.
             const inRange =
+              scrollProgress > 0 &&
+              !showTyping &&
               currentFrameNumber >= block.startFrame &&
               currentFrameNumber < block.endFrame;
             // تبديل مباشر عند حدود الإطارات حتى لا يتداخل نصّان.
