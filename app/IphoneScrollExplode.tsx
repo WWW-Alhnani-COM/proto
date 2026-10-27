@@ -328,7 +328,7 @@ const textBlocks = [
     subtitle: "جاهز لتحويل أفكارك إلى حلول برمجية احترافية",
     align: "center" as const,
     start: 0.73,
-    end: 0.80,
+    end: 0.82,
   },
 ];
 
@@ -403,15 +403,18 @@ const [formError, setFormError] = useState("");
   // ===== تحسين معالجة السكرول =====
   useEffect(() => {
     const updateScrollProgress = () => {
-      const heroScrollDistance = window.innerHeight * 3;
+      // اربط نهاية تسلسل الإطارات ببداية قسم About Me بدل إنهائه بعد ثلاث شاشات.
+      const aboutSection = document.getElementById("about");
+      const aboutStart = aboutSection
+        ? aboutSection.getBoundingClientRect().top + window.scrollY
+        : window.innerHeight * 3;
+      const heroScrollDistance = Math.max(1, aboutStart);
       const nextProgress = Math.min(1, Math.max(0, window.scrollY / heroScrollDistance));
       progressRef.current = nextProgress;
       setScrollProgress(nextProgress);
 
       // يبدأ التدرّج عند الوصول إلى موضع قسم About Me، ثم يكتمل تدريجيًا خلال ارتفاع شاشة.
-      const aboutSection = document.getElementById("about");
       if (aboutSection) {
-        const aboutStart = aboutSection.getBoundingClientRect().top + window.scrollY;
         const gradientProgress = Math.min(
           1,
           Math.max(0, (window.scrollY - aboutStart) / Math.max(1, window.innerHeight))
@@ -823,17 +826,9 @@ useEffect(() => {
       
       {/* ===== الخلفية الثابتة ===== */}
       <div className="fixed inset-0 z-0 overflow-hidden bg-black transition-colors duration-300">
-        {isHeroFinished && (
-          <img
-            src="/me/Glowing_digital_HUD_interface.gif"
-            alt=""
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0 h-full w-full object-cover"
-          />
-        )}
         <canvas
           ref={canvasRef}
-          className={`relative h-full w-full transition-opacity duration-500 ${isHeroFinished ? "opacity-0" : "opacity-90"}`}
+          className="relative h-full w-full opacity-90"
         />
 
         {/* تأثير الزجاج الأسود */}
