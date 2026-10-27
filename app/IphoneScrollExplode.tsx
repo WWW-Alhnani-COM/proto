@@ -339,6 +339,9 @@ function getFramePath(index: number) {
 
 export default function PortfolioMain() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const heroSectionRef = useRef<HTMLDivElement>(null);
+  const scrollStepRef = useRef(0);
+  const wheelLockedRef = useRef(false);
   const progressRef = useRef(0);
   const [frames, setFrames] = useState<HTMLImageElement[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -398,6 +401,64 @@ const [formError, setFormError] = useState("");
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // ===== تمرير الهيرو خطوة واحدة لكل حركة عجلة =====
+  useEffect(() => {
+    const frameSteps = [0, 4, 11, 20, 28, FRAME_COUNT];
+    let unlockTimer: number | undefined;
+
+    const handleWheel = (event: WheelEvent) => {
+      const hero = heroSectionRef.current;
+      if (!hero || Math.abs(event.deltaY) < 2) return;
+
+      const aboutSection = document.getElementById("about");
+      const aboutStart = aboutSection
+        ? aboutSection.getBoundingClientRect().top + window.scrollY
+        : hero.offsetTop + hero.offsetHeight;
+      const heroScrollDistance = Math.max(1, aboutStart - window.innerHeight);
+
+      // تحكم خاص بالهيرو فقط؛ بعد آخر خطوة يعود التمرير الطبيعي للموقع.
+      if (window.scrollY > heroScrollDistance + 4) return;
+
+      const direction = event.deltaY > 0 ? 1 : -1;
+      const currentStep = scrollStepRef.current;
+
+      if (wheelLockedRef.current) {
+        event.preventDefault();
+        return;
+      }
+
+      const nextStep = Math.max(0, Math.min(frameSteps.length - 1, currentStep + direction));
+      if (nextStep === currentStep) {
+        if (direction < 0 && window.scrollY <= 2) return;
+        if (direction > 0 && currentStep === frameSteps.length - 1) return;
+      }
+
+      event.preventDefault();
+      if (nextStep === currentStep) return;
+
+      scrollStepRef.current = nextStep;
+      wheelLockedRef.current = true;
+
+      const targetProgress = frameSteps[nextStep] === 0
+        ? 0
+        : (frameSteps[nextStep] - 1) / (FRAME_COUNT - 1);
+      const targetY = Math.round(targetProgress * heroScrollDistance);
+
+      window.scrollTo({ top: targetY, behavior: "smooth" });
+
+      window.clearTimeout(unlockTimer);
+      unlockTimer = window.setTimeout(() => {
+        wheelLockedRef.current = false;
+      }, 750);
+    };
+
+    window.addEventListener("wheel", handleWheel, { passive: false });
+    return () => {
+      window.removeEventListener("wheel", handleWheel);
+      window.clearTimeout(unlockTimer);
+    };
   }, []);
 
   // ===== تحسين معالجة السكرول =====
@@ -913,6 +974,7 @@ useEffect(() => {
 
       {/* ===== قسم الهيرو ===== */}
       <div 
+        ref={heroSectionRef}
         className="h-[300vh] relative z-10"
         onMouseMove={(e) => {
           const rect = e.currentTarget.getBoundingClientRect();
